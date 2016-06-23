@@ -1,0 +1,136 @@
+<!Doctype html>
+<head>
+    <meta charset="UTF-8">
+    <title>SleepTrend</title>
+    <script src="js/base-address.js"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/echarts-all.js"></script>
+    <script type="text/javascript">
+
+        //ajax函数定义
+        function restful(typeInfo,urlInfo,dataInfo) {
+            /**typeInfo:操作类型；
+             * urlInfo:地址；
+             * dataInfo:json数据；
+             * 操作类型：
+             * get：获取（dataInfo为空时，查询所有；dataInfo不为空，条件查询）；
+             * 查询(数据分页，暂时每页是十条数据，可后台更改)
+             * post：上传；
+             * put：更新(按照id)；
+             * delete：删除数据（id）；
+             * */
+            var result = null;
+            $.ajax({
+                async:false,
+                type: typeInfo,
+                url: urlInfo,
+                dataType:"json",
+                data:dataInfo,
+                success:function(json){
+                    result=json;
+                },
+                error:function(){
+                    result="fail";
+                }
+            });
+            //	.success(function (json) {
+            //	//result = json;
+            //	result= json;
+            //	return result;
+            //}).error(function(json){
+            //	result = json;
+            //	return result;
+            //});
+            return result;
+        }
+
+        $(function () {
+            var dataSeries=restful("get",baseAddress+"/sleepall/?temp_userid=7",{"temp_userid":7});
+            //alert(dataSeries);
+            var xRay=[];     //横坐标数值
+            var data2=[];    //深睡眠数值
+            var data3=[];       //总睡眠时长
+            $.each(dataSeries,function(i){
+                xRay.push(dataSeries[i].overtime);
+                //alert(data1);
+                data2.push(dataSeries[i].deepsleeptime);
+                data3.push(dataSeries[i].sumtime);
+            });
+
+            var myChart=echarts.init(document.getElementById('main'));
+            var option= {
+                title: {
+                    text: '睡眠时间趋势表'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend:{
+                    data:['深睡眠','总睡眠']
+                },
+                dataZoom: {
+                    show: true,
+                    start : 60
+                },
+                toolbox:{
+                    show:true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable:true,
+                grid:
+                {
+                    y2:80
+                },
+                xAxis:[
+                    {
+                        type:'category',
+                        data:xRay
+                    },
+                    {
+                        type : 'category',
+                        axisLine: {show:false},
+                        axisTick: {show:false},
+                        axisLabel: {show:false},
+                        splitArea: {show:false},
+                        splitLine: {show:false},
+                        data : xRay
+                    }
+                ],
+                yAxis:[
+                    {
+                        type:'value'
+                    }
+                ],
+                series:[
+                    {
+                        name:'深睡眠',
+                        type:'bar',
+                        itemStyle:{normal:{color:'rgba(193,35,43,1)',label:{show:true}}},
+                        data:data2
+                    },
+                    {
+                        name:'总睡眠',
+                        type:'bar',
+                        xAxisIndex:1,
+                        itemStyle: {normal: {color:'rgba(193,35,43,0.5)', label:{show:true,formatter:function(p){return p.value > 0 ? (p.value +'\n'):'';}}}},
+                        data:data3
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        })
+
+    </script>
+</head>
+<body>
+    <!--为Echarts准备一个具备大小（宽高）的DOM-->
+    <div id="main" style="height: 400px;width:600px;"></div>
+</body>

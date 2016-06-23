@@ -1,0 +1,138 @@
+#add_header {
+    position: relative;
+    z-index: 2000;
+    width: 235px;
+    top: 10px;
+}
+
+#add_header h1 {
+    font-size: 30px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    background: #000;
+}
+
+#add_middle h3 {
+    color: rgb(78, 153, 199);
+    font-weight: bold;
+    margin-left: 70px;
+    margin-top: 10px;
+}
+
+#add_middle p {
+    color: rgb(131, 129, 129);
+    margin-left: 70px;
+    margin-top: 10px;
+}
+
+#add_middle ul {
+    margin-left: 30px;
+}
+
+#add_middle li {
+    margin: 10px 0px;
+    color: #999;
+}
+
+#navigation {
+    padding-left: 0px;
+    margin-top: 20px;
+    width: 235px;
+    display: block;
+    list-style: none;
+    z-index: 3;
+}
+
+#navigation a {
+    color: #444;
+    display: block;
+    background: rgba(255, 255, 255, 0.9);
+    line-height: 50px;
+    padding: 0px 20px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+}
+
+#navigation a:hover {
+    background: #ddd;
+    text-decoration: none;
+}
+
+.add_content {
+    right: 40px;
+    left: 280px;
+    top: 0px;
+    position: relative;
+    width: 820px;
+}
+
+.add_border {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px auto;
+}
+
+.add_content h2 {
+    font-size: 30px;
+    color: #fff;
+    color: rgba(86, 81, 81, 0.9);
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.add_content li {
+    font-size: 18px;
+    line-height: 30px;
+    margin: 3px 0px;
+}
+
+.panel {
+    min-width: 100%;
+    height: 110%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: fixed;
+    margin-top: -150%;
+    /*background-color: #87cfe6;*/
+    /*box-shadow: 0px 4px 7px rgba(0,0,0,0.6);*/
+    opacity: 0;
+    z-index: 2;
+    -webkit-transition: opacity .6s ease-in-out;
+    -moz-transition: opacity .6s ease-in-out;
+    -o-transition: opacity .6s ease-in-out;
+    -ms-transition: opacity .6s ease-in-out;
+    transition: opacity .6s ease-in-out;
+}
+
+.panel:target {
+    opacity: 1;
+    margin-top: 0%;
+}
+
+/*
+.tab1:target + #add_header #navigation li #link-tab1{
+    background-color: #000;
+}
+
+#tab2:target ~ #link-tab2, #tab3:target ~ #link-tab3, #tab4:target ~ #link-tab4 {
+    background: #000;
+    color: #fff;
+}
+*/
+
+#btn-close-modal {
+    font-size: 45px;
+    float: right;
+}
+
+#btn-close-modal + h1 {
+    font-weight: bold;
+    margin-left: 40%;
+    margin-top: 5px;
+}

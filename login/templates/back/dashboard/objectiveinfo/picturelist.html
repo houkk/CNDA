@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+      {% load staticfiles %}
+    <title>图片列表</title>
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--图片列表-->
+    <div id="picturelisttoolbar" class="btn-group tool-control table-control">
+        <button type="button" class="btn btn-default" id="picturelistadd" >    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="picturelistedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="picturelistdelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%" id="table">
+        <table data-toggle="table"  id="picturelistTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#picturelisttoolbar" sort-name=stargazers_count" sort-order='asc'>
+        <thead>
+        <tr>
+            <th></th>
+        </tr>
+        </thead>
+        </table>
+    </div>  <!--col-md-10-->
+    <div class="row" style="display: none;" id="picturelistaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">图片信息添加</h4>
+                </div>
+                <form id="picturelistform" method="post" enctype="multipart/form-data" runat="server">
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <fieldset>
+                                    <div class="form-group hidden">
+                                        <label for="PictureLocationID">图片信息位置ID</label>
+                                        <input type="text" class="form-control " id="PictureLocationID" name="picturelocationid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="OriginalPicturePath">原图路径</label>
+
+                                        <input type="file"  id="OriginalPicturePath"  name="originalpicturepath" style="width:90%" accept="image/*"  required >
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SmallPicturePath">缩略图路径</label>
+                                        <input type="text" class="form-control" id="SmallPicturePath" name="smallpicturepath" style="width:90%"  >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PictureClass">图片信息类别</label>
+                                         <input type="text" class="form-control" id="PictureClass" name="pictureclass" style="width:90%" required >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PictureName">图片信息名</label>
+                                        <input type="text" class="form-control " id="PictureName" name="picturename"  style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PictureTitle">图片信息主题</label>
+                                        <input type="text" class="form-control " id="PictureTitle" name="picturetitle"  style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PictureUseCode">图片信息使用代码值</label>
+                                        <input type="text" class="form-control " id="PictureUseCode" name="pictureusecode"  style="width:90%" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PictureRemarks">图片信息备注</label>
+                                        <select  class="form-control " id="PictureRemarks" name="pictureremarks"  style="width:90%" >
+                                            <option value selected>请选择</option>
+                                            <option value="test">test</option>
+                                            <option value="head">head</option>
+                                            <option value="healthknowledge">healthknowledge</option>
+                                            <option value="physicalinformation">physicalinformation</option>
+                                            <option value="other">other</option>
+                                        </select>
+                                    </div>
+                                    </fieldset>
+                                </div> <!--cil-md-12 -->
+                            </div>  <!--row-->
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script src="{% static "login/static/js/ajaxfileupload.js" %}"></script>
+
+<!--=========================================here is the js file================================================================-->
+</body>
+<script>
+{#      function   show() {#}
+{#          var p = document.getElementById("OriginalPicturePath").value;#}
+{#          document.getElementById("s").innerHTML = "<input id=pic type=image height=96 width=128 /> ";#}
+{#          document.getElementById("pic").src = p;#}
+{#          alert(p);#}
+{#      }#}
+    var rowcontent = null;
+    var tag=null;
+    $('#picturelistadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#picturelistaddpanel').css('display','block');
+{#        document.getElementById("AmountNumOfDays").focus();#}
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+     $('#picturelistedit').click(function(){
+      var jsonobject = eval('('+ rowcontent +')');
+
+      $('#PictureLocationID').val(jsonobject.picturelocationid);
+      $('#OriginalPicturePath').val(jsonobject.originalpicturepath);
+      $('#SmallPicturePath').val(jsonobject.smallpicturepath);
+      $('#PictureClass').val(jsonobject.pictureclass);
+      $('#PictureName').val(jsonobject.picturename);
+      $('#PictureTitle').val(jsonobject.picturetitle);
+      $('#PictureUseCode').val(jsonobject.pictureusecode);
+      $('#PictureRemarks').val(jsonobject.pictureremarks);
+
+      $('#picturelisttoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#picturelistaddpanel').css('display','block');
+      $('#changepanel').html("图片信息编辑");
+      $('#doit').html("确定");
+  });
+    $('#picturelistTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/picturelist.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#picturelistform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+
+                $.ajax({
+                    async: false,
+                    type: "post",
+                    dataType: 'json',
+                    data: jsonobj1,
+                    url:  baseAddress+'/tbpicturelist/',
+                    success: function (data) {
+                        $('.table-control').css('display', 'block');
+                        $('#picturelistaddpanel').css('display', 'none');
+                        $('#table').bootstrapTable('getData');
+                    },
+                    error: function (json) {
+                        alert("插入失败");
+                        $('.table-control').css('display', 'none');
+                        $('#picturelistaddpanel').css('display', 'block');
+
+                    }
+
+                });
+
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url:  baseAddress+'/tbpicturelist/'+jsonobject.picturelocationid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/picturelist.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#picturelistaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+
+{#    function Uploadfile(){#}
+{#          if($('#file1').val().length<=0){#}
+{#              alert('file1 is null');#}
+{#              $.ajax({#}
+{#                url: baseAddress+'/tbexerciseinfo/',#}
+{#                //url:'http://127.0.0.1:8000/tbpicturelist/',#}
+{#                type: 'post',#}
+{#                data: {'exercisename': "ceshi", "temp_picturelocationid":null},//, 'temp_picturelocationid.picturename': "test"},//, 'picturename':$('#textname').val(),'temp_picturelocationid':{'picturename':"test"}#}
+{#                //data:{'picturename':'test'},#}
+{#                dataType: 'json',#}
+{#                success:function(data){#}
+{#                    turnPage('back/dashboard/objectiveinfo/picturelist.html');#}
+{#                },#}
+{#                error:function(json){#}
+{#                    alert ("修改失败");#}
+{#                    $('.table-control').css('display','none');#}
+{#                    $('#picturelistaddpanel').css('display','block');#}
+{#                }#}
+{#            })#}
+{##}
+{#          }#}
+{#          else{#}
+{#            $.ajaxFileUpload({#}
+{#                url:baseAddress+'/tbpicturelist/?format=json',#}
+{#                secureuri: false,#}
+{#                fileElementId: 'file1',#}
+{#                data: {'picturename': "test"},//, 'picturename':$('#textname').val(),'temp_picturelocationid':{'picturename':"test"}#}
+{#                //data:{'temp_picturelocationid.picturename':'rt','_method':'patch', 'exercisename': "sfsf"},#}
+{#                //data:{'_method':'patch'},#}
+{#                dataType: 'json',#}
+{#                //contentType: 'application/json',#}
+{#                success: function (data, status) {#}
+{##}
+{#                    alert(data);#}
+{#                    alert('s');#}
+{#                    if(typeof(data.originalpicturepath) == 'string'){#}
+{#                        $('#img1').attr("src", data.originalpicturepath);#}
+{#                    }#}
+{#                    else{#}
+{#                        alert('error');#}
+{#                    }#}
+{##}
+{#                },#}
+{#                error: function (data, status, e) {#}
+{#                    alert(data);#}
+{#                    alert('error!!!');#}
+{#                    alert(e);#}
+{##}
+{#                }#}
+{#            })#}
+{#          }#}
+{##}
+{#      }#}
+
+    $('#picturelistdelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+             //确认是否删除
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url:  baseAddress+'/tbpicturelist/'+jsonobject.picturelocationid+"/",
+                   success: function (json) {
+                      turnPage('back/dashboard/objectiveinfo/picturelist.html');
+                   }
+               })
+           }
+       });
+
+{#$(function() {#}
+{#    var fileInput = document.getElementById('OriginalPicturePath');#}
+{#    var info = document.getElementById('test-file-info');#}
+{#    var preview = document.getElementById('test-image-preview');#}
+{#    fileInput.addEventListener('change', function () {#}
+{#        preview.style.backgroundImage = '';#}
+{#        if (!fileInput.value) {#}
+{#            info.innerHTML = '没有选择文件';#}
+{#            return;#}
+{#        }#}
+{#        var file = fileInput.files[0];#}
+{#        info.innerHTML = '文件: ' + file.name + '<br>' +#}
+{#                         '大小: ' + file.size +'KB'+ '<br>' +#}
+{#                         '修改: ' + file.lastModifiedDate;#}
+{#        if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {#}
+{#            alert('不是有效的图片文件!');#}
+{#            return;#}
+{#        }#}
+{#        var reader = new FileReader();#}
+{#        reader.onload = function(e) {#}
+{#            var#}
+{#                data = e.target.result;#}
+{#                index = data.indexOf(';base64,');#}
+{#            preview.style.backgroundImage = 'url(' + data + ')';#}
+{#        };#}
+{#        reader.readAsDataURL(file);#}
+{#    });#}
+{#});#}
+
+
+{#    $('#validateform').bootstrapValidator({#}
+{#      excluded: ':disabled',#}
+{#      feedbackIcons: {#}
+{#        valid: 'glyphicon glyphicon-ok',#}
+{#        invalid: 'glyphicon glyphicon-remove',#}
+{#        validating: 'glyphicon glyphicon-refresh'#}
+{#      },#}
+{##}
+{#      fields: {#}
+{#          amountnumofdays: {#}
+{#              validators: {#}
+{#                  regexp: {#}
+{#                      regexp: /^[1-9]\d*$/,#}
+{#                      message: '只能包含正整数'#}
+{#                  }#}
+{#              }#}
+{#          },#}
+{#          adminisarearemarks: {#}
+{#              validators: {#}
+{#                  stringLength: {#}
+{#                      max: 100,#}
+{#                      message: '限制在100个字符以内'#}
+{#                  }#}
+{#              }#}
+{#          }#}
+{#      }#}
+{#    });#}
+</script>
+</html>
+
+

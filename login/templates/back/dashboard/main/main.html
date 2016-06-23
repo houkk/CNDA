@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache,must-revalidate" />
+    <meta http-equiv="expires" content="Wed,26 Feb 1997 08:21:57 GMT" />
+    <link rel="icon" href="../../favicon.ico">
+    <title>云技术共享平台后台管理系统</title>
+    <!-- Bootstrap core CSS -->
+    {% load staticfiles %}
+    <link href="{% static "login/static/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "login/static/css/dashboard.css" %}" rel="stylesheet">
+    <link href="{% static "login/static/css/bootstrap-table.min.css" %}" rel="stylesheet">
+    <link href="{% static "login/static/css/bootstrapValidator.css" %}" rel="stylesheet">
+    <link href="{% static "login/static/css/bootstrap-table-filter.css" %}" rel="stylesheet">
+    <link href="{% static "login/static/css/common.css" %}" rel="stylesheet">
+    <style type="text/css">
+        .main-left{ width:18%; float:left; margin:1px; height:100%;}
+        .main-right{ width:81%; float:right; margin:1px; height:100%; }
+    </style>
+    <script src="{% static "login/static/js/jquery-1.10.2.min.js" %}"></script>
+</head>
+<body>
+    {% csrf_token %}
+    <nav class="navbar navbar-inverse navbar-fixed-top nav_color" style="height: auto">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" style="font-size: 27px; color: #002a80;">中医云健康数据共享平台</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" onclick="goto_mainpage()"><i class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="bottom" title="主页"></i></a></li>
+                    <li><a href="#" onclick="turnPage('back/dashboard/main/backAccount.html')" ><i class="glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="管理中心"></i></a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-cog" data-toggle="tooltip" data-placement="bottom" title="设置"></i></a></li>
+                    <li><a href="#" onclick="logout()"><i class="glyphicon glyphicon-log-out" data-toggle="tooltip" data-placement="bottom" title="退出"></i></a></li>
+                </ul>
+{#                <form class="navbar-form navbar-right">#}
+{#                    <input type="text" class="form-control" placeholder="Search...">#}
+{#                </form>#}
+            </div>
+        </div>
+    </nav>
+    <div class="modal fade" id="dietModal" tabindex="-1" role="dialog"
+         aria-labelledby="dietModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="dietModalLabel">
+                        请选择您的区域和要查看的图表项
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="container">
+{#                            <div class="row">#}
+{#                                <div style="width: 150px; float: left">请选择您的区域</div>&nbsp;&nbsp;#}
+{#                                <div style="width: 120px; float: left">#}
+{#                                    <select class="form-control" id="province" onchange="show_sub()">#}
+{#                                         <option >请选择省</option>#}
+{##}
+{#                                    </select>#}
+{#                                </div>&nbsp;&nbsp;#}
+{#                                <div style="width: 120px; float: left">#}
+{#                                    <select class="form-control" id="city">#}
+{#                                        <option >请选择市</option>#}
+{##}
+{#                                    </select>#}
+{#                                </div>&nbsp;&nbsp;#}
+{#                                <div style="width: 120px; float: left">#}
+{#                                    <select class="form-control" id="county">#}
+{#                                        <option >请选择区</option>#}
+{##}
+{#                                    </select>#}
+{#                                </div>#}
+{#                            </div><br/>#}
+                            <div class="row">
+                                <div style="width: 150px; float: left">请选择您的区域</div>&nbsp;&nbsp;
+                                <div class="btn-group dropdown_area" id="sheng">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            onclick="select_sheng();">
+                                        <span class="my">请选择省</span><span class="caret"></span>
+                                    </button>
+
+                                    <ul class="dropdown-menu" role="menu" style="height:200px;overflow:auto;">
+                                    </ul>
+                                </div>
+                                <div class="btn-group dropdown_area" id="shi">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            onclick="select_shi();">
+                                        <span class="my">请选择市</span> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" style="height:200px;overflow:auto;">
+                                    </ul>
+                                </div>
+                                <div class="btn-group dropdown_area" id="qu">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            onclick="select_qu();">
+                                        <span class="my">请选择区(县) </span><span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" style="height:200px;overflow:auto;">
+                                    </ul>
+                                </div>
+                            </div><br/>
+                            <div class="row">
+                                <div style="width: 200px; float: left">请选择您要查看的图表</div>&nbsp;&nbsp;
+                                <div style="width: 220px; float: left">
+                                    <select class="form-control select select-primary select-block mbl">
+                                            <option value="0">=======</option>
+                                            <option id="yinshiliang" value="yinshiliang">饮食量图</option>
+                                            <option value="yinshitezheng">营养成分趋势图</option>
+                                            <option value="zhuangkuang">饮食营养成分分析图</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal" id="close">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="dietlook">
+                        查看
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="modal fade" id="sleepModal" tabindex="-1" role="dialog"
+         aria-labelledby="sleepModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="sleepModalLabel">
+                        请选择您的区域和要查看的图表项
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="container">
+                            <div class="row">
+                                <div style="width: 150px; float: left">请选择您的区域</div>&nbsp;&nbsp;
+                                <div class="btn-group dropdown_area" id="sheng">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            onclick="select_sheng();">
+                                        <span class="my">请选择省</span><span class="caret"></span>
+                                    </button>
+
+                                    <ul class="dropdown-menu" role="menu" style="height:200px;overflow:auto;">
+                                    </ul>
+                                </div>
+                                <div class="btn-group dropdown_area" id="shi">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            onclick="select_shi();">
+                                        <span class="my">请选择市</span> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" style="height:200px;overflow:auto;">
+                                    </ul>
+                                </div>
+                                <div class="btn-group dropdown_area" id="qu">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            onclick="select_qu();">
+                                        <span class="my">请选择区(县) </span><span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" style="height:200px;overflow:auto;">
+                                    </ul>
+                                </div>
+                            </div><br/>
+                            <div class="row">
+                                <div style="width: 200px; float: left">请选择您要查看的图表</div>&nbsp;&nbsp;
+                                <div style="width: 220px; float: left">
+                                    <select class="form-control select select-primary select-block mbl">
+                                        <option value="0">=======</option>
+                                        <option id="sporttype" value="sporttype">睡眠信息图</option>
+                                        <option id="shuimianhuanjing" value="shuimianhuanjing">睡眠环境图</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal" id="close">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="sleeplook">
+                        查看
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="modal fade" id="sportModal" tabindex="-1" role="dialog"
+         aria-labelledby="sportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="sportModalLabel">
+                        请选择您的区域和要查看的图表项
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+
+                        <div class="container">
+                            <div class="row">
+                                <div style="width: 150px; float: left">请选择您的区域</div>&nbsp;&nbsp;
+                                <div class="btn-group dropdown_area" id="sheng">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            onclick="select_sheng();">
+                                        <span class="my">请选择省</span><span class="caret"></span>
+                                    </button>
+
+                                    <ul class="dropdown-menu" role="menu" style="height:200px;overflow:auto;">
+                                    </ul>
+                                </div>
+                                <div class="btn-group dropdown_area" id="shi">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            onclick="select_shi();">
+                                        <span class="my">请选择市</span> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" style="height:200px;overflow:auto;">
+                                    </ul>
+                                </div>
+                                <div class="btn-group dropdown_area" id="qu">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"
+                                            onclick="select_qu();">
+                                        <span class="my">请选择区(县) </span><span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" style="height:200px;overflow:auto;">
+                                    </ul>
+                                </div>
+                            </div><br/>
+                            <div class="row">
+                                <div style="width: 200px; float: left">请选择您要查看的图表</div>&nbsp;&nbsp;
+                                <div style="width: 220px; float: left">
+                                    <select class="form-control select select-primary select-block mbl">
+                                        <option value="0">=======</option>
+                                        <option id="sporttype" value="sporttype">运动类型图</option>
+                                        <option id="sportamount" value="sportamount">运动量图</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal" id="close">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="sportlook">
+                        查看
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <div class="main-left" >
+        <div class="main-left sidebar" id="accroding" >
+            <!--===========================================here is the side bar=============================================================-->
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+                <div class="panel panel-primary coll">
+                    <div class="panel-heading s-head" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        <h4 class="panel-title">
+                            <i class="glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" ></i> &nbsp;&nbsp;
+                            用户管理
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body l-nav" id="back_user" onclick="turnPage('back/dashboard/main/backuser.html')">
+                            <div class="col-sm-12" style="color: #006dcc">后台用户管理</div>
+                        </div>
+                        <div class="panel-body l-nav" id="supervisorylevel" onclick="turnPage('back/dashboard/main/supervisorylevel.html')">
+                            <div class="col-sm-12" style="color: #006dcc">管理员权限</div>
+                        </div>
+                        <div class="panel-body l-nav" id="health_user" onclick="turnPage('back/dashboard/main/healther.html')">
+                            <div class="col-sm-12" style="color: #006dcc">健康用户管理</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading collapsed s-head" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <h4 class="panel-title">
+                            <i class="glyphicon glyphicon-heart" data-placement="bottom" ></i> &nbsp;&nbsp;
+                            用户健康数据管理
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body l-nav dropdown">
+                            <div class="col-sm-12 dropdown-toggle" id="yinshishuju" style="color: #006dcc" data-toggle="dropdown">饮食数据管理</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="yinshishuju">
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/dietinfo/eatingrecord.html')"><a role="menuitem" tabindex="-1" href="#" id="dietlist1">饮食信息记录</a></li>
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/dietinfo/eatingprefer.html')"><a role="menuitem" tabindex="-1" href="#" id="dietlist2">饮食偏好记录</a></li>
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/dietinfo/eatingfeature.html')"><a role="menuitem" tabindex="-1" href="#" id="dietlist3">饮食特征信息</a></li>
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/dietinfo/eatinganalysis.html')"><a role="menuitem" tabindex="-1" href="#" id="dietlist4">饮食状况分析</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown">
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="sleepinfo">作息数据管理</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="sleepinfo">
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/sleepinfo/sleepinforecords.html')"><a role="menuitem" tabindex="-1" href="#" id="sleepinfo2">睡眠信息记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/sleepinfo/sleeppreferrecords.html')"><a role="menuitem" tabindex="-1" href="#" id="sleepinfo3">睡眠偏好记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/sleepinfo/usersleepfeature.html')"><a role="menuitem" tabindex="-1" href="#" id="sleepinfo4">用户睡眠特征信息</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/sleepinfo/sleepdetailprocessrecords.html')"><a role="menuitem" tabindex="-1" href="#" id="sleepinfo5">睡眠详细过程记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/sleepinfo/sleepstatuscategory.html')"><a role="menuitem" tabindex="-1" href="#" id="sleepinfo6">睡眠状态类别</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown">
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="sportinfo">运动数据管理</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="sportinfo">
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/sportinfo/sportinforecords.html')"><a role="menuitem" tabindex="-1" href="#" id="sportinfo2">运动信息记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/sportinfo/exercisepreferrecords.html')"><a role="menuitem" tabindex="-1" href="#" id="sportinfo3">运动偏好记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/sportinfo/exerciseinfo.html')"><a role="menuitem" tabindex="-1" href="#" id="sportinfo4">运动实体记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/sportinfo/userexercisefeature.html')"><a role="menuitem" tabindex="-1" href="#" id="sportinfo5">运动特征信息</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/sportinfo/exercisetype.html')"><a role="menuitem" tabindex="-1" href="#" id="sportinfo6">运动类型</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/sportinfo/movementdetailrecords.html')"><a role="menuitem" tabindex="-1" href="#" id="sportinfo7">运动详细过程记录</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown">
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="treatinfo">诊疗数据管理</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="treatinfo">
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/treatmentrecord/tcmdiagnosistype.html')"><a role="menuitem" tabindex="-1" href="#" id="treatinfo1">中医诊断分类</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/treatmentrecord/ctreatmentrecordsTable.html')"><a role="menuitem" tabindex="-1" href="#" id="treatinfo2">中医诊疗记录</a></li>
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/treatmentrecord/wesmedicineexamitem.html')"><a role="menuitem" tabindex="-1" href="#" id="treatinfo3">西医体检项目</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/treatmentrecord/wtreatmentrecord.html')"><a role="menuitem" tabindex="-1" href="#" id="treatinfo4">西医诊疗记录</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav" id="medicinehistory">
+                            <div class="col-sm-12" style="color: #006dcc" onclick="turnPage('back/dashboard/userdata/medicinehistory/medicinehistoryrecord.html')">病史数据管理</div>
+                        </div>
+                        <div class="panel-body l-nav dropdown" >
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="identify">体质辨识/养生数据管理</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="identify">
+
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/identify/identifyresult.html')"><a role="menuitem" tabindex="-1" href="#" id="identify2">体质辨识结果记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/identify/useranswerrecords.html')"><a role="menuitem" tabindex="-1" href="#" id="identify3">用户答题记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/identify/userknowledgemapp.html')"><a role="menuitem" tabindex="-1" href="#" id="identify4">用户养生知识映射</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/identify/healthsuggestionsmapp.html')"><a role="menuitem" tabindex="-1" href="#" id="identify5">用户健康建议映射</a></li>
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/identify/userhealthwarningmapp.html')"><a role="menuitem" tabindex="-1" href="#" id="identify6">用户健康预警映射</a></li>
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/identify/healthtrendrecords.html')"><a role="menuitem" tabindex="-1" href="#" id="identify7">健康趋势分析记录</a></li>
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/identify/expendedhealthpro.html')"><a role="menuitem" tabindex="-1" href="#" id="identify8">扩展健康属性</a></li>
+                                <li role="presentation" onclick=" turnPage('back/dashboard/userdata/identify/userhealthattrmapp.html')"><a role="menuitem" tabindex="-1" href="#" id="identify9">用户健康属性映射</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown"  >
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="mobile1">手机数据管理</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="mobile1">
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/mobile/phonepreferuserecords.html')"><a role="menuitem" tabindex="-1" href="#" id="phone1">手机使用偏好记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/mobile/phoneappinfo.html')">         <a role="menuitem" tabindex="-1" href="#" id="phone2" >手机应用信息</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/mobile/phoneinfo.html')">            <a role="menuitem" tabindex="-1" href="#" id="phone3">手机监控特征信息</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/mobile/phonemonitorrecords.html')">  <a role="menuitem" tabindex="-1" href="#" id="phone4">手机监控记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/mobile/deviceacquireadtarecords.html')">  <a role="menuitem" tabindex="-1" href="#" id="phone5">智能设备采集数据记录</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body 1-nav dropdown" >
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="collection">收藏管理</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="mobile1">
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/collection/mycollection.html')"><a role="menuitem" tabindex="-1" href="#" id="collection1">我的收藏</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/collection/expertcollect.html')">  <a role="menuitem" tabindex="-1" href="#" id="collection2" >专家收藏</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/collection/healthrecommendscollection.html')"><a role="menuitem" tabindex="-1" href="#" id="collection3">养生建议收藏</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/collection/healthknowledgecollection.html')">  <a role="menuitem" tabindex="-1" href="#" id="collection4">养生知识收藏</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown"  >
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="others">其他数据管理</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="others">
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/others/userreviewstat.html')">     <a role="menuitem" tabindex="-1" href="#" id="others2">用户评论统计</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/others/statisticofclick.html')">    <a role="menuitem" tabindex="-1" href="#" id="others3">点击量统计</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/others/tcmdiagnosisobj.html')">      <a role="menuitem" tabindex="-1" href="#" id="others4">诊断对象</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/others/diagnosistrendrecords.html')"><a role="menuitem" tabindex="-1" href="#" id="others5">诊断动态记录</a></li>
+                                <li role="presentation" onclick="turnPage('back/dashboard/userdata/others/indicatorusermapp.html')">    <a role="menuitem" tabindex="-1" href="#" id="others6">指标用户映射</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading s-head collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <h4 class="panel-title">
+                            <i class="glyphicon glyphicon-globe" data-placement="bottom" ></i> &nbsp;&nbsp;
+                            区域管理
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body l-nav">
+                            <div class="col-sm-12" style="color: #006dcc" data-toggle="modal" data-target="#dietModal" id="dietdatachart">饮食数据图</div>
+                        </div>
+                        <div class="panel-body l-nav">
+                            <div class="col-sm-12" style="color: #006dcc" data-toggle="modal" data-target="#sleepModal" id="sleepdatachart">作息数据图</div>
+                        </div>
+                        <div class="panel-body l-nav">
+                            <div class="col-sm-12" style="color: #006dcc" data-toggle="modal" data-target="#sportModal" id="sportdatachart">运动数据图</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading s-head collapsed" role="tab" id="headingFive" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        <h4 class="panel-title">
+                            <i class="glyphicon glyphicon-list" data-placement="bottom" ></i> &nbsp;&nbsp;
+                            客观信息
+                        </h4>
+                    </div>
+                    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                        <div class="panel-body l-nav dropdown"  >
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" id="setmealinfo" data-toggle="dropdown">食物/套餐信息</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="setmealinfo1">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="setmealinfo2" onclick="turnPage('back/dashboard/objectiveinfo/setmealinfo.html')">饮食套餐信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="setmealinfo3" onclick="turnPage('back/dashboard/objectiveinfo/foodnutrient.html')">食物营养成分</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="setmealinfo4" onclick="turnPage('back/dashboard/objectiveinfo/setmealfoodmapp.html')">套餐食物映射</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="setmealinfo5" onclick="turnPage('back/dashboard/objectiveinfo/commonfoodinfo.html')">常见食物信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="setmealinfo6" onclick="turnPage('back/dashboard/objectiveinfo/foodwidecategories.html')">食物大类</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="setmealinfo7" onclick="turnPage('back/dashboard/objectiveinfo/commonfoodtype.html')">常见食物类别</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="setmealinfo8" onclick="turnPage('back/dashboard/objectiveinfo/foodmedicinaleffecttype.html')">食物药用功效类别</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="setmealinfo9" onclick="turnPage('back/dashboard/objectiveinfo/foodmedicinalpropmapp.html')">食物药用属性映射</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="setmealinfo10" onclick="turnPage('back/dashboard/objectiveinfo/foodmedicinalprop.html')">食物药用属性</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown" id="chinesemedicineinfo">
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="medicine">中药/用药信息</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="medicine">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="medicine1" onclick="turnPage('back/dashboard/objectiveinfo/chinesemedicineinfo.html')">中药信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="medicine2" onclick="turnPage('back/dashboard/objectiveinfo/medicineuseinfo.html')">用药信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="medicine3" onclick="turnPage('back/dashboard/objectiveinfo/medicineprescription.html')">中药方剂</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="medicine4" onclick="turnPage('back/dashboard/objectiveinfo/medicineprescriptionmapp.html')">药品方剂映射</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown" id="intelligentdevice">
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="equipment">智能设备</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="equipment">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="equipabment0" onclick="turnPage('back/dashboard/objectiveinfo/intelligentdevice.html')">智能设备基本信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="equipabment1" onclick="turnPage('back/dashboard/objectiveinfo/parametercode.html')">设备参数代码</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="equipabment2" onclick="turnPage('back/dashboard/objectiveinfo/parametermapp.html')">设备参数映射</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="equipabment3" onclick="turnPage('back/dashboard/objectiveinfo/dataacquisition.html')">设备数据采集代码</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="equipabment4" onclick="turnPage('back/dashboard/objectiveinfo/dataacquiretype.html')">采集数据分类</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown" id="healthknowage">
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" id="healthknowage1" data-toggle="dropdown">养生/健康知识信息</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="healthknowage1">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage2" onclick="turnPage('back/dashboard/objectiveinfo/healthknowage.html')">养生知识信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage3" onclick="turnPage('back/dashboard/objectiveinfo/healthknowledgetype.html')">养生知识类别</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage4" onclick="turnPage('back/dashboard/objectiveinfo/healthsuggtype.html')">健康建议类别</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage5" onclick="turnPage('back/dashboard/objectiveinfo/healthsuggestions.html')">健康建议</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage6" onclick="turnPage('back/dashboard/objectiveinfo/healthindicatorinfo.html')">健康指标信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage7" onclick="turnPage('back/dashboard/objectiveinfo/healthwarningtype.html')">健康预警类别</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage8" onclick="turnPage('back/dashboard/objectiveinfo/healthsuggestlimited.html')">健康建议限定条件</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage9" onclick="turnPage('back/dashboard/objectiveinfo/healthknowledgelimited.html')">养生知识限定条件</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage10" onclick="turnPage('back/dashboard/objectiveinfo/healthwarningmess.html')">健康预警信息</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown" id="commondisease" >
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" id="commondisease1" data-toggle="dropdown">常见疾病</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="commondisease1">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="commondisease2" onclick="turnPage('back/dashboard/objectiveinfo/commondisease.html')">    常见疾病信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="commondisease3" onclick="turnPage('back/dashboard/objectiveinfo/commondiseasetype.html')">常见疾病类别</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown" id="identifyissue">
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" id="identify" data-toggle="dropdown">体质辨识库</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="identifyissue">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="identifyissue1" onclick="turnPage('back/dashboard/objectiveinfo/identifyissue.html')">体质辨识问卷项目</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="identifyissue2" onclick="turnPage('back/dashboard/objectiveinfo/identifychoice.html')">体质辨识选项</a></li>
+
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="identifyissue3" onclick="turnPage('back/dashboard/objectiveinfo/phyciqueinfo.html')">体质信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="identifyissue4" onclick="turnPage('back/dashboard/objectiveinfo/identifydiseaserel.html')">体质疾病关系</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown" id="hospitalinfo">
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="hospitalinfo1">医院信息</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="hospitalinfo1">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo2" onclick="turnPage('back/dashboard/objectiveinfo/expertinfo.html')">中医专家信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo3" onclick="turnPage('back/dashboard/objectiveinfo/hospitalinfo.html')">医院信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo4" onclick="turnPage('back/dashboard/objectiveinfo/doctorexpertiseinfo.html')">医生专长信息</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo5" onclick="turnPage('back/dashboard/objectiveinfo/doctorexpertisetype.html')">医生专长分类代码</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo6" onclick="turnPage('back/dashboard/objectiveinfo/hospitaldoctorrel.html')">医院医生关系</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo7" onclick="turnPage('back/dashboard/objectiveinfo/hospitalofficesinfo.html')">医院科室信息</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown" id="unitattribute1">
+                            <div class="col-sm-12 dropdown-toggle " style="color: #006dcc" data-toggle="dropdown" id="unitattribute2">计量单位/标准</div>
+                             <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="unitattribute2">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="unitattribute3" onclick="turnPage('back/dashboard/objectiveinfo/unitattribute.html')">计量单位</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="unitattribute4" onclick="turnPage('back/dashboard/objectiveinfo/averageamountstd.html')">平均量计算标准</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="unitattribute5" onclick="turnPage('back/dashboard/objectiveinfo/commonnutrientintake.html')">营养素每日平均摄入量</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="unitattribute6" onclick="turnPage('back/dashboard/objectiveinfo/variousindicatorstandard.html')">各类指标标准</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="unitattribute7" onclick="turnPage('back/dashboard/objectiveinfo/variousindicatorlimited.html')">各类指标限定</a></li>
+                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="unitattribute8" onclick="turnPage('back/dashboard/objectiveinfo/picturelist.html')">图片列表</a></li>
+                             </ul>
+                        </div>
+                        <div class="panel-body l-nav dropdown" id="locationinfo" >
+                            <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="area">地理/行政区划信息</div>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="area">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="area1" onclick="turnPage('back/dashboard/objectiveinfo/adminisarea.html')">行政区划代码</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="area2" onclick="turnPage('back/dashboard/objectiveinfo/locationinfo.html')">地理位置信息</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>  <!--panel group -->
+            <!--col 10-->
+        </div>
+    </div>
+    <div class="main-right">
+        <div class="container" style="margin-left: -30px">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb" style="width: 125%" id="bread">
+                        <li><a href="#">主页</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div id="content" style="padding:20px">
+        </div>
+    </div>
+
+{#    <div class="footer container"  id="footer">#}
+{#        <ul>#}
+{#            <li><a href="" target="_blank" >关于我们|</a></li>#}
+{#            <li><a href="" target="_blank" >联系我们|</a></li>#}
+{#            <li><a href="" target="_blank" >手机应用|</a></li>#}
+{#            <li><a href="" target="_blank" >同步软件|</a></li>#}
+{#            <li><a href="" target="_blank" >平台介绍|</a></li>#}
+{#            <li><a href="" target="_blank" >帮助|</a></li>#}
+{#            <li><a href="" target="_blank" >常见问题</a></li>#}
+{#        </ul>#}
+{#        <br/>#}
+{#        <span>Copyright@ 2011-2015 中源团队 | 苏ICP备12014086号</span>#}
+{#    </div>#}
+
+<script src="{% static "login/static/js/bootstrap.min.js" %}"></script>
+<script src="{% static "login/static/js/bootstrapValidator.js" %}"></script>
+<script src="{% static "login/static/js/docs.min.js" %}"></script>
+<script src="{% static "login/static/js/bootstrap-table.js" %}"></script>
+<script src="{% static "login/static/js/bootstrap-table-zh-CN.js" %}"></script>
+<script src="{% static "login/static/js/bootstrap-table-filter.js" %}"></script>
+
+<script src="{% static "login/static/js/breadcrumb.js" %}"></script>
+<script src="{% static "login/static/js/common.js" %}"></script>
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script src="{% static "login/static/js/base-address.js" %}"></script>
+<script src="{% static "login/static/js/ajaxfileupload.js" %}"></script>
+
+<script>
+    //ajax函数定义
+        function restful(typeInfo,urlInfo,dataInfo) {
+            /**typeInfo:操作类型；
+             * urlInfo:地址；
+             * dataInfo:json数据；
+             * 操作类型：
+             * get：获取（dataInfo为空时，查询所有；dataInfo不为空，条件查询）；
+             * 查询(数据分页，暂时每页是十条数据，可后台更改)
+             * post：上传；
+             * put：更新(按照id)；
+             * delete：删除数据（id）；
+             * */
+
+            var result = null;
+            $.ajax({
+                async:false,
+                type: typeInfo,
+                url: urlInfo,
+                dataType:"json",
+                //contentType:"application/json",
+                data:dataInfo,
+                success:function(json){
+                    result=json;
+                },
+                error:function(){
+                    result="fail";
+                }
+            });
+            //	.success(function (json) {
+            //	//result = json;
+            //	result= json;
+            //	return result;
+            //}).error(function(json){
+            //	result = json;
+            //	return result;
+            //});
+            return result;
+        }
+    function goto_mainpage(){
+        $('#bread').empty();
+        $('#bread').append('<li><a href="#">主页</a></li>');
+        turnPage('back/dashboard/main/test.html');
+    }
+
+    function logout(){
+        window.location.href = '/login/logoutview/';
+    }
+
+    var page = null;
+    $("select").change(function(){
+        page = $(this).children('option:selected').val();
+
+    });
+    //饮食
+    $('#dietlook').click(function(){
+        $('#content').empty();
+        $('#dietModal').modal('hide');
+        //通过bootstrap 模态框选择将要查看的东西
+        if(page == "yinshiliang"){
+            turnPage('back/dashboard/area/diet/dietcharts.html');
+        }
+        else if(page == "yinshitezheng"){
+            turnPage('back/dashboard/area/diet/dietfeature.html');
+        }
+        else if(page == "zhuangkuang"){
+            turnPage('back/dashboard/area/diet/nutrientanalysis.html');
+        }
+    });
+    //作息
+    $('#sleeplook').click(function(){
+        $('#content').empty();
+        $('#sleepModal').modal('hide');
+        //通过bootstrap 模态框选择将要查看的东西
+        if(page == "shuimianxinxi"){
+            turnPage('back/dashboard/area/sleep/sleepxinxi.html');
+        }
+        else if(page == "shuimianhuanjing"){
+            turnPage('back/dashboard/area/sleep/shuimianhuanjing.html');
+        }
+    });
+    //运动
+    $('#sportlook').click(function(){
+        $('#content').empty();
+        $('#sportModal').modal('hide');
+        if(page == "sporttype"){
+            turnPage('back/dashboard/area/sport/sporttype.html');
+        }
+        else if(page == "sportamount"){
+            turnPage('back/dashboard/area/sport/sportamount.html');
+        }
+
+    });
+{#    $('#dietlist1').click(function(){#}
+{#        turnPage('back/dashboard/userdiet/eatingrecord.html');#}
+{#    });#}
+    $(function(){
+       turnPage('back/dashboard/main/test.html');
+    });
+
+    var txt_sheng = "请选择省";
+    var txt_shi = "请选择市";
+    var txt_qu = "请选择区(县)";
+
+    function select_sheng() {
+        var data = restful("get", baseAddress+"/tbadminisarea/?adminisareacode=0000", "");
+        //省的下拉框
+        var str = "";
+        for (var i in data) {
+            str += " <li><a>" + data[i].adminisareaprovince + "</a></li>";
+        }
+        $('#sheng ul').html(str);
+        $('#sheng a').click(function () {
+            $("#shi .my").html("请选择市");
+            $("#qu .my").html("请选择区(县)");
+            txt_sheng = $(this).text();
+            $("#sheng .my").html(txt_sheng);
+            search_area(txt_sheng, " ", " ", " ");
+        });
+    }
+    function select_shi() {
+        var data = restful("get", baseAddress+"/tbadminisarea/?adminisareaprovince=" + txt_sheng + "&adminisareacode__endswith=00", "");
+        //市的下拉框
+        var str = "";
+        for (var i in data) {
+            str += " <li><a>" + data[i].adminisareacity + "</a></li>";
+        }
+        $('#shi ul').html(str);
+        $('#shi a').click(function () {
+            $("#qu .my").html("请选择区(县)");
+
+            txt_shi = $(this).text();
+            $("#shi .my").html(txt_shi);
+            search_area(txt_sheng, txt_shi, " ", " ");
+        });
+    }
+    function select_qu() {
+        var data = restful("get", baseAddress+"/tbadminisarea/?adminisareaprovince=" + txt_sheng + "&adminisareacity=" + txt_shi, "")
+        //区的下拉框
+        var str = "";
+        for (var i in data) {
+            str += " <li><a>" + data[i].adminisareacounty + "</a></li>";
+        }
+        $('#qu ul').html(str);
+        $('#qu a').click(function () {
+            txt_qu = $(this).text();
+            $("#qu .my").html(txt_qu);
+            search_area(txt_sheng, txt_shi, txt_qu, " ");
+        });
+    }
+
+    function search_area(val_sheng, val_shi, val_qu) {
+
+
+}
+
+</script>
+
+
+</body>
+</html>

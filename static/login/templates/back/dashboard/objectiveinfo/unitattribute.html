@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--计量单位表-->
+    <div id="unitattributetoolbar" class="btn-group tool-control table-control">
+        <button type="button" class="btn btn-default" id="unitattributeadd" >    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button></a>
+        <button type="button" class="btn btn-default" id="unitattributeedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="unitattributedelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="unitattributeTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#unitattributetoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+    <div class="row" style="display: none;" id="unitattributeaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">计量单位添加</h4>
+                </div>
+                <form id="unitattributeform" method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group hidden">
+                                        <label for="UnitAttributeID">计量单位ID</label>
+                                        <input type="text" class="form-control " id="UnitAttributeID" name="unitattributeid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="UnitAttributeName">计量单位属性名</label>
+                                        <input type="text" class="form-control" id="UnitAttributeName" name="unitattributename" placeholder="UnitAttributeName" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="UnitLevel">单位大小级别</label>
+                                         <input type="text" class="form-control" id="UnitLevel" name="unitlevel" placeholder="UnitLevel" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="UnitName">计量单位名</label>
+                                        <input type="text" class="form-control" id="UnitName" name="unitname" placeholder="UnitName" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Hexadecimal">进制</label>
+                                        <input type="text" class="form-control" id="Hexadecimal" name="hexadecimal" placeholder="Hexadecimal" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="UnitRemarks">计量单位备注</label>
+                                        <textarea cols="8" rows="2" class="form-control" id="UnitRemarks" name="unitremarks" style="width:90%" required></textarea>
+                                    </div>
+{#                                     <div class="form-group">#}
+{#                                        <label for="UnitAttributeCode">计量单位代码值</label>#}
+{#                                        <input type="text" class="form-control" id="UnitAttributeCode" name="unitattributecode" style="width:90%" required>#}
+{#                                    </div>#}
+                                </div> <!--cil-md-5 -->
+                            </div>  <!--row-->
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#unitattributeadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#unitattributeaddpanel').css('display','block');
+        document.getElementById("UnitAttributeName").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+    //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#unitattributeedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#UnitAttributeID').val(jsonobject.unitattributeid );
+      $('#UnitAttributeName').val(jsonobject.unitattributename );
+      $('#UnitLevel').val(jsonobject.unitlevel);
+      $('#UnitName').val(jsonobject.unitname );
+      $('#Hexadecimal').val(jsonobject.hexadecimal);
+      $('#UnitRemarks').val(jsonobject.unitremarks );
+{#      $('#UnitAttributeCode').val(jsonobject.unitattributecode );#}
+
+      $('#unitattributetoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#unitattributeaddpanel').css('display','block');
+      document.getElementById("UnitAttributeName").focus();
+      $('#changepanel').html("计量单位编辑");
+      $('#doit').html("确定");
+  });
+     $('#unitattributeTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/unitattribute.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#unitattributeform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbmeasurementunit/',
+                success:function(data){
+                   turnPage('back/dashboard/objectiveinfo/unitattribute.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#unitattributeaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbmeasurementunit/'+jsonobject.unitattributeid+"/",
+                success:function(data){
+                   turnPage('back/dashboard/objectiveinfo/unitattribute.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#unitattributeaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#unitattributedelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbmeasurementunit/'+jsonobject.unitattributeid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/unitattribute.html');
+                   }
+               })
+           }
+       });
+
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+        fields: {
+            unitattributename: {
+                validators: {
+                    stringLength: {
+                        max: 20,
+                        message: '限制在20个字符以内'
+                    }
+                }
+            },
+            unitname: {
+                validators: {
+                    stringLength: {
+                        max: 20,
+                        message: '限制在20个字符以内'
+                    }
+                }
+            },
+            unitremarks: {
+                validators: {
+                    stringLength: {
+                        max: 100,
+                        message: '限制在100个字符以内'
+                    }
+                }
+            },
+            unitlevel: {
+                validators: {
+                    regexp: {
+                        regexp: /^[1-9]\d*$/,
+                        message: '只能包含正整数'
+                    }
+                }
+            },
+            hexadecimal: {
+                validators: {
+                    regexp: {
+                        regexp: /^[1-9]\d*$/,
+                        message: '只能包含正整数'
+                    }
+                }
+            },
+            unitattributecode: {
+                validators: {
+                    regexp: {
+                        regexp: /^[1-9]\d*$/,
+                        message: '只能包含正整数'
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
+
+

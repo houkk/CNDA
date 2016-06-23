@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+<body>
+ <!--为Echarts准备一个具备大小（宽高）的DOM-->
+    <div class="control-group" style="padding-bottom: 30px">
+        请选择营养元素：
+        <select class="input_select" id="element" style="width: 150px;" onchange="showChart()"></select>
+    </div>
+    <div id="main" style="height: 600px;"></div>
+<!-- ECharts单文件引入 -->
+{% load staticfiles %}
+<script src="{% static "login/static/js/dist/echarts-all.js" %}"></script>
+<script src="{% static "login/static/js/common.js" %}"></script>
+ <script src="{% static "login/static/js/base-address.js" %}"></script>
+<script type="text/javascript">
+ //ajax函数定义
+        function restful(typeInfo,urlInfo,dataInfo) {
+            /**typeInfo:操作类型；
+             * urlInfo:地址；
+             * dataInfo:json数据；
+             * 操作类型：
+             * get：获取（dataInfo为空时，查询所有；dataInfo不为空，条件查询）；
+             * 查询(数据分页，暂时每页是十条数据，可后台更改)
+             * post：上传；
+             * put：更新(按照id)；
+             * delete：删除数据（id）；
+             * */
+            var result = null;
+            $.ajax({
+                async:false,
+                type: typeInfo,
+                url: urlInfo,
+                dataType:"json",
+                data:dataInfo,
+                success:function(json){
+                    result=json;
+                },
+                error:function(){
+                    result="fail";
+                }
+            });
+            //	.success(function (json) {
+            //	//result = json;
+            //	result= json;
+            //	return result;
+            //}).error(function(json){
+            //	result = json;
+            //	return result;
+            //});
+            return result;
+        }
+
+        //点击切换营养元素曲线图
+        function showChart(){
+            var checkText=$("#element").find("option:selected").val();
+            var checkText1=$("#element").find("option:selected").text();
+            //alert(checkText);
+            var dataSeries=restful("get",baseAddress+"/eatingelement/",{"temp_userid":11,"element":checkText});
+            //alert(dataSeries);
+            var xRay=[];
+            var data1=[];
+            $.each(dataSeries,function(i){
+                xRay.push(dataSeries[i].uptime);
+                data1.push(dataSeries[i].intake);
+                //alert(xRay);
+                //alert(data);
+            });
+            //alert(xRay);
+            //绘图
+            var myChart=echarts.init(document.getElementById('main'));
+            var option= {
+                title: {
+                    text: '营养元素摄入趋势表'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                toolbox:{
+                    show:true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                dataZoom: {
+                    show: true,
+                    start : 50
+                },
+                legend:{
+                    data:[checkText1]
+                },
+                //calculable:false,
+                grid:
+                {
+                    y2:80
+                },
+                xAxis:[
+                    {
+                        type:'category',
+                        data:xRay
+                    }
+                ],
+                yAxis:[
+                    {
+                        name:'毫克(mg)',
+                        type:'value'
+                    }
+                ],
+                series:[
+                    {
+                        name:checkText1,
+                        type:'bar',
+                        showAllSymbol:true,
+                        itemStyle:{normal:{color:'rgba(65,105,225,1)',label:{show:true}}},
+                        data:data1
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+
+        $(function () {
+            /*************营养元素下拉框**********************/
+            var msg = restful("get",baseAddress+"/tbfoodnutritionelement/",null);
+            var str="";
+            $.each(msg,function(i){
+                str+= "<option value=" + msg[i].elementen +">" + msg[i].elementzh + "</option>";
+            });
+            $("#element").html(str);
+
+            var checkText=$("#element").find("option:selected").val();
+            var checkText1=$("#element").find("option:selected").text();
+            //alert(checkText);
+            var dataSeries=restful("get",baseAddress+"/eatingelement/",{"temp_userid":11,"element":checkText});
+            //alert(dataSeries);
+            var xRay=[];
+            var data1=[];
+            $.each(dataSeries,function(i){
+                xRay.push(dataSeries[i].uptime);
+                data1.push(dataSeries[i].intake);
+                //alert(xRay);
+                //alert(data);
+            });
+
+            var myChart=echarts.init(document.getElementById('main'));
+            var option= {
+                title: {
+                    text: '营养元素摄入趋势表'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                toolbox:{
+                    show:true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                legend:{
+                    data:[checkText1]
+                },
+                dataZoom: {
+                    show: true,
+                    start : 60
+                },
+                calculable:true,
+                grid:
+                {
+                    y2:80
+                },
+                xAxis:[
+                    {
+                        type:'category',
+                        data:xRay
+                    }
+                ],
+                yAxis:[
+                    {
+                        name:'毫克(mg)',
+                        type:'value'
+                    }
+                ],
+                series:[
+                    {
+                        name:checkText1,
+                        type:'bar',
+                        itemStyle:{normal:{color:'rgba(65,105,225,1)',label:{show:true}}},
+                        data:data1
+                    },
+                ]
+            };
+            myChart.setOption(option);
+        });
+
+</script>
+</body>

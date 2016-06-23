@@ -1,0 +1,622 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>生活数据记录——个人健康</title>
+    <!-- CSS Bootstrap & Custom -->
+    <link rel="stylesheet" href="css/add.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/templatemo_misc.css">
+    <link rel="stylesheet" href="css/float.css">
+    <link rel="stylesheet" href="css/temp.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/templatemo_style.css">
+    <!-- Favicons -->
+
+    <style type="text/css">
+        .about ul li:before{
+            content:" ";
+        }
+        .row p{
+            margin-top:5px;
+        }
+        .base_header ul li:nth-child(5),.base_header ul li:nth-child(6),.base_header ul li:nth-child(7),.base_header ul li:nth-child(8){
+            float: right;
+        }
+        .base_header{
+            text-align: left;
+        }
+        span{
+            font-size: 16px;
+        }
+        a{
+            cursor: pointer;
+        }
+        h2{
+            color:rgb(51, 51, 51)
+        }
+    </style>
+    <script src="js/base-address.js"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/echarts-all.js"></script>
+    <script type="text/javascript" src="sumjs/individualization.js"></script>
+    <script type="text/javascript">
+        function changePage(url){
+            window.location.href=url;
+        }
+
+        //ajax函数定义
+        function restful(typeInfo,urlInfo,dataInfo) {
+            /**typeInfo:操作类型；
+             * urlInfo:地址；
+             * dataInfo:json数据；
+             * 操作类型：
+             * get：获取（dataInfo为空时，查询所有；dataInfo不为空，条件查询）；
+             * 查询(数据分页，暂时每页是十条数据，可后台更改)
+             * post：上传；
+             * put：更新(按照id)；
+             * delete：删除数据（id）；
+             * */
+            var result = null;
+            $.ajax({
+                async:false,
+                type: typeInfo,
+                url: urlInfo,
+                dataType:"json",
+                data:dataInfo,
+                success:function(json){
+                    result=json;
+                },
+                error:function(json){
+                    result="fail";
+                }
+            });
+            //	.success(function (json) {
+            //	//result = json;
+            //	result= json;
+            //	return result;
+            //}).error(function(json){
+            //	result = json;
+            //	return result;
+            //});
+            return result;
+        }
+
+        function FoodTimeChange(){
+            var checkText=$("#chooseFoodTime").val();
+            var dataFood=restful("get",baseAddress+"/eatingtype/",{"temp_userid":7,"querytime":checkText});
+            var dataFoodSeries=dataFood.alldata;
+            var xRay=[];
+            var dataFoodValue=[];
+            $.each(dataFoodSeries,function(i){
+                if(dataFoodSeries[i].value!=0){
+                    xRay.push(dataFoodSeries[i].type);
+                    dataFoodValue.push(dataFoodSeries[i].value)
+                }
+            });
+            var strChange="<div class='row'><div class='col-md-6'><div><p>能量："+dataFood.能量 +"千卡</p></div><div><p>蛋白质：" +dataFood.蛋白质+"克</p></div><div><p>脂肪："+dataFood.脂肪+"克</p></div></div><div class='col-md-6'><div><p>水分："+
+                    dataFood.水分+"毫升</p></div><div><p>胆固醇："+dataFood.胆固醇+"克</p></div><div><p>饱和脂肪酸："+ dataFood.饱和脂肪酸 + "克</p></div></div></div>";
+            $("#FoodDataDisplay").html(strChange);
+
+            var myChart1=echarts.init(document.getElementById("canvasFoodDiv"));
+            var option={
+                title:{
+                    text:checkText+'饮食情况数据图'
+                },
+                tooltip:{
+                    trigger:'axis'
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend:{
+                    data:['饮食数量']
+                },
+                /*  grid:{
+                 y2: 80
+                 },*/
+                xAxis:[
+                    {
+                        type:'category',
+                        // min:data1,
+                        //max:data2,
+                        //boundaryGap:0,
+                        show:true,
+                        data:xRay,
+                        axisLabel:{
+                            rotate:30,    //刻度旋转30度角
+                            textStyle:{
+                                fontSize:1
+                            }
+                        }
+                    }
+                ],
+                yAxis:[
+                    {
+                        type:'value'
+                    }
+                ],
+                series:[
+                    {
+                        name:'饮食数量',
+                        type:'bar',
+                        showAllSymbol:true,
+                        data:dataFoodValue
+                    }
+                ]
+            };
+            myChart1.setOption(option);
+        }
+
+        $(function(){
+
+            /********************页面加载时默认显示今天饮食数据**********************/
+            var dataFood=restful("get",baseAddress+"/eating/",{"temp_userid":7,"date":'today'});
+            var dataFoodSeries=dataFood.alldata;
+            var xRay=[];
+            var dataFoodValue=[];
+            $.each(dataFoodSeries,function(i){
+                if(dataFoodSeries[i].value!=0){
+                    xRay.push(dataFoodSeries[i].type);
+                    dataFoodValue.push(dataFoodSeries[i].value)
+                }
+            });
+            var strChange="<div class='row'><div class='col-md-6'><div><p>能量："+dataFood.能量 +"千卡</p></div><div><p>蛋白质：" +dataFood.蛋白质+"克</p></div><div><p>脂肪："+dataFood.脂肪+"克</p></div></div><div class='col-md-6'><div><p>水分："+
+                    dataFood.水分+"毫升</p></div><div><p>胆固醇："+dataFood.胆固醇+"克</p></div><div><p>饱和脂肪酸："+ dataFood.饱和脂肪酸 + "克</p></div></div></div>";
+            $("#FoodDataDisplay").html(strChange);
+
+            var myChart1=echarts.init(document.getElementById("canvasFoodDiv"));
+            var option={
+                title:{
+                    text:'今天饮食情况数据图'
+                },
+                tooltip:{
+                    trigger:'axis'
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend:{
+                    data:['饮食数量']
+                },
+                /*  grid:{
+                 y2: 80
+                 },*/
+                xAxis:[
+                    {
+                        type:'category',
+                        // min:data1,
+                        //max:data2,
+                        show:true,
+                        data:xRay,
+                        axisLabel:{
+                            rotate:30,    //刻度旋转30度角
+                            textStyle:{
+                                fontSize:1
+                            }
+                        }
+                    }
+                ],
+                yAxis:[
+                    {
+                        type:'value'
+                    }
+                ],
+                series:[
+                    {
+                        name:'饮食数量',
+                        type:'bar',
+                        showAllSymbol:true,
+                        data:dataFoodValue
+                    }
+                ]
+            };
+            myChart1.setOption(option);
+
+            //点击今天按钮查看今天饮食数据
+            $("#todayFoodData").click(function(){
+                var dataFood=restful("get",baseAddress+"/eating/",{"temp_userid":7,"date":'today'});
+                var dataFoodSeries=dataFood.alldata;
+                var xRay=[];
+                var dataFoodValue=[];
+                $.each(dataFoodSeries,function(i){
+                    if(dataFoodSeries[i].value!=0){
+                        xRay.push(dataFoodSeries[i].type);
+                        dataFoodValue.push(dataFoodSeries[i].value)
+                    }
+                });
+                var strChange="<div class='row'><div class='col-md-6'><div><p>能量："+dataFood.能量 +"千卡</p></div><div><p>蛋白质："+dataFood.蛋白质+"克</p></div><div><p>脂肪："+dataFood.脂肪+"克</p></div></div><div class='col-md-6'><div><p>水分："+
+                        dataFood.水分+"毫升</p></div><div><p>胆固醇："+dataFood.胆固醇+"克</p></div><div><p>饱和脂肪酸："+ dataFood.饱和脂肪酸 + "克</p></div></div></div>";
+                $("#FoodDataDisplay").html(strChange);
+
+                var myChart1=echarts.init(document.getElementById("canvasFoodDiv"));
+                var option={
+                    title:{
+                        text:'今天饮食情况数据图'
+                    },
+                    tooltip:{
+                        trigger:'axis'
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend:{
+                        data:['饮食数量']
+                    },
+                    /*  grid:{
+                     y2: 80
+                     },*/
+                    xAxis:[
+                        {
+                            type:'category',
+                            // min:data1,
+                            //max:data2,
+                            show:true,
+                            data:xRay,
+                            axisLabel:{
+                                rotate:30,    //刻度旋转30度角
+                                textStyle:{
+                                    fontSize:1
+                                }
+                            }
+                        }
+                    ],
+                    yAxis:[
+                        {
+                            type:'value'
+                        }
+                    ],
+                    series:[
+                        {
+                            name:'饮食数量',
+                            type:'bar',
+                            showAllSymbol:true,
+                            data:dataFoodValue
+                        }
+                    ]
+                };
+                myChart1.setOption(option);
+            });
+
+            //点击一周按钮查看一周饮食数据
+            $("#weekFoodData").click(function(){
+                var dataFoodWeek=restful("get",baseAddress+"/eating/",{"temp_userid":11,"date":'week'});
+                var dataFoodSeriesWeek=dataFoodWeek.alldata;
+                var xRay=[];
+                var dataFoodValue=[];
+                $.each(dataFoodSeriesWeek,function(i){
+                    if(dataFoodSeriesWeek[i].value!=0){
+                        xRay.push(dataFoodSeriesWeek[i].type);
+                        dataFoodValue.push(dataFoodSeriesWeek[i].value)
+                    }
+                });
+                var strChange="<div class='row'><div class='col-md-6'><div><p>一周平均每天摄入能量："+dataFoodWeek.能量 +"千卡</p></div><div><p>一周平均每天摄入蛋白质："+dataFoodWeek.蛋白质+"克</p></div><div><p>一周平均每天摄入脂肪："+dataFoodWeek.脂肪+"克</p></div></div><div class='col-md-6'><div><p>一周平均每天摄入水分："+
+                        dataFoodWeek.水分+"毫升</p></div><div><p>一周平均每天摄入胆固醇："+dataFoodWeek.胆固醇+"克</p></div><div><p>一周平均每天摄入饱和脂肪酸："+ dataFoodWeek.饱和脂肪酸 + "克</p></div></div></div>";
+                $("#FoodDataDisplay").html(strChange);
+                var myChart1=echarts.init(document.getElementById("canvasFoodDiv"));
+                var option={
+                    title:{
+                        text:'一周饮食情况数据图'
+                    },
+                    tooltip:{
+                        trigger:'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType : {show: true, type: ['pie']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend:{
+                        x : 'center',
+                        y : 'bottom',
+                        data:xRay
+                    },
+                    calculable : true,
+                    series:[
+                        {
+                            name:'饮食数量',
+                            type:'pie',
+                            radius:[20,110],
+                            center:['50%',200],
+                            roseType:'radius',
+                            /*       itemStyle : {
+                             normal : {
+                             label : {
+                             show : false
+                             },
+                             labelLine : {
+                             show : false
+                             }
+                             },
+                             emphasis : {
+                             label : {
+                             show : true
+                             },
+                             labelLine : {
+                             show : true
+                             }
+                             }
+                             },*/
+                            data:(function(){
+                                var dataArray=[];
+                                $.each(dataFoodSeriesWeek,function(i){
+                                    dataArray.push({value:dataFoodValue[i],name:xRay[i]});                   //将键值对push进数组里，同时可将一系列格式push进去
+                                });
+                                return dataArray;
+                            })()
+                        }
+                    ]
+                };
+                myChart1.setOption(option);
+            });
+
+            //点击一月按钮查看一月饮食数据
+            $("#monthFoodData").click(function(){
+                var dataFoodMonth=restful("get",baseAddress+"/eating/",{"temp_userid":11,"date":'month'});
+                var dataFoodSeriesMonth=dataFoodMonth.alldata;
+                var xRay=[];
+                var dataFoodValue=[];
+                $.each(dataFoodSeriesMonth,function(i){
+                    if(dataFoodSeriesMonth[i].value!=0){
+                        xRay.push(dataFoodSeriesMonth[i].type);
+                        dataFoodValue.push(dataFoodSeriesMonth[i].value)
+                    }
+                });
+                var strChange="<div class='row'><div class='col-md-6'><div><p>一月平均每天摄入能量："+dataFoodMonth.能量 +"千卡</p></div><div><p>一月平均每天摄入蛋白质：" +dataFoodMonth.蛋白质+"克</p></div><div><p>一月平均每天摄入脂肪："+dataFoodMonth.脂肪+"克</p></div></div><div class='col-md-6'><div><p>一月平均每天摄入水分："+
+                        dataFoodMonth.水分+"毫升</p></div><div><p>一月平均每天摄入胆固醇："+dataFoodMonth.胆固醇+"克</p></div><div><p>一月平均每天摄入饱和脂肪酸："+ dataFoodMonth.饱和脂肪酸 + "克</p></div></div></div>";
+                $("#FoodDataDisplay").html(strChange);
+                var myChart1=echarts.init(document.getElementById("canvasFoodDiv"));
+                var option={
+                    title:{
+                        text:'一月饮食情况数据图'
+                    },
+                    tooltip:{
+                        trigger:'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType : {show: true, type: ['pie']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend:{
+                        x : 'center',
+                        y : 'bottom',
+                        data:xRay
+                    },
+                    calculable : true,
+                    series:[
+                        {
+                            name:'饮食数量',
+                            type:'pie',
+                            radius:[20,110],
+                            center:['50%',200],
+                            roseType:'radius',
+                            /*   itemStyle : {
+                             normal : {
+                             label : {
+                             show : false
+                             },
+                             labelLine : {
+                             show : false
+                             }
+                             },
+                             emphasis : {
+                             label : {
+                             show : true
+                             },
+                             labelLine : {
+                             show : true
+                             }
+                             }
+                             },*/
+                            data:(function(){
+                                var dataArray=[];
+                                $.each(dataFoodSeriesMonth,function(i){
+                                    dataArray.push({value:dataFoodValue[i],name:xRay[i]});                   //将键值对push进数组里，同时可将一系列格式push进去
+                                });
+                                return dataArray;
+                            })()
+                        }
+                    ]
+                };
+                myChart1.setOption(option);
+            })
+        })
+    </script>
+</head>
+<body>
+<!--<个性化平台导航条>-->
+<div class="base_header" style="position: relative;z-index: 200">
+    <ul>
+        <li style="margin-left: 350px">健康管理</li>
+        <li><a class="active" onclick="changePage('index2.html')" style="margin-left: 50px">个人健康</a></li>
+        <li><a onclick="changePage('index3.html')" >健康数据</a></li>
+        <li><a onclick="changePage('index4.html')" >养生知识</a></li>
+        <li>
+            <div class="nav-button transition">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </li>
+        <li><a id="login" href="loginPage/index.html" style="font-size: 14px">登录</a></li>
+        <li><a href="tables/index2_jieshao.html" style="font-size: 14px">智慧养生</a></li>
+        <li><a href="index-end.html"  style="font-size: 14px">首页</a></li>
+    </ul>
+</div>
+
+<!--<个人健康——生活数据记录>-->
+<div id="menu-container">
+    <div class="content services" id="menu-3" style="display: block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-2">
+                    <div id="icons">
+                        <ul class="tabs">
+                            <li>
+                                <a href="#tab1" class="icon-item1" onclick="changePage('index2.html')">
+                                    <span>我的体质</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab2" class="icon-item1" id="collection" onclick="changePage('index2_2.html')">
+                                    <span>我的收藏</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab11" class="icon-item1" onclick="changePage('index2_3.html')">
+                                    <span>我的偏好</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab3" class="icon-item1" onclick="changePage('index2_4.html')">
+                                    <span>生活习惯</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab4" class="icon-item1 active" onclick="changePage('index2_5.html')">
+                                    <span>生活数据记录</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab5" class="icon-item1" onclick="changePage('index2_6.html')">
+                                    <span>健康预警</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab6" class="icon-item1" onclick="changePage('index2_7.html')">
+                                    <span>健康趋势</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab7" class="icon-item1" onclick="changePage('index2_8_main.html')">
+                                    <span>个性化养生方案</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                        </ul>
+                    </div> <!-- /.icons -->
+                </div> <!-- /.col-md-3 -->
+
+                <div class="col-md-9 col-sm-10">
+                    <div class="inner-content">
+                        <!--<生活数据记录>-->
+                        <div class="toggle-content" id="tab4">
+                            <h2 style="font-size: x-large">生活数据记录</h2>
+                            <hr>
+                            <ul class="nav nav-tabs" style="margin-top: 20px;margin-bottom: 20px">
+                                <li role="presentation" class="active" onclick="changePage('index2_5.html')"><a style="cursor: pointer;">饮食数据</a></li>
+                                <li role="presentation" onclick="changePage('index2_5_sleep.html')" ><a style="cursor: pointer;">睡眠数据</a></li>
+                                <li role="presentation" onclick="changePage('index2_5_exercise.html')" ><a style="cursor: pointer;">运动数据</a></li>
+                            </ul>
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="control-group">
+                                            请选择日期查看当天饮食情况:
+                                            <div class="input-group date form_date col-md-5" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                                <input class="form-control" style="width:200px" type="text" id="chooseFoodTime" onchange="FoodTimeChange()" readonly>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                            </div>
+                                            <!--<input type="date" style="width:180px;" id="chooseFoodTime" onchange="FoodTimeChange()">-->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="padding-left: 100px;margin-top: 24px">
+                                        <button type="button" id="todayFoodData">今天数据</button>
+                                        <button type="button" id="weekFoodData">一周数据</button>
+                                        <button type="button" id="monthFoodData">一月数据</button>
+                                    </div>
+                                </div>
+                                <div id="canvasFoodDiv" style="height: 400px;width:100%;margin-top: 10px"></div>
+                                <div id="FoodDataDisplay">
+
+                                </div>
+                                <div>
+                                    <p>饮食情况分析:</p>
+                                    <span id="foodanalysis"></span>
+                                </div>
+                            </div>
+                        </div> <!-- /.toggle-content -->
+                    </div> <!-- /.inner-content -->
+                </div> <!-- /.col-md-9 -->
+            </div> <!-- /.row -->
+        </div> <!-- /.container -->
+    </div> <!-- /.services -->
+</div>
+
+<!--<页面底部>-->
+<div id="templatemo_footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div style="font-size: inherit">
+                    <p>关于我们 | 联系我们 | 手机应用 | 同步软件| 平台介绍 | 帮助 | 常见问题</p>
+                    <p>Copyright@ 2011-2015 中源团队 | 苏ICP备12014086号</p>
+                </div>
+            </div> <!-- /.col-md-12 -->
+        </div> <!-- /.row -->
+    </div> <!-- /.container -->
+</div> <!-- /.templatemo_footer -->
+
+<!-- Scripts -->
+<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/templatemo_custom.js"></script>
+<script type="text/javascript" src="loginPage/js/login.js"></script>
+<script type="text/javascript" src="js/loginCookie.js"></script>
+<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/cl.js"></script>
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>
+</body>
+</html>

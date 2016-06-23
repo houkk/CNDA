@@ -1,0 +1,631 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>生活数据记录——个人健康</title>
+    <!-- CSS Bootstrap & Custom -->
+    <link rel="stylesheet" href="css/add.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/templatemo_misc.css">
+    <link rel="stylesheet" href="css/float.css">
+    <link rel="stylesheet" href="css/temp.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/templatemo_style.css">
+    <!-- Favicons -->
+
+    <style type="text/css">
+        .about ul li:before{
+            content:" ";
+        }
+        .row p{
+            margin-top:5px;
+        }
+        .base_header ul li:nth-child(5),.base_header ul li:nth-child(6),.base_header ul li:nth-child(7),.base_header ul li:nth-child(8){
+            float: right;
+        }
+        .base_header{
+            text-align: left;
+        }
+        span{
+            font-size: 16px;
+        }
+        a{
+            cursor: pointer;
+        }
+        h2{
+            color:rgb(51, 51, 51)
+        }
+    </style>
+    <script src="js/base-address.js"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/echarts-all.js"></script>
+    <script type="text/javascript" src="sumjs/individualization.js"></script>
+    <script type="text/javascript">
+        function changePage(url){
+            window.location.href=url;
+        }
+
+        //ajax函数定义
+        function restful(typeInfo,urlInfo,dataInfo) {
+            /**typeInfo:操作类型；
+             * urlInfo:地址；
+             * dataInfo:json数据；
+             * 操作类型：
+             * get：获取（dataInfo为空时，查询所有；dataInfo不为空，条件查询）；
+             * 查询(数据分页，暂时每页是十条数据，可后台更改)
+             * post：上传；
+             * put：更新(按照id)；
+             * delete：删除数据（id）；
+             * */
+            var result = null;
+            $.ajax({
+                async:false,
+                type: typeInfo,
+                url: urlInfo,
+                dataType:"json",
+                data:dataInfo,
+                success:function(json){
+                    result=json;
+                },
+                error:function(json){
+                    result="fail";
+                }
+            });
+            //	.success(function (json) {
+            //	//result = json;
+            //	result= json;
+            //	return result;
+            //}).error(function(json){
+            //	result = json;
+            //	return result;
+            //});
+            return result;
+        }
+
+        function timeChange1(){
+            var checkText=$("#chooseExerciseTime").val();
+            var dataSport=restful("get",baseAddress+"/sportsingle/",{"temp_userid":11,"querytime":checkText});
+            var data1=dataSport.sportbegintime;             //横坐标开始时间
+            var data2=dataSport.sportovertime;                 //横坐标结束时间
+            var dataSportSeries=dataSport.alldata;
+            var strChoose="<div class='row' style='width: 600px;'><div class='col-md-4'><p style='float: left;width: 200px'>当天共走："+dataSport.walkstepnumber+"步</p></div><div class='col-md-4'><p style='float: left;width: 200px'>共计："+dataSport.walkdistance+"千米</p>" +
+                    "</div><div class='col-md-4'><p style='float: left;width: 200px'>消耗："+dataSport.calorieconsumption+"卡</p></div></div><div class='row'' style='width:600px'><div class='col-md-6'><div><p style='float: left;width: 300px;'>最长休息："+dataSport.longestidleduration
+                    +"小时</p></div><div><p style='float: left;width: 300px;'>静止消耗："+dataSport.restingcalorieconsume+"卡</p></div><div><p style='float: left;width: 300px;'>已爬楼层："+dataSport.crawledfloor+"层</p></div></div><div class='col-md-6'><div>" +
+                    "<p style='float: left;width: 300px;'>最长运动："+dataSport.longestactiveduration+"小时</p></div><div><p style='float: left;width: 300px;'>运动消耗："+dataSport.movecalorieconsume+"卡</p></div><div><p style='float: left;width: 300px;'>摔倒次数："+
+                    dataSport.fallitems +"次</p> </div></div></div>";
+            $("#dataDisplay").html(strChoose);
+            var myChart=echarts.init(document.getElementById("canvasDiv"));
+            var option={
+                title:{
+                    text:checkText+'运动情况数据图'
+                },
+                tooltip:{
+                    trigger:'axis'
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend:{
+                    data:['走路步数']
+                },
+                grid:{
+                    y2: 80
+                },
+                xAxis:[
+                    {
+                        type:'category',
+                        min:data1,
+                        max:data2,
+                        show:false,
+                        data:(function () {
+                            var xRay=[];
+                            $.each(dataSportSeries,function(i){
+                                xRay.push(dataSportSeries[i].sportbegintime+"～"+dataSportSeries[i].sportovertime);
+                                // alert(dataValue);
+                            });
+                            return xRay;
+                        })()
+                    }
+                ],
+                yAxis:[
+                    {
+                        type:'value'
+                    }
+                ],
+                series:[
+                    {
+                        name:'走路步数',
+                        type:'bar',
+                        showAllSymbol:true,
+                        data:(function () {
+                            var dataValue=[];
+                            $.each(dataSportSeries,function(i){
+                                dataValue.push(dataSportSeries[i].walkstepnumber);
+                                // alert(dataValue);
+                            });
+                            return dataValue;
+                        })()
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+
+        $(function () {
+
+            /******************页面加载时默认显示今天运动数据********************/
+            var dataSport1=restful("get",baseAddress+"/sport/",{"temp_userid":11,"date":"today"});
+            var data10=dataSport1.sportbegintime;             //横坐标开始时间
+            var data11=dataSport1.sportovertime;                 //横坐标结束时间
+            var dataSportSeries=dataSport1.alldata;
+            var strChoose1="<div class='row' style='width: 600px;'><div class='col-md-4'><p style='float: left;width: 200px'>今天共走："+dataSport1.walkstepnumber+"步</p></div><div class='col-md-4'><p style='float: left;width: 200px'>共计："+dataSport1.walkdistance+"千米</p>" +
+                    "</div><div class='col-md-4'><p style='float: left;width: 200px'>消耗："+dataSport1.calorieconsumption+"卡</p></div></div><div class='row'' style='width:600px'><div class='col-md-6'><div><p style='float: left;width: 300px;'>最长休息："+dataSport1.longestidleduration
+                    +"小时</p></div><div><p style='float: left;width: 300px;'>静止消耗："+dataSport1.restingcalorieconsume+"卡</p></div><div><p style='float: left;width: 300px;'>已爬楼层："+dataSport1.crawledfloor+"层</p></div></div><div class='col-md-6'><div>" +
+                    "<p style='float: left;width: 300px;'>最长运动："+dataSport1.longestactiveduration+"小时</p></div><div><p style='float: left;width: 300px;'>运动消耗："+dataSport1.movecalorieconsume+"卡</p></div><div><p style='float: left;width: 300px;'>摔倒次数："+
+                    dataSport1.fallitems +"次</p> </div></div></div>";
+            $("#dataDisplay").html(strChoose1);
+
+            var myChart1=echarts.init(document.getElementById("canvasDiv"));
+            var option={
+                title:{
+                    text:'今天运动情况数据图'
+                },
+                tooltip:{
+                    trigger:'axis'
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend:{
+                    data:['走路步数']
+                },
+                grid:{
+                    y2: 80
+                },
+                xAxis:[
+                    {
+                        type:'category',
+                        min:data10,
+                        max:data11,
+                        show:false,
+                        data:(function () {
+                            var xRay=[];
+                            $.each(dataSportSeries,function(i){
+                                xRay.push(dataSportSeries[i].sportbegintime+"～"+dataSportSeries[i].sportovertime);
+                                // alert(dataValue);
+                            });
+                            return xRay;
+                        })()
+                    }
+                ],
+                yAxis:[
+                    {
+                        type:'value'
+                    }
+                ],
+                series:[
+                    {
+                        name:'走路步数',
+                        type:'bar',
+                        showAllSymbol:true,
+                        symbolSize:2,
+                        data:(function () {
+                            var dataValue=[];
+                            $.each(dataSportSeries,function(i){
+                                dataValue.push(dataSportSeries[i].walkstepnumber);
+                                // alert(dataValue);
+                            });
+                            return dataValue;
+                        })()
+                    }
+                ]
+            };
+            myChart1.setOption(option);
+
+            //今天数据按钮点击时执行
+            $("#todayExerciseData").click(function () {
+                var dataSport1=restful("get",baseAddress+"/sport/",{"temp_userid":11,"date":"today"});
+                var data10=dataSport1.sportbegintime;             //横坐标开始时间
+                var data11=dataSport1.sportovertime;                 //横坐标结束时间
+                var dataSportSeries=dataSport1.alldata;
+                var strChoose1="<div class='row' style='width: 600px;'><div class='col-md-4'><p style='float: left;width: 200px'>当天共走："+dataSport1.walkstepnumber+"步</p></div><div class='col-md-4'><p style='float: left;width: 200px'>共计："+dataSport1.walkdistance+"千米</p>" +
+                        "</div><div class='col-md-4'><p style='float: left;width: 200px'>消耗："+dataSport1.calorieconsumption+"卡</p></div></div><div class='row'' style='width:600px'><div class='col-md-6'><div><p style='float: left;width: 300px;'>最长休息："+dataSport1.longestidleduration
+                        +"小时</p></div><div><p style='float: left;width: 300px;'>静止消耗："+dataSport1.restingcalorieconsume+"卡</p></div><div><p style='float: left;width: 300px;'>已爬楼层："+dataSport1.crawledfloor+"层</p></div></div><div class='col-md-6'><div>" +
+                        "<p style='float: left;width: 300px;'>最长运动："+dataSport1.longestactiveduration+"小时</p></div><div><p style='float: left;width: 300px;'>运动消耗："+dataSport1.movecalorieconsume+"卡</p></div><div><p style='float: left;width: 300px;'>摔倒次数："+
+                        dataSport1.fallitems +"次</p> </div></div></div>";
+                $("#dataDisplay").html(strChoose1);
+
+                var myChart1=echarts.init(document.getElementById("canvasDiv"));
+                var option={
+                    title:{
+                        text:'今天运动情况数据图'
+                    },
+                    tooltip:{
+                        trigger:'axis'
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend:{
+                        data:['走路步数']
+                    },
+                    grid:{
+                        y2: 80
+                    },
+                    xAxis:[
+                        {
+                            type:'category',
+                            min:data10,
+                            max:data11,
+                            show:false,
+                            data:(function () {
+                                var xRay=[];
+                                $.each(dataSportSeries,function(i){
+                                    xRay.push(dataSportSeries[i].sportbegintime+"～"+dataSportSeries[i].sportovertime);
+                                    // alert(dataValue);
+                                });
+                                return xRay;
+                            })()
+                        }
+                    ],
+                    yAxis:[
+                        {
+                            type:'value'
+                        }
+                    ],
+                    series:[
+                        {
+                            name:'走路步数',
+                            type:'bar',
+                            showAllSymbol:true,
+                            symbolSize:2,
+                            data:(function () {
+                                var dataValue=[];
+                                $.each(dataSportSeries,function(i){
+                                    dataValue.push(dataSportSeries[i].walkstepnumber);
+                                    // alert(dataValue);
+                                });
+                                return dataValue;
+                            })()
+                        }
+                    ]
+                };
+                myChart1.setOption(option);
+            });
+
+            //点击一周按钮获取一周数据
+            $("#weekExerciseData").click(function () {
+                var dataSportWeek=restful("get",baseAddress+"/sport/",{"temp_userid":11,"date":"week"});
+                var dataSportWeekSeries=dataSportWeek.alldata;
+                var strChoose2="<div class='row' style='width: 600px;'><div class='col-md-6'><div><p style='float: left;width: 300px;'>一周平均每天走："+dataSportWeek.walkstepnumberaverage+"步</p></div><div>" +
+                        "<p style='float: left;width: 300px;'>一周平均每天消耗："+dataSportWeek.calorieconsumptionaverage+"卡</p></div><div><p style='float: left;width: 300px;'>一周平均每天运动："+dataSportWeek.activedurationaverage+"小时</p></div></div><div class='col-md-6'><div>" +
+                        "<p style='float: left;width: 300px;'>一周平均每天走：" +dataSportWeek.walkdistanceaverage+"千米</p></div><div><p style='float: left;width: 300px;'>一周平均每天爬楼："+dataSportWeek.crawledflooraverage+"层</p></div><div><p style='float: left;width: 300px;'>" +
+                        "一周平均每天摔倒："+dataSportWeek.fallitemsaverage+"次</p></div> </div></div>";
+                $("#dataDisplay").html(strChoose2);
+
+                var myChart2=echarts.init(document.getElementById("canvasDiv"));
+                var option={
+                    title:{
+                        text:'一周运动情况数据图'
+                    },
+                    tooltip:{
+                        trigger:'axis'
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend:{
+                        data:['走路步数']
+                    },
+                    grid:{
+                        y2: 80
+                    },
+                    xAxis:[
+                        {
+                            type:'category',
+                            data:(function () {
+                                var xRay=[];
+                                $.each(dataSportWeekSeries,function(i){
+                                    xRay.push(dataSportWeekSeries[i].sporttime);
+                                });
+                                return xRay;
+                            })(),
+                            axisLabel:{
+                                rotate:30,    //刻度旋转45度角
+                                textStyle:{
+                                    fontSize:5
+                                }
+                            }
+                        }
+                    ],
+                    yAxis:[
+                        {
+                            type:'value'
+                        }
+                    ],
+                    series:[
+                        {
+                            name:'走路步数',
+                            type:'bar',
+                            showAllSymbol:true,
+                            symbolSize:2,
+                            data:(function () {
+                                var dataValue2=[];
+                                $.each(dataSportWeekSeries,function(i){
+                                    dataValue2.push(dataSportWeekSeries[i].walkstepnumber);
+                                    // alert(dataValue);
+                                });
+                                return dataValue2;
+                            })()
+                        }
+                    ]
+                };
+                myChart2.setOption(option);
+            });
+
+            //点击一月按钮获取一月数据
+            $("#monthExerciseData").click(function () {
+                var dataSportMonth=restful("get",baseAddress+"/sport/",{"temp_userid":11,"date":"month"});
+                var dataSportMonthSeries=dataSportMonth.alldata;
+                var strChoose3="<div class='row' style='width: 600px;'><div class='col-md-6'><div><p style='float: left;width: 300px;'>一月平均每天走："+dataSportMonth.walkstepnumber+"步</p></div><div>" +
+                        "<p style='float: left;width: 300px;'>一月平均每天消耗："+dataSportMonth.calorieconsumption+"卡</p></div><div><p style='float: left;width: 300px;'>一月平均每天运动："+dataSportMonth.activeduration+"小时</p></div></div><div class='col-md-6'><div>" +
+                        "<p style='float: left;width: 300px;'>一月平均每天走：" +dataSportMonth.walkdistance+"千米</p></div><div><p style='float: left;width: 300px;'>一月平均每天爬楼："+dataSportMonth.crawledfloor+"层</p></div><div><p style='float: left;width: 300px;'>" +
+                        "一月平均每天摔倒："+dataSportMonth.fallitems+"次</p></div> </div></div>";
+                $("#dataDisplay").html(strChoose3);
+
+                var myChart3=echarts.init(document.getElementById("canvasDiv"));
+                var option={
+                    title:{
+                        text:'一月运动情况数据图'
+                    },
+                    tooltip:{
+                        trigger:'axis'
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend:{
+                        data:['走路步数']
+                    },
+                    grid:{
+                        y2: 80
+                    },
+                    xAxis:[
+                        {
+                            type:'category',
+                            //show:false,
+                            //boundaryGap:50,
+                            data:(function () {
+                                var xRay=[];
+                                $.each(dataSportMonthSeries,function(i){
+                                    xRay.push(dataSportMonthSeries[i].overtime);
+                                });
+                                return xRay;
+                            })()
+                        }
+                    ],
+                    yAxis:[
+                        {
+                            type:'value'
+                        }
+                    ],
+                    series:[
+                        {
+                            name:'走路步数',
+                            type:'bar',
+                            showAllSymbol:true,
+                            symbolSize:2,
+                            data:(function () {
+                                var dataValue3=[];
+                                $.each(dataSportMonthSeries,function(i){
+                                    dataValue3.push(dataSportMonthSeries[i].walkstepnumber);
+                                    // alert(dataValue);
+                                });
+                                return dataValue3;
+                            })()
+                        }
+                    ]
+                };
+                myChart3.setOption(option);
+            });
+        });
+    </script>
+</head>
+<body>
+<!--<个性化平台导航条>-->
+<div class="base_header" style="position: relative;z-index: 200">
+    <ul>
+        <li style="margin-left: 350px">健康管理</li>
+        <li><a class="active" onclick="changePage('index2.html')" style="margin-left: 50px">个人健康</a></li>
+        <li><a onclick="changePage('index3.html')" >健康数据</a></li>
+        <li><a onclick="changePage('index4.html')" >养生知识</a></li>
+        <li>
+            <div class="nav-button transition">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </li>
+        <li><a id="login" href="loginPage/index.html" style="font-size: 14px">登录</a></li>
+        <li><a href="tables/index2_jieshao.html" style="font-size: 14px">智慧养生</a></li>
+        <li><a href="index-end.html"  style="font-size: 14px">首页</a></li>
+    </ul>
+</div>
+
+<!--<个人健康——生活数据记录>-->
+<div id="menu-container">
+    <div class="content services" id="menu-3" style="display: block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-2">
+                    <div id="icons">
+                        <ul class="tabs">
+                            <li>
+                                <a href="#tab1" class="icon-item1" onclick="changePage('index2.html')">
+                                    <span>我的体质</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab2" class="icon-item1" id="collection" onclick="changePage('index2_2.html')">
+                                    <span>我的收藏</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab11" class="icon-item1" onclick="changePage('index2_3.html')">
+                                    <span>我的偏好</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab3" class="icon-item1" onclick="changePage('index2_4.html')">
+                                    <span>生活习惯</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab4" class="icon-item1 active" onclick="changePage('index2_5.html')">
+                                    <span>生活数据记录</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab5" class="icon-item1" onclick="changePage('index2_6.html')">
+                                    <span>健康预警</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab6" class="icon-item1" onclick="changePage('index2_7.html')">
+                                    <span>健康趋势</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab7" class="icon-item1" onclick="changePage('index2_8_main.html')">
+                                    <span>个性化养生方案</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                        </ul>
+                    </div> <!-- /.icons -->
+                </div> <!-- /.col-md-3 -->
+
+                <div class="col-md-9 col-sm-10">
+                    <div class="inner-content">
+                        <!--<生活数据记录>-->
+                        <div class="toggle-content" id="tab4">
+                            <h2 style="font-size: x-large">生活数据记录</h2>
+                            <hr>
+                            <ul class="nav nav-tabs" style="margin-top: 20px;margin-bottom: 20px">
+                                <li role="presentation" onclick="changePage('index2_5.html')"><a style="cursor: pointer;">饮食数据</a></li>
+                                <li role="presentation" onclick="changePage('index2_5_sleep.html')" ><a style="cursor: pointer;">睡眠数据</a></li>
+                                <li role="presentation" class="active" onclick="changePage('index2_5_exercise.html')" ><a style="cursor: pointer;">运动数据</a></li>
+                            </ul>
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="control-group">
+                                            请选择日期查看当天运动情况:
+                                            <div class="input-group date form_date col-md-5" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1">
+                                                <input class="form-control" style="width:200px" type="text" id="chooseExerciseTime" onchange="timeChange1()" readonly>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                            </div>
+                                            <!--<input type="date" style="width:180px;" id="chooseExerciseTime" onchange="timeChange1()">-->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="padding-left: 100px;margin-top: 24px">
+                                        <button type="button" id="todayExerciseData">今天数据</button>
+                                        <button type="button" id="weekExerciseData">一周数据</button>
+                                        <button type="button" id="monthExerciseData">一月数据</button>
+                                    </div>
+                                </div>
+                                <div id="canvasDiv" style="height: 400px;width:100%;margin-top: 10px"></div>
+                                <div id="dataDisplay">
+
+                                </div>
+                                <div>
+                                    <p>运动情况分析:</p>
+                                    <span id="sportanalysis"></span>
+                                </div>
+                            </div>
+                        </div> <!-- /.toggle-content -->
+                    </div> <!-- /.inner-content -->
+                </div> <!-- /.col-md-9 -->
+            </div> <!-- /.row -->
+        </div> <!-- /.container -->
+    </div> <!-- /.services -->
+</div>
+
+<!--<页面底部>-->
+<div id="templatemo_footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div style="font-size: inherit">
+                    <p>关于我们 | 联系我们 | 手机应用 | 同步软件| 平台介绍 | 帮助 | 常见问题</p>
+                    <p>Copyright@ 2011-2015 中源团队 | 苏ICP备12014086号</p>
+                </div>
+            </div> <!-- /.col-md-12 -->
+        </div> <!-- /.row -->
+    </div> <!-- /.container -->
+</div> <!-- /.templatemo_footer -->
+
+<!-- Scripts -->
+<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/templatemo_custom.js"></script>
+<script type="text/javascript" src="loginPage/js/login.js"></script>
+<script type="text/javascript" src="js/loginCookie.js"></script>
+<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/cl.js"></script>
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>
+</body>
+</html>

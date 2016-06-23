@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="height:600px"></div>
+<!-- ECharts单文件引入 -->
+<script src="{% static "login/static/js/dist/echarts.js" %}"></script>
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            echarts: '../../js/dist'
+        }
+    });
+
+    // 使用
+    require(
+            [
+                'echarts',
+                'echarts/chart/pie' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+
+                var option = {
+                    title:{
+                      text:'饮食信息记录图',
+                      x:'center'
+                    },
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {
+                        data:['肉类','蔬菜类','水果类']
+                    },
+                    toolbox:{
+                        show:true,
+                        feature:{
+                            mark:{show:true},
+                            dataView:{show:true,readOnly:false},
+                            magicType:{
+                                show:true,
+                                type:['pie','funnel'],
+                                option:{
+                                    funnel:{
+                                        x:'25%',
+                                        width:'50%',
+                                        funnelAlign:'left',
+                                        max:1548
+                                    }
+                                }
+                            },
+                            restore:{show:true},
+                            saveAsImage:{show:true}
+                        }
+                    },
+                    calculable:true,
+                    series : [
+                        {
+                            "name":"各类食物所占比重",
+                            "type":"pie",
+                            "reduce":'55%',
+                            'center':['50%','60%'],
+                            "data":[
+                                {value:325,name:'肉类'},
+                                {value:596,name:'蔬菜类'},
+                                {value:120,name:'水果类'},
+                            ]
+                        }
+                    ]
+                };
+
+                // 为echarts对象加载数据 
+                myChart.setOption(option);
+            }
+    );
+</script>
+</body>

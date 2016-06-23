@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+      {% load staticfiles %}
+    <title>Dashboard Template for Bootstrap</title>
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--运动特征信息表-->
+    <div id="toolbar" class="btn-group">
+        <button type="button" class="btn btn-default">    <!--data-target="#myModal" data-toggle="modal"-->
+            <a href="#"><i class="glyphicon glyphicon-eye-open"></i></a>
+        </button>
+        <button type="button" class="btn btn-default">
+            <a href="#"><i class="glyphicon glyphicon-list-alt"></i></a>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12" style="margin-left:-3%; margin-top: -2%">
+        <table data-toggle="table"  id="userexercisefeature" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <thead>
+        <tr>
+            <th></th>
+        </tr>
+        </thead>
+        </table>
+    </div>  <!--col-md-10-->
+</div>  <!--container-fluid-->
+<script src="{% static "login/static/js/start.js" %}"></script>
+
+<!--=========================================here is the js file================================================================-->
+</body>
+</html>

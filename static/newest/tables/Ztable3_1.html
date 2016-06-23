@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>知识检索</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/Ztable.css" rel="stylesheet"/>
+    <!--新增css模态框-->
+    <link rel="stylesheet" href="css/motaikuang.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="center" id="middle">
+        <div class="title">
+            <div class="title-area left"><h2>中医养生知识</h2></div>
+            <div class=" widget-area right"><input class="form-control" type="text" placeholder="搜索..."
+                                                   onkeypress="EnterPress(event);"></div>
+        </div>
+        <div class="header left">
+            <nav class="navbar navbar-default"
+                 style="border-left-color: #FFFFFF;border-right-color: #FFFFFF;border-radius:0">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a>个人推荐</a></li>
+                        <li><a id="time">按时间排序</a></li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
+        </div>
+        <div id="content">
+            <div class="news">
+            </div>
+            <div id="sort">
+                <div>
+                    <h4>分类查看</h4>
+                    <ul id="fenlei">
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div>
+    <section class="cd-section">
+        <div class="cd-modal-action">
+            <span class="cd-modal-bg"></span>
+        </div>
+        <div class="cd-modal">
+            <div class="cd-modal-content">
+                <h1></h1>
+                <p></p>
+                <img src="images/1.jpg" alt="" style="width: 991px;height:400px; "/>
+                <div class='flag3'><span class='glyphicon glyphicon-tags'></span></div>
+                <p>
+                </p>
+            </div>
+            <!-- cd-modal-content -->
+        </div>
+        <!-- cd-modal -->
+        <a href="#0" class="cd-modal-close">Close</a>
+    </section>
+    <!-- .cd-section -->
+</div>
+</body>
+<script src="../js/base-address.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--新增js模态框-->
+<script src="js/velocity.min.js"></script>
+<script src="js/motaikuang.js"></script>
+<script src="js/Ztable3.js"></script>
+<!--<script src="js/myjs/main.js"></script>-->
+</html>

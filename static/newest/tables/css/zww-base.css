@@ -1,0 +1,122 @@
+.base_header {
+    font-family: 'Helvetica Neue', 'Hiragino Sans GB', 'Microsoft YaHei', 黑体, Arial, sans-serif;
+    font-size: 24px;
+    line-height: 24.5px;
+    color: white;
+    display: block;
+    background-color: #77b4a5;
+    text-align: left;
+    padding: 25px 0;
+    height: 79px;
+    position: relative;
+    z-index: 200;
+}
+.base_header ul {
+    list-style: none;
+   /* margin: 0 auto;
+    width: 1000px;*/
+}
+.base_header ul li {
+    display: inline-block;
+    margin-right: 35px;
+    vertical-align: baseline;
+}
+.base_header ul li:nth-child(1){
+    margin-left: 350px;
+}
+.base_header ul li:nth-child(2){
+    margin-left: 50px;
+}
+.base_header ul li:nth-child(5),.base_header ul li:nth-child(6),.base_header ul li:nth-child(7),.base_header ul li:nth-child(8){
+    float: right;
+}
+.base_header a,.base_header a:hover{
+    cursor: pointer;
+    font-size: 18px;
+    text-decoration: none;
+    color: white;
+}
+.base_header a.active {
+    background-color: #eeeeee;
+    color: #2a2a2a;
+    border-radius: 4px;
+    padding: 10px 20px;
+}
+.base_header ul li:nth-child(6) a,.base_header ul li:nth-child(7) a,.base_header ul li:nth-child(8) a{
+    text-decoration: underline;
+}
+.inner-content h3 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-family: inherit;
+    color: #333;
+}
+textarea{
+    border-radius: 0.9em;
+    border: 1px solid #999;
+    overflow:hidden;
+    resize: none;
+    height: 250px;
+    width:600px;
+}
+.base_content{
+    font-family: 'Helvetica Neue', 'Hiragino Sans GB', 'Microsoft YaHei', 黑体, Arial, sans-serif;
+    margin-top:60px;
+    margin-bottom: 60px;
+}
+#icons{
+    display: block;
+    height: 495px;
+    width:263px;
+}
+#icons li{
+    list-style: none;
+}
+#icons a{
+    display: block;
+    padding: 30px 25px;
+    margin-bottom: 30px;
+    background-color: #ebffef;
+    cursor: pointer;
+    text-align: center;
+    color:#745959;
+}
+#icons a i{
+    font-size: 24px;
+}
+#icons a span {
+    margin-top: 25px;
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+}
+#icons a:hover{
+    color:#2a2a2a;
+    text-decoration: none;
+}
+#icons a.link {
+    background-color: #77b483;
+}
+.inner-content{
+     background-color: white;
+     padding: 30px;
+     border: 1px solid #cfcfcf;
+ }
+#templatemo_footer {
+    background-color: white;
+    font-family: 'Helvetica Neue', 'Hiragino Sans GB', 'Microsoft YaHei', 黑体, Arial, sans-serif;
+    border-top: 3px solid #77b4a5;
+    padding: 20px 0;
+    position: relative;
+}
+#templatemo_footer p{
+    color: rgb(51, 51, 51);
+    text-align: center;
+    margin: 0 0 10px;
+}
+.modal{
+    font-family: 'Helvetica Neue', 'Hiragino Sans GB', 'Microsoft YaHei', 黑体, Arial, sans-serif;
+}
+.modal li{
+    font-size: 14px;
+}

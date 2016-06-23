@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+
+{% load staticfiles %}
+<script src="{% static "login/static/js/dist/echarts.js" %}"></script>
+<script src="{% static "login/static/js/common.js" %}"></script>
+<script type="text/javascript">
+
+    // 路径配置
+    require.config({
+        paths: {
+            echarts:src = '{% static "login/static/js/dist" %}'
+        }
+    });
+
+    // 使用
+    require(
+            [
+                'echarts',
+                'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/line'
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+
+                var option = {
+                    title:{
+                        text:'健康数据对比',
+                        subtext:'单位',
+                        x:'left'
+                    },
+                    tooltip: {
+                        trigger:'axis'
+                    },
+                    legend: {
+                        data:['本周','上周']
+                    },
+                    toolbox:{
+                        show:true,
+                        feature:{
+                            mark:{show:true},
+                            dataView:{show:true,readOnly:false},
+                            magicType:{
+                                show:true,
+                                type:['line','bar']
+                            },
+                            restore:{show:true},
+                            saveAsImage:{show:true}
+                        }
+                    },
+                    calculable:true,
+                    xAxis:[
+                        {
+                            type:'category',
+                            axisLabel:{'interval':0},
+                            data:['能量','\n蛋白质','脂肪','\n膳食纤维','碳水化合物','\n维生素A',
+                                '维生素B1','\n维生素B2','维生素B6','\n维生素B12','维生素C','\n维生素D',
+                                '维生素E','\n烟酸','叶酸','\n纳','钙','\n铁',
+                                '钾','\n锌','铜','\n钴','碘','\n硒',
+                                '氟','\n饱和脂肪酸','泛酸','\n生物素']
+                        }
+                    ],
+                    yAxis:[
+                        {
+                            type:'value'
+                        }
+                    ],
+                    series:[
+                        {
+                            name:"本周",
+                            type:"bar",
+                            data:[12,23,34,12,55,41,34,1,2,32,12,23,17,12,45,74,36,48,75,23,33,12,25,27,34,67,23,78],
+                            itemStyle:{normal:{color:'#C758CC',label:{show:true}}},
+
+                            markPoint:{
+                                data:[
+                                    {type:'max',name:'最大值'},
+                                    {type:'min',name:'最小值'}
+                                ]
+                            }
+                        },
+                        {
+                            name:'上周',
+                            type:"bar",
+                            data:[12,23,34,12,45,41,34,1,2,32,12,25,23,12,45,67,36,45,75,23,12,12,21,43,34,56,34,23],
+                            itemStyle:{normal:{color:'#0fc1cc',label:{show:true}}},
+
+                            markPoint:{
+                                data:[
+                                    {type:'max',name:'最大值'},
+                                    {type:'min',name:'最小值'}
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+    );
+</script>
+<body>
+<div id="main" style="height:600px"></div>
+<div style="height:600px; width: auto">小提示：饱和脂肪酸摄入量有所增高哦！少吃油腻的食物！</div>
+<!-- ECharts单文件引入 -->
+</body>

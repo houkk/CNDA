@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--食物药用功效类别-->
+    <div id="foodmedicinaleffecttypetoolbar" class="btn-group tool-control table-control">
+        <button type="button" class="btn btn-default" id="foodmedicinaleffecttypeadd" >    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="foodmedicinaleffecttypeedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="foodmedicinaleffecttypedelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="foodmedicinaleffecttypeTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#foodmedicinaleffecttypetoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+    <div class="row" style="display: none;" id="foodmedicinaleffecttypeaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">食物药用功效类别添加</h4>
+                </div>
+                <form id="foodmedicinaleffecttypeform" method="post">
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group hidden">
+                                        <label for="MedicinalEffectTypeID">药用功效类别ID</label>
+                                        <input type="text" class="form-control " id="MedicinalEffectTypeID" name="medicinaleffecttypeid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicinalEffectTypeName">药用功效类别名称</label>
+                                        <textarea cols="8" rows="2" class="form-control" id="MedicinalEffectTypeName" name="medicinaleffecttypename" style="width:90%" required></textarea>
+                                    </div>
+                                    <div >
+                                        <label for="MedicinalEffectTypeCode">药用功效类别代码</label>
+                                         <input type="text" class="form-control" id="MedicinalEffectTypeCode" name="medicinaleffecttypecode" style="width:90%" required >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicinalEffectTypeExp">分类说明</label>
+                                        <textarea cols="8" rows="6" class="form-control" id="MedicinalEffectTypeExp" name="medicinaleffecttypeexp" style="width:90%" required></textarea>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                            </div>  <!--row-->
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag=null;
+    $('#foodmedicinaleffecttypeadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#foodmedicinaleffecttypeaddpanel').css('display','block');
+        document.getElementById("MedicinalEffectTypeName").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+     $('#foodmedicinaleffecttypeedit').click(function(){
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#MedicinalEffectTypeID').val(jsonobject.medicinaleffecttypeid);
+      $('#MedicinalEffectTypeName').val(jsonobject.medicinaleffecttypename);
+      $('#MedicinalEffectTypeCode').val(jsonobject.medicinaleffecttypecode);
+      $('#MedicinalEffectTypeExp').val(jsonobject.medicinaleffecttypeexp);
+
+      $('#foodmedicinaleffecttypetoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#foodmedicinaleffecttypeaddpanel').css('display','block');
+         document.getElementById("MedicinalEffectTypeName").focus();
+      $('#changepanel').html("食物药用功效类别编辑");
+      $('#doit').html("确定");
+  });
+    $('#foodmedicinaleffecttypeTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/foodmedicinaleffecttype.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#foodmedicinaleffecttypeform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbfoodmedicinaleffecttype/',
+                success:function(data){
+                    $('.table-control').css('display','block');
+                    $('#foodmedicinaleffecttypeaddpanel').css('display','none');
+                    $('#table').bootstrapTable('getData');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#foodmedicinaleffecttypeaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbfoodmedicinaleffecttype/'+jsonobject.medicinaleffecttypeid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/foodmedicinaleffecttype.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#foodmedicinaleffecttypeaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+
+    $('#foodmedicinaleffecttypedelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+             //确认是否删除
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbfoodmedicinaleffecttype/'+jsonobject.medicinaleffecttypeid+"/",
+                   success: function (json) {
+                      turnPage('back/dashboard/objectiveinfo/foodmedicinaleffecttype.html');
+                   }
+               })
+           }
+       });
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+
+      fields: {
+          medicinaleffecttypecode: {
+              validators: {
+                  regexp: {
+                      regexp: /^[0-9]*$/,
+                      message: '只能包含正整数'
+                  }
+              }
+          },
+          medicinaleffecttypename: {
+              validators: {
+                  stringLength: {
+                      max: 100,
+                      message: '限制在100个字符以内'
+                  }
+              }
+          },
+          medicinaleffecttypeexp: {
+              validators: {
+                  stringLength: {
+                      max: 500,
+                      message: '限制在500个字符以内'
+                  }
+              }
+          }
+      }
+    });
+</script>
+</body>
+</html>
+
+

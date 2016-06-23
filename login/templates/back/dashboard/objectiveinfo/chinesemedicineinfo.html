@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--中药信息表-->
+    <div id="chinesemedicineinfotoolbar" class="btn-group table-control tool-control">
+        <button type="button" class="btn btn-default" id="chinesemedicineadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="chinesemedicineedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="chinesemedicinedelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="chinesemedicineTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#chinesemedicineinfotoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <div class="row" style="margin-left: -2%; display: none" id="chinesemedicineaddpanel">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">中药信息添加</h4>
+                </div>
+                <form id="chinesemedicineform" method="post">
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group hidden">
+                                        <label for="ChineseMedicineID">药品ID</label>
+                                        <input type="text" class="form-control " id="ChineseMedicineID" name="chinesemedicineid"  style="width:100%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineName">药名</label>
+                                        <input type="text" class="form-control" id="MedicineName" name="medicinename" placeholder="MedicineName" style="width:100%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineGeneralType">药品总类别</label>
+                                        <select class="form-control" id="MedicineGeneralType" name="medicinegeneraltype" required>
+                                            <option >请选择</option>
+                                            <option value="根茎类">根茎类</option>
+                                            <option value="全草类">全草类</option>
+                                            <option value="花类">花类</option>
+                                            <option value="果实/种子类">果实/种子类</option>
+                                             <option value="矿物类">矿物类</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineSubType">药品子类别</label>
+                                        <select class="form-control" id="MedicineSubType" name="medicinesubtype" required>
+                                            <option >请选择</option>
+                                            <option value="一类子药">一类子药</option>
+                                            <option value="二类子药">二类子药</option>
+                                            <option value="三类子药">三类子药</option>
+                                            <option value="四类子药">四类子药</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineToxicity">毒性</label>
+                                        <input type="text" class="form-control" id="MedicineToxicity" name="medicinetoxicity" placeholder="MedicineToxicity" style="width:100%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineProperty">药性</label>
+                                        <select class="form-control" id="MedicineProperty" name="medicineproperty" required>
+                                            <option >请选择</option>
+                                            <option value="性温">性温</option>
+                                            <option value="性寒">性寒</option>
+                                            <option value="性平">性平</option>
+                                            <option value="性热">性热</option>
+                                            <option value="性凉">性凉</option>
+                                            <option value="微温">微温</option>
+                                            <option value="微寒">微寒</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="IndicationsFunction">功能主治</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="IndicationsFunction" name="indicationsfunction" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ChannelTropism">归经</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="ChannelTropism" name="channeltropism" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ClinicalApplication">临床应用</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="ClinicalApplication" name="clinicalapplication" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineGenera">科属与药用部分</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="MedicineGenera" name="medicinegenera" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionName">处方用名</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="PrescriptionName" name="prescriptionname" required></textarea>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="MedicineTaste">药味</label>
+                                        <input type="text" class="form-control" id="MedicineTaste" name="medicinetaste" placeholder="MedicineTaste" required>
+{#                                            <option >请选择</option>#}
+{#                                            <option value="味甘">味甘</option>#}
+{#                                            <option value="味苦">味苦</option>#}
+{#                                            <option value="味淡">味淡</option>#}
+{#                                            <option value="味辛">味辛</option>#}
+{#                                            <option value="味酸">味酸</option>#}
+{#                                            <option value="味涩">味香</option>#}
+{#                                            <option value="味咸">味咸</option>#}
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineCode">中药代码</label>
+                                        <input type="text" class="form-control" id="MedicineCode" name="medicinecode" placeholder="MedicineCode" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="temp_PictureLocationID">图片位置ID</label>
+                                        <select  class="form-control" id="temp_PictureLocationID" name="temp_picturelocationid" style="width:100%" required>
+                                            <option >请选择</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GeneralDosage">一般用量</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="GeneralDosage" name="generaldosage" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GeneralUsage">一般用法</label>
+                                        <textarea class="form-control"  cols="8" rows="6" id="GeneralUsage" name="generalusage" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="WithMedicine">附药</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="WithMedicine" name="withmedicine"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Comment">按语</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="Comment" name="comment" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionsExample">方剂举例</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="PrescriptionsExample" name="prescriptionsexample"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineRemarks">药品备注</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="MedicineRemarks" name="medicineremarks" required></textarea>
+                                    </div>
+
+                                </div>
+                            </div>  <!--row-->
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-7 col-lg-1 col-lg-offset-10">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script src="{% static "login/static/js/bootstrapValidator.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#chinesemedicineadd').click(function(){
+        tag ="add";
+        $('.table-control').css('display','none');
+        $('#chinesemedicineaddpanel').css('display','block');
+        document.getElementById("MedicineName").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+    //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#chinesemedicineedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#ChineseMedicineID').val(jsonobject.chinesemedicineid);
+      $('#MedicineName').val(jsonobject.medicinename);
+      $('#MedicineGeneralType').val(jsonobject.medicinegeneraltype);
+      $('#MedicineSubType').val(jsonobject.medicinesubtype);
+      $('#MedicineToxicity').val(jsonobject.medicinetoxicity);
+      $('#MedicineProperty').val(jsonobject.medicineproperty);
+      $('#MedicineTaste').val(jsonobject.medicinetaste);
+      $('#IndicationsFunction').val(jsonobject.indicationsfunction);
+      $('#ChannelTropism').val(jsonobject.channeltropism);
+      $('#ClinicalApplication').val(jsonobject.clinicalapplication);
+      $('#MedicineGenera').val(jsonobject.medicinegenera);
+      $('#PrescriptionName').val(jsonobject.prescriptionname);
+      $('#GeneralDosage').val(jsonobject.generaldosage);
+      $('#GeneralUsage').val(jsonobject.generalusage);
+      $('#WithMedicine').val(jsonobject.withmedicine);
+      $('#Comment').val(jsonobject.comment);
+      $('#PrescriptionsExample').val(jsonobject.prescriptionsexample);
+      $('#MedicineRemarks').val(jsonobject.medicineremarks);
+      $('#MedicineCode').val(jsonobject.medicinecode);
+      $('#temp_PictureLocationID').val(jsonobject.temp_picturelocationid);
+
+      $('#chinesemedicineinfotoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#chinesemedicineaddpanel').css('display','block');
+      document.getElementById("MedicineName").focus();
+      $('#changepanel').html("中药信息编辑");
+      $('#doit').html("确定");
+  });
+    $('#chinesemedicineTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/chinesemedicineinfo.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#chinesemedicineform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbmedicineinfo/',
+                success:function(data){
+                   turnPage('back/dashboard/objectiveinfo/chinesemedicineinfo.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#chinesemedicineaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbmedicineinfo/'+jsonobject.chinesemedicineid+"/",
+                success:function(data){
+                  turnPage('back/dashboard/objectiveinfo/chinesemedicineinfo.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#chinesemedicineaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+       //删除
+    $('#chinesemedicinedelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbmedicineinfo/'+jsonobject.chinesemedicineid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/chinesemedicineinfo.html');
+                   }
+               })
+           }
+       });
+     //获取图片位置id数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url:baseAddress+'/tbpicturelist/',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].originalpicturepath +" >" + msg[i].picturename + "</option>";
+                }
+                $("#temp_PictureLocationID").append(str);
+            }
+        })
+    });
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+
+      fields: {
+          medicinename: {
+              validators: {
+                  stringLength: {
+                      max: 50,
+                      message: '限制在50个字符以内'
+                  }
+              }
+          },
+          medicinecode: {
+              validators: {
+                  regexp: {
+                      regexp: /^[1-9]\d*$/,
+                      message: '只能包含正整数'
+                  }
+              }
+          },
+          medicinetaste: {
+              validators: {
+                  stringLength: {
+                      max: 100,
+                      message: '限制在100个字符以内'
+                  }
+              }
+          },
+          medicinetoxicity: {
+              validators: {
+                  regexp: {
+                      regexp: /^[\u4e00-\u9fa5]+$/,
+                      message: '限制中文字符'
+                  },
+                  stringLength: {
+                      max: 50,
+                      message: '限制在50个字符以内'
+                  }
+              }
+          },
+          indicationsfunction: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          channeltropism: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          clinicalapplication: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          medicinegenera: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          prescriptionname: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          generaldosage: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          generalusage: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          withmedicine: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          comment: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          prescriptionsexample: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          medicineremarks: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          }
+      }
+     });
+
+</script>
+</body>
+</html>
+
+

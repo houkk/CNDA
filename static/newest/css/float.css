@@ -1,0 +1,73 @@
+.in_navigation {
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 300;
+    font-size: 27px;
+    line-height: 1.75em;
+    color: #39454b;
+    letter-spacing: 0.5px;
+    display: block;
+    position: fixed;
+    height: 100%;
+    z-index: 100;
+    width: 200px;
+    background:rgba(33, 33, 33, 0.32);
+    right: -200px;
+}
+.nav-rotade {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+}
+.transition {
+    transition: all 300ms linear;
+}
+.nav-button {
+    width: 25px;
+    cursor: pointer;
+}
+.nav-button span {
+    width: 100%;
+    height: 4px;
+    margin-top: 4px;
+    background: #666;
+    display: block;
+}
+.link-holder {
+    margin: 90px auto;
+    padding: 0;
+}
+.link-holder ul {
+    margin-left: 20px;
+    margin-right: 20px;
+    list-style: none;
+    padding: 0;
+}
+.link-holder a{
+    display: block;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(56, 57, 59, 0.57);
+    color: white;
+    text-decoration: none;
+    opacity: 0;
+}
+.link-holder a:hover, .link-holder li.current a{
+    color: #F54F36;
+    border-right: 2px solid #F54F36;
+    /*transition: color 0.33s linear;*/
+}
+.link-holder ul p{
+    color:white;
+    font-size:18px;
+    text-align: center;
+}
+.in_img{
+    padding:0;
+    border-radius: 75px;
+    border: 3px solid #fff;
+    height: 70px;
+    width: 70px;
+    margin: 10px auto;overflow: hidden;
+}

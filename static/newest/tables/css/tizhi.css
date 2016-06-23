@@ -1,0 +1,63 @@
+ul{
+    padding-left: 5px;
+    list-style: none;
+    width: 768px;
+}
+/*ul li:last-child{
+    margin-top:80px;
+}*/
+ul li:last-child a{
+    float: left;
+}
+ul li:last-child button{
+    float: left;
+    margin-left: 500px;
+}
+li>div>div{
+    float: left;
+}
+.ques{
+    margin-top: 50px;
+    margin-bottom: 10px;
+    padding:5px 0px 5px 0px;
+}
+.button--itzel .button__icon {
+    font-size: 14px;
+}
+.button__icon{
+    width:100px;
+}
+.button.button--sacnite {
+    width: 380px;
+    height: 70px;
+    margin-left:260px;
+}
+#tizhi{
+    font-family: 'Helvetica Neue', 'Hiragino Sans GB', 'Microsoft YaHei',sans-serif;
+    font-size: 17px;
+    line-height: 2;
+}
+#tizhi li{
+    margin-top: 20px;
+    margin-bottom: 60px;
+}
+.center{
+    font-size:19px;
+    text-align: center;
+    margin-top: 60px;
+    color: tomato;
+}
+.progress{
+    height: 30px;
+}
+.progress-bar {
+    font-size: 14px;
+    line-height: 30px;
+}
+#detail{
+    margin-bottom: -45px;
+    padding: 10px 5px;
+}
+#detail div{
+    width: 780px;
+}

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+   <head>
+     <title>Ajax Test</title>
+    <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../static/ajaxfileupload.js"></script>
+    <script src="/static/aboutcookie.js"></script>
+    <script type="text/javascript" language="javascript">
+         //function update() {
+         //    var http = "http://127.0.0.1:8000/register/";
+         //    $.ajax({
+         //        type: "get",
+         //        url: http,
+         //        dataType: "json",
+         //        error: function (msg) {  //若Ajax处理失败后回调函数，msg是返回的错误信息
+         //            alert("Ajax跳转处理失败 : ");
+         //        },
+         //        success: function (text) { //若Ajax处理成功后的回调函数，text是返回的页面信息
+         //            alert("Ajax处理已成功：" + text.count);
+//
+         //        }
+         //    });
+         //}
+
+
+
+
+
+
+        //         $.getJSON("/abc/",function(data) {
+        //         $.each(data, function(i,item){
+        //             $("#content").html('<p>' + item.name + ' is a ' + item.gender + ' teacher.</p>');
+        //            // $('#content').html("")
+        //            // $('#content').append(
+        //            //   '<div>'+item.model+"     "+item.pk+'</div>'
+        //           //  );
+        //         });
+        //        });
+        //    }
+
+
+
+           function timeDown(limit, i) {
+                limit--;
+                if (i > 4) {
+                    i = 0;
+                }
+                if (limit < 0) {
+                    limit = 3;
+                    update();
+                    i++;
+                }
+                $('#time').text(limit + '秒后刷新');
+                setTimeout(function() {
+                    timeDown(limit, i);
+                }, 1000)
+            }
+
+            $(document).ready(function() {
+                timeDown(3, 0);
+                /*$.getJSON("abc" ,function(data) {
+                 $.each(data, function(){
+                      $("#cc").html('<p>' + this.gender+ ' is a ' + this.name + ' teacher.</p>');
+                 });
+                });*/
+
+               /* $('#usr').focus(function(){
+                     if($('#usr').val()=='usr'){
+                         $('#usr').val("")
+                     }else if($('#usr').val()==''){
+                         $('#usr').val("usr")
+                     }
+                })*/
+
+
+             })
+
+    </script>
+    <script>
+        var th = GetCookie();
+
+        alert(th);
+       $(function () {
+
+           $('#value').click(function(){
+              alert($('#tt').val()) ;
+           });
+           $('#text').click(function(){
+              alert($('#tt').find('option:selected').text()) ;
+           });
+
+           $('#usr').focus(function(){
+               if($('#usr').val()=='usr'){
+                    $('#usr').val("")
+              }else if($('#usr').val()==''){
+                  $('#usr').val("usr")
+           }
+           });
+           $('#btn').click(function(){
+               var date = new Date('Mon Nov 24 17:18:32 CST 2014');
+
+               alert(date);
+
+               //alert("afaf");
+                //$('#usr').val("shit")
+               //$.getJSON("abc/",function(data) {
+//
+               //  $.each(data, function(i,item){
+               //      $("#content").html('<p>' + item.name + ' is a '  + ' teacher.</p>');
+               //        // $('#usr').val(data.results.name
+               //         )
+
+                //var htp="http://10.120.59.9:81/tbdietaryrecords/?temp_userid=11";
+                //var htp="http://10.120.59.9:81/tbhealthsuggestionsmapp/";
+                //var htp="http://10.120.59.9:81/tbuser/30/";
+                //var htp="http://127.0.0.1:8000/album/";
+                //var htp="http://127.0.0.1:8000/ceshi/";
+                var tt = JSON.stringify([{"duration":9}]);
+               var name = $('#usernam').val();
+               alert(name);
+               var word = $('#passwor').val();
+               alert(word);
+               //document.write(tt);
+               alert(tt);
+                //var htp="http://10.120.59.9:81/tbidentifydiseaserel/";
+                var htp="http://127.0.0.1:8000/tbcommonfoodinfo/";
+                //var htp="http://127.0.0.1:8000/logintest/";
+                //var htp="http://127.0.0.1:8000/auth/login";
+                //var htp="http://10.120.59.9:81/tbsleepinforecords/";
+                //var htp="http://10.120.59.9:81/doctorview/";
+                //var htp="http://10.120.57.201/tbpicturelist/";
+                //var htp="http://10.120.57.201/tbpicturelist/";
+                //var htp="http://10.120.59.9:81/tbhealthsuggestionsmapp/47/";
+                //var htp="http://10.120.59.2/tbtcmhealthknowledge/";
+                //location.href=http;
+               var ddata = [{"album_name": "pl7", "artist": "pl7"},{"album_name": "pl6", "artist": "pl6"}];
+               //var postdata = [];
+               //postdata.push({"album_name": "pl7", "artist": "pl7"});
+               //postdata.push({"album_name": "pl6", "artist": "pl6"});
+
+                $.ajax({
+                    type:"post",
+                    url:htp,
+                    dataType:"json",
+                    //contentType:"application/json",
+                    //data:{"order":'166, 168', "duration":5},
+                    //data:JSON.stringify({"checktosee":0}),
+                    //data:JSON.stringify({"commonfoodname":"苹果"}),
+                    //data:JSON.stringify({"album_id": 116, "album_name": "pp15", "artist": "pl16"}),
+                    //data:JSON.stringify([{"album_name":"pl9"}, {"album_name":"pl8"}]),
+                    //data:{"Originalpicturepath":'http://images.enrz.com/wp-content/uploads/2015/04/14296154339166-300x181.jpg',"pictureremarks": 'test'},
+                    //data:{'name':'djoser','department': 'djoser'},
+                    data:{'commonfoodname': 'test', 'temp_picturelocationid':null},
+                    //data:{'email': name, 'password': word},
+                    //data:{'username':'testfout','password': 'testfour', 'email': '78910@qq.com'},
+                    //data:tt,
+                      //data:JSON.stringify({"checktosee":0}),
+                    //data:JSON.stringify([{"order":117},{"order":118}]),
+                    //data:JSON.stringify([98, 99]),
+                    //data:JSON.stringify([{"order":117, "title":"bulkupdate7", "duration":1, "album":null}, {"order":118, "title":"bulkbulkupdate8", "duration":1, "album":null}]),
+                    //data:JSON.stringify([{"title":"bulkupdate7", "duration":9}, {"title":"bulkbulkupdate8", "duration":9}]),
+                    //data:JSON.stringify([{"album_id": 116, "album_name": "pp15", "artist": "pl16"}, {"album_id": 115, "album_name": "pp14", "artist": "pl14"}]),
+                    //data:JSON.stringify({"album_name": "pp15", "artist": "pl16"}),
+                    //data:JSON.stringify({"album_name":"pl15"}),
+                    //data:JSON.stringify([{"album_name": "pl13", "artist": "pl13"},{"album_name": "pl14", "artist": "pl14"}]),
+                    //data:JSON.stringify({"album_name": "pl15", "artist": "pl16"}),
+                    //data:JSON.stringify([{"title":"123456"},{"title":"123456"}]),
+                    //data:'[{"title":"123456"},{"title":"123456"}]',
+                    //contentType:"charset=UTF-8",
+                    //data:{'title':'fuck', 'duration':4,'artist':'qqq'},
+                    //data:{'title':'sss', 'cc':'ccc'},
+                    //data:{'username':'com', 'usersex':'man', 'userage':1, 'userpassword':'', 'userphonenumber':'', 'usermail':'1061235338@qq.com', 'userrank':'', 'userwroktype':'', 'userbmiindex':null, 'temp_sleepfeatureid':null, 'temp_exercisefeatureid':null, 'temp_eatingfeatureid':null, 'temp_adminisareaid':null},
+                    //data:'{"healthsuggcontent": "shit", "temp_userid": "张传清", "temp_healthsuggestid":null, "healthsuggestreason": "", "healthsuggesttime": "2016-3-8 23:4:00", "healthsuggestremarks": ""}',
+                    //data:{'adminisareacity':'南京'},
+                    //data:{"username":"天才","passwork":"fycj","datatime":"2015-04-04 00:00:00"},
+                    //contentType:"application/json",
+                    //data:{"temp_hospitalid":"南京鼓楼医院","temp_doctorid":"杨勤","temp_hospitalofficeid":"消化科","workduty":"主任医师"},
+                    //data:{"tracks__title":"w1", "tt":"cc"},
+                    //data:{"title":"w1", "tt":"cc"},
+                    //data:JSON.stringify({"album_name": "x", "artist": "xx",  "tracks":[{"title":"x1","duration":5}, {"title":"x1","duration":9}]}),
+                    //data:JSON.stringify({"album_name": "xx", "artist": "xxx",  "tracks":[{"title":"xx1","duration":9}]}),
+                    //data:{'healthknowledgetitle':'温阳'},
+                    //data:{'duration':4},
+                    //data:{'title':'mnbv', 'duration':3, 'album':{'album_name':'a','artist':'aa'}},
+                    //data:{'name':'rest25','gender':'Male','country':'China','aboutYou':'cccccccc','mailinglist':true},
+                    //data:{"album_id":3},
+                    //data:{"foodtypename":"水果","foodname":"西瓜","eatingamount":"300.0","unitname":"g","eatingtime":"2015-04-03 16:22:38","eatingrecordsuptime":null,"eatinginforemarks":"橘子","temp_userid":11,"eatingstateback":"暂无","temp_foodnutritionid":1,"temp_locationinfoid":1,"temp_intelligentdeviceid":1,"intelligentdevicecode":1,"eatingupflag":null,"setmealcode":null},
+      		        success: function(message) { //若Ajax处理成功后的回调函数，text是返回的页面信息
+                        alert("success "+message.auth_token);
+                        authtoken=message.auth_token;
+                        SetCookie(authtoken);
+                        alert(authtoken);
+
+                        //alert("success"+message.results[1].album_name);
+{#                        //alert("Ajax处理已成功："+message);#}
+                        {% comment %}for(i in message){
+                            alert(message[i].foodname);
+                        }{% endcomment %}
+                        {% comment %}$.each(message, function(i){
+                           alert(message[i].foodname);
+                        });{% endcomment %}
+{#                        alert('sf');#}
+{#                        alert("\""+htp+"\"");#}
+{#                        url = "\""+htp+message[12].picture+"\"";#}
+{#                        alert(url);#}
+{#                        $('#imagee').attr("src", "http://10.120.59.9:81/"+message[12].picture);#}
+{#                        $.each(text, function(i){#}
+{#                          option+="<option value=\""+text[i].healthknowledgeid+"\">"+text[i].healthknowledgetitle+"</option>";#}
+{#                        });#}
+{#                        $("#tt").html(option);#}
+
+                    },
+                    error: function(msg) {  //若Ajax处理失败后回调函数，msg是返回的错误信息
+                        alert("error:"+msg);
+                    }
+
+
+                 });
+                });
+           $('#reg').click(function(){
+            alert('1');
+            var namere = $('#namere').val();
+            var passre = $('#wordre').val();
+            var eamilre = $('#emailre').val();
+               alert(namere);
+               alert(passre);
+               alert(eamilre);
+            $.ajax({
+                url:'http://10.120.59.9:81/auth/register',
+                type:'post',
+                dataType:'json',
+                data:{'username': namere, 'password': passre, 'email': eamilre},
+                success:function(msg){
+                    SetCookie(msg.auth_token);
+                    alert("success"+msg.auth_token);
+                },
+                error:function(msg){
+                    alert('error:'+msg);
+                }
+            });
+           });
+            $('#change').click(function(){
+                var cuword = $('#cuword').val();
+                var newword = $('#newword').val();
+                alert(cuword);
+                $.ajax({
+                    url:'http://10.120.59.9:81/changepassword/',
+                    type:'post',
+                    dataType:'json',
+                    data:{'new_password': newword, 'current_password': cuword},
+                    beforeSend:function(xhr) {
+                        alert(GetCookie());
+                        xhr.setRequestHeader("Authorization", 'Token '+GetCookie());
+                    },
+                    success:function(msg){
+                        alert("success");
+                    },
+                    error:function(msg){
+                        alert('error:'+'未登陆'+msg.status);
+                        DeleteCookie();
+                    }
+                });
+            });
+           $('#create').click(function(){
+            alert('2');
+            $.ajax({
+                type: "put",
+                url: 'http://127.0.0.1:5000/to/55efced9d3dae2382e4c1b22/',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({'content': "six"}),
+                success: function(msg){
+                    alert("success");
+                },
+                error: function(msg){
+                    alert("error");
+                }
+            })
+        });
+
+       });
+
+        function dengchu(){
+            alert(GetCookie());
+            DeleteCookie();
+{#            var htp = 'http://127.0.0.1:8000/auth/logout';#}
+{#            $.ajax({#}
+{#                type:'post',#}
+{#                url:htp,#}
+{#                dataType:'json',#}
+{#                beforeSend:function(xhr) {#}
+{#                    alert(GetCookie('cnda'));#}
+{#                    xhr.setRequestHeader("Authorization", 'Token '+GetCookie('cnda'));#}
+{#                },#}
+{#                success:function(msg){#}
+{#                  DeleteCookie('cnda');#}
+{#                },#}
+{#                error: function (msg) {#}
+{#                    alert('error:'+msg);#}
+{#                }#}
+{#            });#}
+        }
+        function me(){
+            $.ajax({
+                url:'http://127.0.0.1:8000/me/',
+                type:'get',
+                contentType:'application/json',
+                beforeSend:function(xhr) {
+                    alert(GetCookie());
+                    xhr.setRequestHeader("Authorization", 'Token '+GetCookie());
+                },
+                success:function(msg){
+                    alert("success"+msg[0].username);
+                },
+                error:function(msg){
+                    alert('error:'+msg);
+                }
+            });
+        }
+
+
+
+    </script>
+  </head>
+   <center>
+  <body>
+    <h1>Ajax Test</h1>
+    <p id="time"></p>
+    <div id="content"></div>
+    <div id="cc"></div>
+    <input id="usr" value="usr" type="text">
+{#  <input type="button" id="btn" >#}
+  <select id="tt"></select>
+  <input type="button" id="value" value="value">
+  <input type="button" id="text" value="text">
+    <hr>
+  <input id="imagee" type="button" value="logout" onclick="dengchu()">
+  <input  type="button" value="me" onclick="me()">
+    <script>
+        function va(){
+            alert($('#us').val());
+           $.ajax({
+                url:'http://10.120.59.9:81/validate/',
+                type:'get',
+                dataType:'json',
+                data:{'username':$('#us').val()},
+                success:function(msg){
+                    alert(msg.result);
+                    if (msg.result==0){
+                        alert(0);
+
+                    }
+                    else if (msg.result==1){alert(1);}
+                },
+                error:function(msg){
+                    alert('error:'+msg);
+                }
+            });
+        }
+    </script>
+    <hr>
+    <input id="create" type="button" value="提交">
+    <hr>
+     <input id = 'us', type="text">
+    <input onclick="va()" , type="button">
+  <hr>
+        <h3>登陆</h3>
+        username:<input id="usernam" type="text" name="username"><br>
+        password:<input id="passwor" type="password" name="password"><br>
+        <input id="btn" type="submit" value="login"><br>
+
+  <hr>
+    <h3>注册</h3>
+    username:<input id="namere" type="text" name="username"><br>
+    password:<input id="wordre" type="password" name="password"><br>
+    email:   <input id="emailre" type="email" name="password"><br>
+             <input id="reg" type="button" value="register">
+  <hr>
+    <h3>修改密码：</h3>
+    current-password:<input id="cuword" type="text" name="password"><br>
+    new  -  password:<input id="newword" type="text" name="password"><br>
+    <input id="change", type="button", value="修改">
+    <hr>
+  <input type="button" value="requests" onclick="requestceshi()">
+  <script>
+      function requestceshi(){
+          var htpurl = "http://10.120.59.9:81/tbuserhealthwarningmapp/9/";
+          //var htpurl = "http://127.0.0.1:8000/receshi/";
+          $.ajax({
+              type:'patch',
+              url:htpurl,
+              dataType:'json',
+              success:function(msg){
+{#                  $.each(msg, function(i){#}
+{#                     alert(msg[i].adminisareacounty);#}
+{#                  });#}
+                  alert(msg);
+              },
+              error: function (msg) {
+                  alert('error:'+msg);
+              }
+          });
+      }
+  </script>
+<hr>
+  <p><input type="file" id="file1" name="originalpicturepath" /></p>
+  <p><input type="text" id="textname" name="picturename"/></p>
+  <input type="button" name="_method" value="patch" onclick="Uploadfile()" />
+  <p><img id="img1" alt="上传成功啦" src="" ></p>
+  <script>
+      function Uploadfile(){
+          if($('#file1').val().length<=0){
+              alert('file1 is null');
+              $.ajax({
+                url: 'http://127.0.0.1:8000/tbexerciseinfo/',
+                //url:'http://127.0.0.1:8000/tbpicturelist/',
+                type: 'post',
+                data: {'exercisename': "ceshi", "temp_picturelocationid":null},//, 'temp_picturelocationid.picturename': "test"},//, 'picturename':$('#textname').val(),'temp_picturelocationid':{'picturename':"test"}
+                //data:{'picturename':'test'},
+                dataType: 'json',
+                success: function (data) {
+                    alert('success');
+                    alert(data.exercisename);
+                },
+                error: function () {
+                    alert('error!!!');
+                }
+            })
+
+          }
+          else{
+            $.ajaxFileUpload({
+                //url: 'http://127.0.0.1:8000/tbexerciseinfo/152/?format=json',
+                url:'http://127.0.0.1:8000/tbpicturelist/?format=json',
+                type: 'post',
+                secureuri: false,
+                fileElementId: 'file1',
+                data: {'picturename': "test"},//, 'picturename':$('#textname').val(),'temp_picturelocationid':{'picturename':"test"}
+                //data:{'temp_picturelocationid.picturename':'rt','_method':'patch', 'exercisename': "sfsf"},
+                //data:{'_method':'patch'},
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data, status) {
+
+                    alert(data);
+                    alert('s');
+                    if(typeof(data.originalpicturepath) == 'string'){
+                        $('#img1').attr("src", data.originalpicturepath);
+                    }
+                    else{
+                        alert('error');
+                    }
+
+                },
+                error: function (data, status, e) {
+                    alert(data);
+                    alert('error!!!');
+                    alert(e);
+
+                }
+            })
+          }
+
+      }
+  </script>
+  <hr>
+  <form action="http://127.0.0.1:5000/login/", method="post">
+            email:<input type="email" name="email">
+            password:<input type="password" name="password">
+            <input value="submit" type="submit">
+        </form>
+  <hr> <form action="http://127.0.0.1:5000/register/", method="post">
+            email:<input type="email" name="email">
+            name:<input type="text" name="name">
+            password:<input type="password" name="password">
+            <input value="sumit" type="submit">
+
+        </form>
+  <hr>
+
+  </body>
+       </center>
+ </html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--体质信息表-->
+    <div id="phyciqueinfotoolbar" class="btn-group table-control tool-control">
+        <button type="button" class="btn btn-default" id="phyciqueinfoadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="phyciqueinfoedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="phyciqueinfodelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="phyciqueinfoTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#phyciqueinfotoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <div class="row" style="margin-left: -2%; display: none" id="phyciqueinfoaddpanel">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">体质信息添加</h4>
+                </div>
+                 <form id="phyciqueinfoform" method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group hidden">
+                                        <label for="PhysiqueInfoID">体质信息ID</label>
+                                        <input type="text" class="form-control" id="PhysiqueInfoID" name="physiqueinfoid"  style="width:100%" disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="TableScoreHeight">量表辨识总分上限</label>
+                                        <input type="text" class="form-control" id="TableScoreHeight" name="tablescoreheight" placeholder="TableScoreHeight" style="width:100%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="TableScoreLow">量表辨识总分下限</label>
+                                        <input type="text" class="form-control" id="TableScoreLow"      name="tablescorelow" placeholder="TableScoreLow" style="width:100%" required>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="PhysicalTypeName">体质类型名</label>
+                                        <input type="text" class="form-control" id="PhysicalTypeName" name="physicaltypename" placeholder="PhysicalTypeName" style="width:100%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GeneraCharacter">总体特征</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="GeneraCharacter" name="generacharacter" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ShapeFeature">形体特征</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="ShapeFeature" name="shapefeature" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CommonManifest">常见表现</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="CommonManifest" name="commonmanifest" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PhysicalInterpretation">体质解释</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="PhysicalInterpretation" name="physicalinterpretation" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PhysicalReason">体质原因</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="PhysicalReason" name="physicalreason" required></textarea>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="SwitchScoreHeight">转换得分上限</label>
+                                        <input type="text" class="form-control" id="SwitchScoreHeight" name="switchscoreheight" placeholder="SwitchScoreHeight" style="width:100%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SwitchScoreLow">转换得分下限</label>
+                                        <input type="text" class="form-control" id="SwitchScoreLow" name="switchscorelow" placeholder="SwitchScoreLow" style="width:100%" required>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="PhysicalTypeCode">体质类型代码</label>
+                                        <input type="text" class="form-control" id="PhysicalTypeCode" name="physicaltypecode" placeholder="PhysicalTypeCode" style="width:100%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MentalCharacter">心理特征</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="MentalCharacter" name="mentalcharacter" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="IncidenceTendency">发病倾向</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="IncidenceTendency" name="incidencetendency" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="AdaptiveCapacity">环境适应能力</label>
+                                        <textarea class="form-control"  cols="8" rows="8" id="AdaptiveCapacity" name="adaptivecapacity" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PhysicalAdjustMethod">体质调整方法</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="PhysicalAdjustMethod" name="physicaladjustmethod" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FoodAllowTaboo">食物禁忌</label>
+                                        <textarea class="form-control"  cols="8" rows="8" id="FoodAllowTaboo" name="foodallowtaboo" required></textarea>
+                                    </div>
+                                </div>
+                            </div>  <!--row-->
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-7 col-lg-1 col-lg-offset-10">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </form>
+            </div>
+        </div>
+    </div>
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#phyciqueinfoadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#phyciqueinfoaddpanel').css('display','block');
+        document.getElementById("TableScoreHeight").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+    //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#phyciqueinfoedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#PhysiqueInfoID').val(jsonobject.physiqueinfoid );
+      $('#TableScoreHeight').val(jsonobject.tablescoreheight );
+      $('#TableScoreLow').val(jsonobject.tablescorelow);
+      $('#SwitchScoreHeight').val(jsonobject.switchscoreheight );
+      $('#SwitchScoreLow').val(jsonobject.switchscorelow);
+      $('#GeneraCharacter').val(jsonobject.generacharacter );
+      $('#ShapeFeature').val(jsonobject.shapefeature);
+      $('#CommonManifest').val(jsonobject.commonmanifest );
+      $('#MentalCharacter').val(jsonobject.mentalcharacter);
+      $('#IncidenceTendency').val(jsonobject.incidencetendency);
+      $('#AdaptiveCapacity').val(jsonobject.adaptivecapacity);
+      $('#PhysicalTypeName').val(jsonobject.physicaltypename );
+      $('#PhysicalTypeCode').val(jsonobject.physicaltypecode);
+      $('#PhysicalInterpretation').val(jsonobject.physicalinterpretation);
+      $('#PhysicalReason').val(jsonobject.physicalreason);
+      $('#PhysicalAdjustMethod').val(jsonobject.physicaladjustmethod );
+      $('#FoodAllowTaboo').val(jsonobject.foodallowtaboo);
+
+      $('#phyciqueinfotoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#phyciqueinfoaddpanel').css('display','block');
+      document.getElementById("TableScoreHeight").focus();
+      $('#changepanel').html("体质信息编辑");
+      $('#doit').html("确定");
+  });
+    $('#phyciqueinfoTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/phyciqueinfo.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#phyciqueinfoform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbphysiqueinfo/',
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/phyciqueinfo.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#phyciqueinfoaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbphysiqueinfo/'+jsonobject.physiqueinfoid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/phyciqueinfo.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#phyciqueinfoaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#phyciqueinfodelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbphysiqueinfo/'+jsonobject.physiqueinfoid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/phyciqueinfo.html');
+                   }
+               })
+           }
+       });
+
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+       fields: {
+           tablescoreheight: {
+               validators: {
+                   regexp: {
+                       regexp: /^\d{1,3}(\.\d{1})$/,
+                       message: '限制最多三位整数以及一位小数'
+                   }
+               }
+           },
+           tablescorelow: {
+               validators: {
+                   regexp: {
+                       regexp: /^\d{1,3}(\.\d{1})$/,
+                       message: '限制最多三位整数以及一位小数'
+                   }
+               }
+           },
+           switchscoreheight: {
+               validators: {
+                   regexp: {
+                       regexp: /^\d{1,3}(\.\d{1})$/,
+                       message: '限制最多三位整数以及一位小数'
+                   }
+               }
+           },
+           switchscorelow: {
+               validators: {
+                   regexp: {
+                       regexp: /^\d{1,3}(\.\d{1})$/,
+                       message: '限制最多三位整数以及一位小数'
+                   }
+               }
+           },
+           physicaltypecode: {
+               validators: {
+                   regexp: {
+                       regexp: /^[1-9]\d*$/,
+                       message: '只能包含正整数'
+                   }
+               }
+           },
+           physicaltypename: {
+               validators: {
+                   stringLength: {
+                       max: 20,
+                       message: '限制在20个字符以内'
+                   }
+               }
+           },
+           generacharacter: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           shapefeature: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           commonmanifest: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           mentalcharacter: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           incidencetendency: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           adaptivecapacity: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           adjustmethod: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           mutiplepeople: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           physicalinterpretation: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           physicalreason: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           physicaladjustmethod: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           },
+           foodallowtaboo: {
+               validators: {
+                   stringLength: {
+                       max: 1024,
+                       message: '限制在1024个字符以内'
+                   }
+               }
+           }
+       }
+    });
+</script>
+</body>
+</html>
+
+

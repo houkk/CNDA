@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="icon" href="../../favicon.ico">
+    <title>基于云技术的智慧中医后台管理系统</title>
+    <!-- Bootstrap core CSS -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/dashboard.css" rel="stylesheet">
+    <link href="../../css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../../css/common.css" rel="stylesheet">
+    <style type="text/css">
+        .left{ width:18%; float:left; margin:1px; height:100%;}
+        .right{ width:81%; float:right; margin:1px; height:100%; }
+    </style>
+
+    <script src="../../js/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top nav_color" style="height: auto">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!--<a href="#"><img src="../icons/bird2.ico"></a>-->
+            <a class="navbar-brand" style="font-size: 27px; color: #002a80;">云健康数据共享平台</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><i class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="bottom" title="主页"></i></a></li>
+                <li><a href="#"><i class="glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="用户"></i></a></li>
+                <li><a href="#"><i class="glyphicon glyphicon-cog"data-toggle="tooltip" data-placement="bottom" title="设置"></i></a></li>
+                <li><a href="#"><i class="glyphicon glyphicon-log-out" data-toggle="tooltip" data-placement="bottom" title="退出"></i></a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    请选择您的区域和要查看的图表项
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="container">
+                        <div class="row">
+                            <div style="width: 150px; float: left">请选择您的区域</div>&nbsp;&nbsp;
+                            <div style="width: 100px; float: left">
+                                <select class="form-control">
+                                    <option value="jiangsu">江苏</option>
+                                    <option value="anhui">安徽</option>
+                                    <option value="zhejiang">浙江</option>
+                                    <option value="guangdong">广东</option>
+                                </select>
+                            </div>&nbsp;&nbsp;
+                            <div style="width: 100px; float: left">
+                                <select class="form-control">
+                                    <option value="nanjing">南京</option>
+                                    <option value="suzhou">苏州</option>
+                                    <option value="wuxi">无锡</option>
+                                    <option value="changzhou">常州</option>
+                                </select>
+                            </div>&nbsp;&nbsp;
+                            <div style="width: 100px; float: left">
+                                <select class="form-control">
+                                    <option value="qixiaqu">栖霞区</option>
+                                    <option value="suzhou">鼓楼区</option>
+                                    <option value="wuxi">玄武区</option>
+                                </select>
+                            </div>
+                        </div><br/>
+                        <div class="row">
+                            <div style="width: 200px; float: left">请选择您要查看的图表</div>&nbsp;&nbsp;
+                            <div style="width: 220px; float: left">
+                                <select class="form-control select select-primary select-block mbl">
+                                    <option value="0">=======</option>
+                                    <option value="yinshiliang">饮食量图</option>
+                                    <option value="yinshitezheng">饮食特征图</option>
+                                    <option value="zhuangkuang">饮食状况分析图</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal" id="close">关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="look">
+                    查看
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div class="left">
+
+    <div class="left sidebar" id="accroding">
+        <!--===========================================here is the side bar=============================================================-->
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+            <div class="panel panel-info coll">
+                <div class="panel-heading s-head" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    <h4 class="panel-title">
+                        <i class="glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" ></i> &nbsp;&nbsp;
+                        用户管理
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body l-nav" id="back_user" onclick="turnPage('../two/backuser.html')">
+                        <div class="col-sm-12" style="color: #006dcc">后台用户管理</div>
+                    </div>
+                    <div class="panel-body l-nav" id="health_user" onclick="turnPage('../two/healther.html')">
+                        <div class="col-sm-12" style="color: #006dcc">普通用户管理</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading collapsed s-head" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <h4 class="panel-title">
+                        <i class="glyphicon glyphicon-heart" data-placement="bottom" ></i> &nbsp;&nbsp;
+                        用户健康数据管理
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body l-nav dropdown">
+                        <div class="col-sm-12 dropdown-toggle" id="yinshishuju" style="color: cornflowerblue" data-toggle="dropdown">饮食数据管理
+                        </div>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="yinshishuju">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="dietlist1">营养素种类表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="dietlist2">食物营养成分表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="dietlist3">饮食信息记录表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="dietlist4">饮食偏好记录表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="dietlist5">饮食特征信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="dietlist6">饮食状况分析表</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body l-nav">
+                        <a href="#"><div class="col-sm-12">作息数据管理</div></a>
+                    </div>
+                    <div class="panel-body l-nav">
+                        <a href="#"><div class="col-sm-12">运动数据管理</div></a>
+                    </div>
+                    <div class="panel-body l-nav">
+                        <div class="col-sm-12" style="color: #006dcc">诊疗数据管理</div>
+                    </div>
+                    <div class="panel-body l-nav">
+                        <div class="col-sm-12" style="color: #006dcc">病史数据管理</div>
+                    </div>
+                    <div class="panel-body l-nav">
+                        <div class="col-sm-12" style="color: #006dcc">体质辨识数据管理</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading s-head collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <h4 class="panel-title">
+                        <i class="glyphicon glyphicon-globe" data-placement="bottom" ></i> &nbsp;&nbsp;
+                        区域管理
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body l-nav">
+                        <div class="col-sm-12" style="color: #006dcc" data-toggle="modal" data-target="#myModal" id="dietdatachart">饮食数据图表</div>
+                    </div>
+                    <div class="panel-body l-nav">
+                        <div class="col-sm-12" style="color: #006dcc">作息数据图表</div>
+                    </div>
+                    <div class="panel-body l-nav">
+                        <div class="col-sm-12" style="color: #006dcc">运动数据图表</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading s-head collapsed" role="tab" id="headingFive" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    <h4 class="panel-title">
+                        <i class="glyphicon glyphicon-list" data-placement="bottom" ></i> &nbsp;&nbsp;
+                        客观信息表
+                    </h4>
+                </div>
+                <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                    <div class="panel-body l-nav dropdown"  >
+                        <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" id="setmealinfo1" data-toggle="dropdown">食物/套餐信息表</div>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="setmealinfo1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="commondisease2" onclick="turnPage('../objectiveinfo/setmealinfo.html')">饮食套餐信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="commondisease3" onclick="turnPage('../userdiet/foodnutrient.html')">食物营养成分表</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body l-nav dropdown" id="chinesemedicineinfo" onclick="turnPage('../objectiveinfo/chinesemedicineinfo.html')">
+                        <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="medicine">中药/用药信息表</div>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="medicine">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="medicine1" onclick="turnPage('../objectveinfo/chinesemedicineinfo.html')">中药信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="medicine2">用药信息表表</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body l-nav dropdown" id="intelligentdevice">
+                        <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="equipment">智能设备表</div>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="equipment">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="equipabment0">智能设备表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="equipabment1">设备参数代码表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="equipabment2">设备参数映射表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="equipabment3">设备数据采集代码表</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body l-nav dropdown" id="healthknowage">
+                        <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" id="healthknowage1" data-toggle="dropdown">养生/健康知识信息</div>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="healthknowage1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage2" onclick="turnPage('../objectiveinfo/healthknowage.html')">养生知识信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage8">养生知识类别表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage3">健康建议类别表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage4">健康建议表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage5">健康指标信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage6">健康趋势分析记录表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage7">健康预警记录表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="healthknowage9">个性化养生信息表</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body l-nav dropdown" id="commondisease" onclick="turnPage('../objectiveinfo/commondisease.html')">
+                        <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" id="commondisease1" data-toggle="dropdown">常见疾病</div>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="commondisease1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="commondisease4">常见疾病信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="commondisease5">常见疾病类别表</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body l-nav dropdown" id="identifyissue">
+                        <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" id="identify" data-toggle="dropdown">体质辨识库</div>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="identify">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="identifylist1" onclick="turnPage('../objectiveinfo/identifychoice.html')">体质辨识选项表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="identifylist2" onclick="turnPage('../objectiveinfo/identifyissue.html')">体质辨识问卷项目表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="identifylist3" onclick="turnPage('../objectiveinfo/identifyissue.html')">体质信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="identifylist4" onclick="turnPage('../objectiveinfo/identifyissue.html')">体质疾病关系表</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body l-nav dropdown" id="hospitalinfo">
+                        <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="hospitalinfo1">医院信息表</div>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="hospitalinfo1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo7" onclick="turnPage('../objectiveinfo/expertinfo.html')">中医专家信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo2" onclick="turnPage('../objectiveinfo/hospitalinfo.html')">医院信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo3">医生专长信息表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo4">医生专长分类代码表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo5">医院医生关系表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="hospitalinfo6">医院科室信息表</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body l-nav" id="unitattribute" onclick="turnPage('../objectiveinfo/unitattribute.html')">
+                        <div class="col-sm-12" style="color: #006dcc">计量单位表</div>
+                    </div>
+                    <div class="panel-body l-nav dropdown" id="locationinfo" >
+                        <div class="col-sm-12 dropdown-toggle" style="color: #006dcc" data-toggle="dropdown" id="area">地理/行政区划信息表</div>
+                        <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="area">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="area1">行政区划代码表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="area2">设备参数代码表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="area3">设备参数映射表</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="area4">设备数据采集代码表</a></li>
+                        </ul>
+                    </div>
+                    <div class="panel-body l-nav" id="mobile" onclick="turnPage('../objectiveinfo/unitattribute.html')">
+                        <div class="col-sm-12" style="color: #006dcc">手机信息表</div>
+                    </div>
+                </div>
+            </div>
+        </div>  <!--panel group -->
+        <!--col 10-->
+    </div>
+</div>
+<div class="right">
+    <div class="container" style="margin-left: -30px">
+        <div class="row">
+            <div class="col-md-12">
+                <ol class="breadcrumb" style="width: 125%" id="bread">
+                    <li><a href="#">用户管理</a></li>
+                    <li><a href="#">后台用户管理</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div id="content" style="padding: 20px;">
+
+    </div>
+</div>
+</div>
+
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/bootstrap-table.js"></script>
+<script src="../../js/bootstrap-table-zh-CN.js"></script>
+<script src="../../js/start.js"></script>
+<script src="../../js/common.js"></script>
+<script>
+    $('#back_user').click(function(){
+        $('#bread').empty();
+        $('#bread').append('<li><a href="#">用户管理</a></li> <li><a href="#">后台用户管理</a></li>');
+    });
+    $('#health_user').click(function(){
+        $('#bread').empty();
+        $('#bread').append('<li><a href="#">用户管理</a></li> <li><a href="#">普通用户管理</a></li>');
+    });
+
+    var page = null;
+    $("select").change(function(){
+        page = $(this).children('option:selected').val();
+
+    });
+    $('#look').click(function(){
+        $('#content').empty();
+        $('#myModal').modal('hide');
+        //通过bootstrap 模态框选择将要查看的东西
+        if(page == "yinshiliang"){
+            turnPage('../area/dietcharts.html');
+        }
+        else if(page == "yinshitezheng"){
+            turnPage('../area/dietfeature.html');
+        }
+    });
+
+    $('#dietlist1').click(function(){
+        turnPage('../userdiet/dietdata.html');
+    });
+    $('#dietlist2').click(function(){
+        turnPage('../userdiet/foodnutrient.html');
+    });
+    $('#dietlist3').click(function(){
+        turnPage('../userdiet/eatingrecord.html');
+    });
+    $('#dietlist4').click(function(){
+        turnPage('../userdiet/eatingprefer.html');
+    });
+    $('#dietlist5').click(function(){
+        turnPage('../userdiet/eatingfeature.html');
+    });
+    $('#equipabment0').click(function(){
+        turnPage('../objectiveinfo/intelligentdevice.html');
+    });
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="../../favicon.ico">
+
+	<title>Dashboard Template for Bootstrap</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link href="../css/dashboard.css" rel="stylesheet">
+
+	<link href="../css/bootstrap-table.css" rel="stylesheet">
+
+	<link href="../css/bootstrap-editable.css" rel="stylesheet">
+
+	<link href="../css/common.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top nav_color">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">基于云技术的智慧中医健康平台后台管理系统</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><i class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="bottom" title="主页"></i></a></li>
+					<li><a href="#"><i class="glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="用户"></i></a></li>
+					<li><a href="#"><i class="glyphicon glyphicon-cog"data-toggle="tooltip" data-placement="bottom" title="设置"></i></a></li>
+					<li><a href="#"><i class="glyphicon glyphicon-log-out" data-toggle="tooltip" data-placement="bottom" title="退出"></i></a></li>
+				</ul>
+				<form class="navbar-form navbar-right">
+					<input type="text" class="form-control" placeholder="Search...">
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-2 sidebar" id="accroding">
+				<!--===========================================here is the side bar=============================================================-->
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+					<div class="panel panel-default">
+						<div class="panel-heading s-head" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							<h4 class="panel-title">
+								用户管理
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<div class="panel-body l-nav">
+								<a href="main/back_user.html" target="back_user" id="back_user" style="display:block; width:300px"><div class="col-sm-12">后台用户管理</div></a>
+							</div>
+							<div class="panel-body l-nav">
+								<a href="main/healther.html" target="back_user" id="healther"><div class="col-sm-12">设备使用用户管理</div></a>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="panel panel-default">
+						<div class="panel-heading collapsed s-head" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+							<h4 class="panel-title">
+								用户健康数据管理
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+							<div class="panel-body l-nav">
+								<div class="col-sm-12" id="yinshishuju">饮食数据管理</div>
+							</div>
+							<div class="panel-body l-nav">
+								<a href="#"><div class="col-sm-12">作息数据管理</div></a>
+							</div>
+							<div class="panel-body l-nav">
+								<a href="#"><div class="col-sm-12">运动数据管理</div></a>
+							</div>
+							<div class="panel-body l-nav">
+								<a href="#"><div class="col-sm-12">诊疗数据管理</div></a>
+							</div>
+							<div class="panel-body l-nav">
+								<a href="#"><div class="col-sm-12">病史数据管理</div></a>
+							</div>
+							<div class="panel-body l-nav">
+								<a href="#"><div class="col-sm-12">体质辨识数据管理</div></a>
+							</div>
+						</div>  
+					</div>
+
+
+
+					<div class="panel panel-default">
+						<div class="panel-heading s-head collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+							<h4 class="panel-title">
+								区域管理
+							</h4>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+							<div class="panel-body l-nav">
+								<a href="#"><div class="col-sm-12">饮食数据图表</div></a>
+							</div>
+							<div class="panel-body l-nav">
+								<a href="#"><div class="col-sm-12">作息数据图表</div></a>
+							</div>
+							<div class="panel-body l-nav">
+								<a href="#"><div class="col-sm-12">运动数据图表</div></a>
+							</div>
+						</div>
+					</div>
+
+         
+
+			        <div class="panel panel-default">
+			        	<div class="panel-heading s-head collapsed" role="tab" id="headingFive" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+			        		<h4 class="panel-title">
+			        			客观信息表
+			        		</h4>
+			        	</div>
+			        	<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+			        		<div class="panel-body l-nav">
+			        			<a href="expreinfo.html" target="back_user" id="expreinfo"><div class="col-sm-12">中医专家信息表</div><a>
+			        		</div>
+			        		<div class="panel-body l-nav">
+			        			<a href="#"><div class="col-sm-12">食物/套餐信息表</div></a>
+			        		</div>
+			        		<div class="panel-body l-nav">
+			        			<a href="#"><div class="col-sm-12">中药信息表</div></a>
+			        		</div>
+			        		<div class="panel-body l-nav">
+			        			<a href="#"><div class="col-sm-12">智能设备表</div></a>
+			        		</div>
+			        		<div class="panel-body l-nav">
+			        			<a href="#"><div class="col-sm-12">养生知识信息</div></a>
+			        		</div>
+			        		<div class="panel-body l-nav">
+			        			<a href="#"><div class="col-sm-12">常见疾病</div></a>
+			        		</div>
+			        		<div class="panel-body l-nav">
+			        			<a href="#"><div class="col-sm-12">体质辨识库</div></a>
+			        		</div>
+			        		<div class="panel-body l-nav">
+			        			<a href="#"><div class="col-sm-12">医院信息表</div></a>
+			        		</div>
+			        		<div class="panel-body l-nav">
+			        			<a href="#"><div class="col-sm-12">计量单位表</div></a>
+			        		</div>
+			        		<div class="panel-body l-nav">
+			        			<a href="#"><div class="col-sm-12">地理信息表</div></a>
+			        		</div>
+			        	</div>
+			        </div>
+    			</div>  <!--panel group -->
+			</div>  <!--col 10-->
+			<div class="col-md-10 col-md-offset-2 main">
+				<h5 class="sub-header">用户管理 >> 后台用户管理</h5>
+				<div id="content">
+					<!-- <iframe name="back_user" src="back_user.html" scrolling="auto" frameborder="0" style="width:113%;height:680px;"></iframe> -->
+				</div> 
+			</div>
+		</div>  <!--row-->
+	</div>  <!--container-fluid-->
+
+
+
+
+
+<!--=========================================here is the js file================================================================-->
+<script src="../js/jquery-1.10.2.min.js"></script>
+<script src="../js/bootstrap.js"></script>
+<script src="../js/bootstrap-table.js"></script>
+<script src="../js/bootstrap-editable.min.js"></script>
+<script src="../js/bootstrap-table-zh-CN.js"></script>
+   <!-- <script src="../js/transition.js"></script>
+    <script src="../js/modal.js"></script>
+    
+    <script src="../js/collapse.js.js"></script>-->
+<script src="../js/docs.min.js"></script>
+<script src="../js/common.js"></script>
+    <!--<script src="../js/tableExport.js"></script> 
+     <script src="../js/tooltip.js"></script>   
+    <script src="../js/jquery.base64.js"></script>
+    <script src="../js/jspdf/libs/sprintf.js"></script>
+    <script src="../js/jspdf/libs/base64.js"></script>
+    <script src="../js/jspdf/jspdf.js"></script>   -->
+<script>
+	function turnPage(url){
+		$.ajax({
+			type:"post",
+			url:url,
+			success:function(html){
+				$('#content').html(html);
+			}
+		});
+	}
+	$(function(){
+		$('#yinshishuju').bind("click", function(){
+			//alert("d");
+			turnPage("test.html");
+		});
+	});
+	
+</script>
+
+
+
+</body>
+</html>
+
+

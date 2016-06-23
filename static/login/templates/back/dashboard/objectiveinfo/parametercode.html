@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--设备参数代码表-->
+    <div id="parametercodetoolbar" class="btn-group table-control tool-control">
+        <button type="button" class="btn btn-default" id="parametercodeadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="parametercodeedit" >
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="parametercodedelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="parametercodeTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#parametercodetoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <div class="row" style="display: none;" id="parametercodeaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">设备参数代码添加</h4>
+                </div>
+                <form id="parametercodeform" method="post">
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group hidden">
+                                        <label for="DeviceParaCodeID">设备参数代码ID</label>
+                                        <input type="text" class="form-control " id="DeviceParaCodeID" name="deviceparacodeid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ParameterCode">设备参数代码</label>
+                                        <input type="text" class="form-control" id="ParameterCode" name="parametercode" placeholder="ParameterCode" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ParameterName">设备参数名称</label>
+                                        <input type="text" class="form-control" id="ParameterName" name="parametername" placeholder="ParameterName" style="width:90%" required >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ParameterMean">设备参数含义</label>
+                                        <textarea class="form-control" cols="8" rows="2" id="ParameterMean" name="parametermean" style="width:90%"  required></textarea>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                            </div>  <!--row-->
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#parametercodeadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#parametercodeaddpanel').css('display','block');
+        document.getElementById("ParameterCode").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+        alert("prevented");
+    });
+     //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#parametercodeedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#DeviceParaCodeID').val(jsonobject.deviceparacodeid );
+      $('#ParameterCode').val(jsonobject.parametercode );
+      $('#ParameterName').val(jsonobject.parametername);
+      $('#ParameterMean').val(jsonobject.parametermean);
+
+      $('#parametercodetoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#parametercodeaddpanel').css('display','block');
+      document.getElementById("ParameterCode").focus();
+      $('#changepanel').html("设备参数代码编辑");
+      $('#doit').html("确定");
+  });
+    $('#parametercodeTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/parametercode.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#parametercodeform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbdeviceparacode/',
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/parametercode.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#parametercodeaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "patch",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbdeviceparacode/'+jsonobject.deviceparacodeid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/parametercode.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#parametercodeaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#parametercodedelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbdeviceparacode/'+jsonobject.deviceparacodeid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/parametercode.html');
+                   }
+               })
+           }
+       });
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+        fields: {
+            parametername: {
+                validators: {
+                    stringLength: {
+                        max: 30,
+                        message: '限制在30个字符以内'
+                    }
+                }
+            },
+            parametercode: {
+                validators: {
+                    regexp: {
+                        regexp: /^[0-9]*$/,
+                        message: '只能包含正整数'
+                    }
+                }
+            },
+            parametermean: {
+                validators: {
+                    stringLength: {
+                        max: 100,
+                        message: '限制在100个字符以内'
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--中药方剂表-->
+    <div id="medicineprescriptiontoolbar" class="btn-group table-control SetMealInfo">
+        <button type="button" class="btn btn-default" id="medicineprescriptionadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="medicineprescriptionedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="medicineprescriptiondelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="medicineprescriptionTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#medicineprescriptiontoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <div class="row" style="margin-left: -2%; display: none" id="medicineprescriptionaddpanel">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">中药方剂添加</h4>
+                </div>
+                 <form id="medicineprescriptionform" method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group hidden">
+                                        <label for="MedicinePrescriptionID">中药方剂ID</label>
+                                        <input type="text" class="form-control " id="MedicinePrescriptionID" name="medicineprescriptionid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicinePrescriptionName">中药方剂名</label>
+                                        <input type="text" class="form-control" id="MedicinePrescriptionName" name="medicineprescriptionname" placeholder="MedicinePrescriptionName" style="width:100%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionIndications">功能主治</label>
+                                        <textarea class="form-control" cols="8" rows="4" id="PrescriptionIndications" name="prescriptionindications" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionUsage">用法用量</label>
+                                        <textarea class="form-control" cols="8" rows="2" id="PrescriptionUsage" name="prescriptionusage" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionMethod">制法</label>
+                                        <textarea class="form-control" cols="8" rows="2" id="PrescriptionMethod" name="prescriptionmethod" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionCharacters">性状</label>
+                                        <textarea class="form-control" cols="8" rows="2" id="PrescriptionCharacters" name="prescriptioncharacters" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionRemarks">方剂备注</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="PrescriptionRemarks" name="prescriptionremarks" required></textarea>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="PrescriptionSpecification">规格</label>
+                                        <textarea class="form-control" cols="8" rows="2" id="PrescriptionSpecification" name="prescriptionspecification" required></textarea>
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="PrescriptionStore">储藏</label>
+                                        <input type="text" class="form-control" id="PrescriptionStore" name="prescriptionstore" placeholder="PrescriptionStore" style="width:100%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionContraindicat">注意</label>
+                                        <textarea class="form-control" cols="8" rows="4" id="PrescriptionContraindicat" name="prescriptioncontraindicat" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionTheories">各家论述</label>
+                                        <textarea class="form-control"  cols="8" rows="6" id="PrescriptionTheories" name="prescriptiontheories" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionExtract">摘录</label>
+                                        <textarea class="form-control" cols="8" rows="6" id="PrescriptionExtract" name="prescriptionextract" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PrescriptionTag">方剂标识</label>
+                                        <input type="text" class="form-control" id="PrescriptionTag" name="prescriptiontag" placeholder="PrescriptionTag" style="width:100%" required>
+                                    </div>
+                                </div>
+                            </div>  <!--row-->
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-7 col-lg-1 col-lg-offset-10">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </form>
+            </div>
+        </div>
+    </div>
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#medicineprescriptionadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#medicineprescriptionaddpanel').css('display','block');
+        document.getElementById("MedicinePrescriptionName").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+    //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#medicineprescriptionedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#MedicinePrescriptionID').val(jsonobject.medicineprescriptionid);
+      $('#MedicinePrescriptionName').val(jsonobject.medicineprescriptionname);
+      $('#PrescriptionIndications').val(jsonobject.prescriptionindications);
+      $('#PrescriptionUsage').val(jsonobject.prescriptionusage);
+      $('#PrescriptionMethod').val(jsonobject.prescriptionmethod);
+      $('#PrescriptionCharacters').val(jsonobject.prescriptioncharacters);
+      $('#PrescriptionSpecification').val(jsonobject.prescriptionspecification);
+      $('#PrescriptionStore').val(jsonobject.prescriptionstore);
+      $('#PrescriptionContraindicat').val(jsonobject.prescriptioncontraindicat);
+      $('#PrescriptionTheories').val(jsonobject.prescriptiontheories);
+      $('#PrescriptionExtract').val(jsonobject.prescriptionextract);
+      $('#PrescriptionRemarks').val(jsonobject.prescriptionremarks);
+      $('#PrescriptionTag').val(jsonobject.prescriptiontag);
+
+     $('#medicineprescriptiontoolbar').css('display','none');
+     $('#table').css('display','none');
+     $('#medicineprescriptionaddpanel').css('display','block');
+      document.getElementById("MedicinePrescriptionName").focus();
+      $('#changepanel').html("中药方剂编辑");
+      $('#doit').html("确定");
+  });
+    $('#medicineprescriptionTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/medicineprescription.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#medicineprescriptionform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbmedicineprescription/',
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/medicineprescription.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#medicineprescriptionaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbmedicineprescription/'+jsonobject.medicineprescriptionid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/medicineprescription.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#medicineprescriptionaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#medicineprescriptiondelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbmedicineprescription/'+jsonobject.medicineprescriptionid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/medicineprescription.html');
+                   }
+               })
+           }
+       });
+{#     //获取图片位置id数据#}
+{#    jQuery(function($){#}
+{#        $.ajax({#}
+{#            type: "get",#}
+{#            datatype:"json",#}
+{#            url:baseAddress+'/tbpicturelist/',#}
+{#            success:function(msg){#}
+{#                var str="";#}
+{#                for(i in msg){#}
+{#                    str += "<option value ="+ msg[i].originalpicturepath +" >" + msg[i].picturename + "</option>";#}
+{#                }#}
+{#                $("#temp_PictureLocationID").append(str);#}
+{#            }#}
+{#        })#}
+{#    });#}
+
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+        fields: {
+            medicineprescriptionname: {
+                validators: {
+                    stringLength: {
+                       max: 50,
+                       message: '限制在50个字符以内'
+                   }
+                }
+            },
+            prescriptionindications: {
+                validators: {
+                    stringLength: {
+                       max: 200,
+                       message: '限制在200个字符以内'
+                   }
+                }
+            },
+            prescriptionusage: {
+                validators: {
+                    stringLength: {
+                       max: 100,
+                       message: '限制在100个字符以内'
+                   }
+                }
+            },
+            prescriptionmethod: {
+                validators: {
+                    stringLength: {
+                       max: 100,
+                       message: '限制在100个字符以内'
+                   }
+                }
+            },
+            prescriptioncharacters: {
+                validators: {
+                    stringLength: {
+                       max: 100,
+                       message: '限制在100个字符以内'
+                   }
+                }
+            },
+            prescriptionspecification: {
+                validators: {
+                    stringLength: {
+                       max: 100,
+                       message: '限制在100个字符以内'
+                   }
+                }
+            },
+            prescriptionstore: {
+                validators: {
+                    stringLength: {
+                       max: 50,
+                       message: '限制在50个字符以内'
+                   }
+                }
+            },
+            prescriptioncontraindicat: {
+                validators: {
+                    stringLength: {
+                       max: 200,
+                       message: '限制在200个字符以内'
+                   }
+                }
+            },
+            prescriptiontheories: {
+                validators: {
+                    stringLength: {
+                       max: 500,
+                       message: '限制在500个字符以内'
+                   }
+                }
+            },
+            prescriptionextract: {
+                validators: {
+                    stringLength: {
+                       max: 500,
+                       message: '限制在500个字符以内'
+                   }
+                }
+            },
+            prescriptionremarks: {
+                validators: {
+                    stringLength: {
+                       max: 500,
+                       message: '限制在500个字符以内'
+                   }
+                }
+            },
+            prescriptiontag: {
+                validators: {
+                    stringLength: {
+                       max: 50,
+                       message: '限制在50个字符以内'
+                   }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
+
+

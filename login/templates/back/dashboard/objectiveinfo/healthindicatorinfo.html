@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--健康指标信息表-->
+    <div id="healthindicatorinfotoolbar" class="btn-group table-control tool-control">
+        <button type="button" class="btn btn-default" id="healthindicatorinfoadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="healthindicatorinfoedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="healthindicatorinfodelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="healthindicatorinfoTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#healthindicatorinfotoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <div class="row" style="display: none;" id="healthindicatorinfoaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">健康指标信息添加</h4>
+                </div>
+                 <form id="healthindicatorinfoform" method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group hidden">
+                                        <label for="HealthIndicatorID">健康指标ID</label>
+                                        <input type="text" class="form-control " id="HealthIndicatorID" name="healthindicatorid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthIndicatorName">健康指标名称</label>
+                                        <input type="text" class="form-control" id="HealthIndicatorName" name="healthindicatorname" placeholder="HealthIndicatorName" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthIndicatorValue">健康指标值</label>
+                                        <input type="text" class="form-control" id="HealthIndicatorValue" name="healthindicatorvalue" placeholder="HealthIndicatorValue" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthIndicatorChange">健康指标变化趋势</label>
+                                        <textarea cols="8" rows="2" class="form-control" id="HealthIndicatorChange" name="healthindicatorchange" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="IndicatorChangeExplain">指标变化趋势说明</label>
+                                        <textarea cols="8" rows="4" class="form-control" id="IndicatorChangeExplain" name="indicatorchangeexplain" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="temp_HealthTrendID">健康趋势ID</label>
+                                        <select class="form-control" id="temp_HealthTrendID" name="temp_healthtrendid" style="width:90%" required>
+                                            <option>请选择</option>
+                                        </select>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                            </div>  <!--row-->
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#healthindicatorinfoadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#healthindicatorinfoaddpanel').css('display','block');
+        document.getElementById("HealthIndicatorName").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+    //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#healthindicatorinfoedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#HealthIndicatorID').val(jsonobject.healthindicatorid );
+      $('#HealthIndicatorName').val(jsonobject.healthindicatorname );
+      $('#HealthIndicatorValue').val(jsonobject.healthindicatorvalue);
+      $('#HealthIndicatorChange').val(jsonobject.healthindicatorchange);
+      $('#IndicatorChangeExplain').val(jsonobject.indicatorchangeexplain);
+
+      $('#healthindicatorinfotoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#healthindicatorinfoaddpanel').css('display','block');
+      document.getElementById("HealthIndicatorName").focus();
+      $('#changepanel').html("健康指标信息编辑");
+      $('#doit').html("确定");
+  });
+    $('#healthindicatorinfoTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/healthindicatorinfo.html');
+    });
+    $('#doit').click(function(){
+          var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#healthindicatorinfoform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbhealthindicatorinfo/',
+                success:function(data){
+                   turnPage('back/dashboard/objectiveinfo/healthindicatorinfo.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#healthindicatorinfoaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbhealthindicatorinfo/'+jsonobject.healthindicatorid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/healthindicatorinfo.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#healthindicatorinfoaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#healthindicatorinfodelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbhealthindicatorinfo/'+jsonobject.healthindicatorid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/healthindicatorinfo.html');
+                   }
+               })
+           }
+       });
+
+    //获取健康趋势ID数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url:baseAddress+'/tbhealthtrendrecords/',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].healthtrendid+" >" + msg[i].heaanalysistitle + "</option>";
+                }
+                $("#temp_HealthTrendID").append(str);
+            }
+        })
+    });
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+
+      fields: {
+          healthindicatorname: {
+              validators: {
+                  stringLength: {
+                      max: 50,
+                      message: '限制在50个字符以内'
+                  }
+              }
+          },
+          healthindicatorvalue: {
+              validators: {
+                  regexp: {
+                      regexp: /^\d{1,6}(\.\d{1,2})?$/,
+                      message: '限制最多六位整数以及两位小数'
+                  }
+              }
+          },
+          healthindicatorchange: {
+              validators: {
+                  stringLength: {
+                      max: 100,
+                      message: '限制在100个字符以内'
+                  }
+              }
+          },
+          indicatorchangeexplain: {
+              validators: {
+                  stringLength: {
+                      max: 200,
+                      message: '限制在200个字符以内'
+                  }
+              }
+          }
+      }
+     });
+</script>
+</body>
+</html>
+
+

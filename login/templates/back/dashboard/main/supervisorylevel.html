@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  {% load staticfiles %}
+  <link rel="icon" href="../../favicon.ico">
+  <title>Dashboard Template for Bootstrap</title>
+</head>
+
+<body>
+  <!--================================================here is the message block=======================================================-->
+  <div class="container-fluid" >
+    <div id="supervisoryleveltoolbar" class="btn-group table-control">
+      <button type="button" class="btn btn-default" id="supervisoryleveladd">    <!--data-target="#myModal" data-toggle="modal"-->
+        <i class="glyphicon glyphicon-plus"></i>
+      </button>
+      <button type="button" class="btn btn-default" id="supervisoryleveledit">
+        <i class="glyphicon glyphicon-edit"></i>
+      </button>
+      <button type="button" class="btn btn-default" id="supervisoryleveldelete">
+        <i class="glyphicon glyphicon-trash"></i>
+      </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%" id="table">
+      <table data-toggle="table"  id="supervisorylevelTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#supervisoryleveltoolbar" sort-name="stargazers_count" sort-order='asc'>
+
+        <thead>
+         <tr>
+          <th></th>
+        </tr>
+        </thead>
+      </table>
+    </div>  <!--col-md-10-->
+    <div class="row" style="display: none;" id="supervisoryleveladdpanel">
+      <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h4 class="panel-title" id="changepanel">管理权限添加</h4>
+          </div>
+          <form id="supervisorylevelform" method="post">
+              <div id="validateform">
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group hidden">
+                            <label for="SuperLevelID">管理级别ID</label>
+                            <input type="text" class="form-control " id="SuperLevelID" name="superlevelid"  style="width:90%"  disabled="true">
+                        </div>
+                        <div class="form-group ">
+                            <label for="temp_ManagerID">管理员ID</label>
+                            <select class="form-control" id="temp_ManagerID" name="temp_managerid"   style="width:90%" required>
+                                <option>请选择</option>
+                            </select>
+                        </div>
+                        <div class="form-group ">
+                            <label for="temp_AdminisAreaID">行政区划ID</label>
+                            <select class="form-control" id="temp_AdminisAreaID" name="temp_adminisareaid"   style="width:90%" required>
+                                <option>请选择</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="ManagerRank">管理权限</label>
+                          <input type="text" class="form-control" id="ManagerRank" name="managerrank" style="width:90%" required>
+                        </div>
+                      </div> <!--cil-md-5 -->
+                    </div>  <!--row-->
+                  </div>
+                  <div class="panel-footer">
+                    <div class="row">
+                      <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                        <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                      </div>
+                      <div class="col-md-1">
+                        <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </form>
+        </div>
+      </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+<!--<script src="../../js/jquery-1.10.2.min.js"></script>-->
+  <script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag=null;
+  $('#supervisoryleveladd').click(function(){
+    tag = "add";
+    $('.table-control').css('display','none');
+    $('#supervisoryleveladdpanel').css('display','block');
+  });
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+  $('#supervisoryleveledit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#SuperLevelID').val(jsonobject.superlevelid);
+      $('#temp_ManagerID').val(jsonobject.temp_managerid);
+      $('#temp_AdminisAreaID').val(jsonobject.temp_adminisareaid);
+      $('#ManagerRank').val(jsonobject.managerrank);
+
+      $('#supervisoryleveltoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#supervisoryleveladdpanel').css('display','block');
+      $('#changepanel').html("管理权限编辑");
+      $('#doit').html("确定");
+  });
+    $('#supervisorylevelTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+  $('#cancel').click(function(){
+    turnPage('back/dashboard/main/supervisorylevel.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#supervisorylevelform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbsupervisorylevel/',
+                success:function(data){
+                   turnPage('back/dashboard/main/supervisorylevel.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#supervisoryleveladdpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbsupervisorylevel/'+jsonobject.superlevelid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/main/supervisorylevel.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#supervisoryleveladdpanel').css('display','block');
+                }
+            });
+        }
+    });
+    $('#supervisoryleveldelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+             //确认是否删除
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbsupervisorylevel/'+jsonobject.superlevelid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/main/supervisorylevel.html');
+                   }
+               })
+           }
+       });
+    //获取行政id数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url:baseAddress+'/tbadminisarea/',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].adminisareaid+" >" + msg[i].adminisareaprovince + msg[i].adminisareacity +msg[i].adminisareacounty + "</option>";
+                }
+                $("#temp_AdminisAreaID").append(str);
+            }
+        })
+    });
+    //获取管理员id数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url:baseAddress+'/tbmanager/',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].managerid+" >" + msg[i].managername + "</option>";
+                }
+                $("#temp_ManagerID").append(str);
+            }
+        })
+    });
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+
+      fields: {
+          managerrank: {
+              validators: {
+                  regexp: {
+                      regexp: /^[1-9]\d*$/,
+                      message: '只能包含正整数'
+                  }
+              }
+          }
+      }
+    });
+</script>
+</body>
+</html>
+
+

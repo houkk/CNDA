@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>体质辨识</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/flat/orange.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/tizhi.css"/>
+</head>
+<body>
+<div id="tizhi">
+    <ul>
+        <li>
+            <p>
+                【中医体质测试】是根据《中医体质分类与判定》的体质判定标准研发而成，该文件是我国第一部指导和规范中医体质研究及应用文件，旨在为体质辨识及与中医体质相关疾病的防治、养生保健、健康管理提供依据，使体质分类科学化、规范化。</p>
+        </li>
+        <li>
+            <p>“中医体质”包括<strong>平和质、气虚质、阳虚质、阴虚质、痰湿质、湿热质、瘀血质、气郁质、特禀质</strong>等9种基本类型，不同体质类型在形体特征、生理特征、心理特征、病理反应状态、发病倾向等方面各有特点。
+            </p>
+        </li>
+    </ul>
+    <p class="center">想了解自己属于哪种中医体质吗？想知道如何针对自己的中医体质进行中医养生吗？</p>
+    <button class="button button--sacnite" id="total"><i class="button__icon icon"></i>开始测试</button>
+</div>
+<div id="progress-bar" style="display: none">
+    <h4>【平和质】测试</h4>
+    <div class="progress">
+        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+             aria-valuemax="100" style="width: 11%">
+            1/9组
+        </div>
+    </div>
+</div>
+<div id="detail" class="alert alert-success" style="display:none">
+    <div>【平和质】为正常体质</div>
+</div>
+<div id="id_form" style="display: none">
+</div>
+<script src="../js/base-address.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/tizhibianshi/icheck.js"></script>
+<script src="js/tizhibianshi/transition.js"></script>
+<script src="js/tizhibianshi/collapse.js"></script>
+<script src="js/animatedModal.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/zww-table2.js"></script>
+</body>
+</html>

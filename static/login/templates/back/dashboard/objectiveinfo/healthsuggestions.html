@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--健康建议表-->
+    <div id="healthsuggestionstoolbar" class="btn-group table-control tool-control">
+        <button type="button" class="btn btn-default" id="healthsuggestionsadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="healthsuggestionsedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="healthsuggestiondelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="healthsuggestionsTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#healthsuggestionstoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <div class="row" style="display: none;" id="healthsuggestionsaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">健康建议添加</h4>
+                </div>
+                 <form id="healthsuggestionsform" method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group hidden">
+                                        <label for="HealthSuggestID">健康建议ID</label>
+                                        <input type="text" class="form-control " id="HealthSuggestID" name="healthsuggestid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthSuggestTitle">健康建议主题</label>
+                                        <textarea cols="8" rows="2" class="form-control" id="HealthSuggestTitle" name="healthsuggesttitle"  style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthSuggestContent">健康建议内容</label>
+                                        <textarea cols="8" rows="8" class="form-control" id="HealthSuggestContent" name="healthsuggestcontent" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthSuggestRemarks">健康建议备注</label>
+                                        <textarea cols="8" rows="4" class="form-control" id="HealthSuggestRemarks" name="healthsuggestremarks" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="temp_HealthSuggTypeID">健康建议类别ID</label>
+                                        <select class="form-control" id="temp_HealthSuggTypeID" name="temp_healthsuggtypeid"  style="width:90%" required>
+                                            <option>请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthSuggestFlag">健康建议标识</label>
+                                        <input type="text" class="form-control" id="HealthSuggestFlag" name="healthsuggestflag" placeholder="HealthSuggestFlag" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthSuggestCode">健康建议代码</label>
+                                        <input type="text" class="form-control" id="HealthSuggestCode" name="healthsuggestcode" placeholder="HealthSuggestCode" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="temp_PictureLocationID">图片位置ID</label>
+                                        <select  class="form-control" id="temp_PictureLocationID" name="temp_picturelocationid" style="width:90%" required>
+                                            <option>请选择</option>
+                                        </select>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                            </div>  <!--row-->
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#healthsuggestionsadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#healthsuggestionsaddpanel').css('display','block');
+        document.getElementById("HealthSuggestTitle").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+     //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#healthsuggestionsedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#HealthSuggestID').val(jsonobject.healthsuggestid );
+      $('#HealthSuggestContent').val(jsonobject.healthsuggestcontent );
+      $('#HealthSuggestTitle').val(jsonobject.healthsuggesttitle );
+      $('#HealthSuggestRemarks').val(jsonobject.healthsuggestremarks);
+      $('#temp_HealthSuggTypeID').val(jsonobject.temp_healthsuggtypeid );
+      $('#HealthSuggestFlag').val(jsonobject.healthsuggestflag);
+      $('#HealthSuggestCode').val(jsonobject.healthsuggestcode);
+      $('#temp_PictureLocationID').val(jsonobject.temp_picturelocationid);
+
+      $('#healthsuggestionstoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#healthsuggestionsaddpanel').css('display','block');
+      document.getElementById("HealthSuggestTitle").focus();
+      $('#changepanel').html("健康建议编辑");
+      $('#doit').html("确定");
+  });
+    $('#healthsuggestionsTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/healthsuggestions.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#healthsuggestionsform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbhealthsuggestions/',
+                success:function(data){
+                   turnPage('back/dashboard/objectiveinfo/healthsuggestions.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#healthsuggestionsaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url:  baseAddress+'/tbhealthsuggestions/'+jsonobject.healthsuggestid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/healthsuggestions.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#healthsuggestionsaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#healthsuggestionsdelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url:  baseAddress+'/tbhealthsuggestions/'+jsonobject.healthsuggestid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/healthsuggestions.html');
+                   }
+               })
+           }
+       });
+
+
+    //获取健康建议类别ID数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url: baseAddress+'/tbhealthknowledgetype/',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].healthknowltypeid+" >" + msg[i].healthknowltypename + "</option>";
+                }
+                $("#temp_HealthSuggTypeID").append(str);
+            }
+        })
+    });
+     //获取图片位置id数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url: baseAddress+'/tbpicturelist/',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].originalpicturepath +" >" + msg[i].picturename + "</option>";
+                }
+                $("#temp_PictureLocationID").append(str);
+            }
+        })
+    });
+
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+          healthsuggesttitle: {
+              validators: {
+                  stringLength: {
+                      max: 100,
+                      message: '限制在100个字符以内'
+                  }
+              }
+          },
+          healthsuggestflag: {
+              validators: {
+                  regexp: {
+                      regexp: /^[1-9]\d*$/,
+                      message: '只能包含正整数'
+                  }
+              }
+          },
+          healthsuggestcode: {
+              validators: {
+                  regexp: {
+                      regexp: /^[1-9]\d*$/,
+                      message: '只能包含正整数'
+                  }
+              }
+          },
+          healthsuggestremarks: {
+              validators: {
+                  stringLength: {
+                      max: 200,
+                      message: '限制在200个字符以内'
+                  }
+              }
+          },
+          healthsuggestcontent: {
+              validators: {
+                  stringLength: {
+                      max: 200,
+                      message: '限制在200个字符以内'
+                  }
+              }
+          }
+      }
+    });
+</script>
+</body>
+</html>
+
+

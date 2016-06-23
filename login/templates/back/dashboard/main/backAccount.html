@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  {% load staticfiles %}
+  <link rel="icon" href="../../favicon.ico">
+  <title>Dashboard Template for Bootstrap</title>
+</head>
+
+<body>
+  <!--================================================here is the message block=======================================================-->
+  <div class="container-fluid" >
+    <div id="managertoolbar" class="btn-group table-control">
+      <button type="button" class="btn btn-default" id="backuseradd">    <!--data-target="#myModal" data-toggle="modal"-->
+        <i class="glyphicon glyphicon-plus"></i>
+      </button></a>
+      <button type="button" class="btn btn-default" id="backuseredit">
+        <i class="glyphicon glyphicon-edit"></i>
+      </button>
+      <button type="button" class="btn btn-default" id="backuserdelete">
+        <i class="glyphicon glyphicon-trash"></i>
+      </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%" id="table">
+      <table data-toggle="table" data-url="http://10.120.59.9:81/tbmanager/" id="eventsTable" data-height="480" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#managertoolbar" sort-name="stargazers_count" sort-order='asc'>
+
+        <thead>
+         <tr>
+          <th></th>
+        </tr>
+        </thead>
+      </table>
+    </div>  <!--col-md-10-->
+    <div class="row" style="display: none;" id="backuseraddpanel">
+      <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h4 class="panel-title" id="changepanel">后台用户添加</h4>
+          </div>
+          <form id="backuserform" method="post">
+              <div id="validateform">
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group hidden">
+                            <label for="ManagerID">管理员ID</label>
+                            <input type="text" class="form-control " id="ManagerID" name="managerid"  style="width:90%"  disabled="true">
+                        </div>
+                        <div class="form-group">
+                          <label for="ManagerName">管理员名</label>
+                          <input type="text" class="form-control" id="ManagerName" name="managername" style="width:90%" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="ManagerPassword">密码</label>
+                          <input type="password" class="form-control" id="ManagerPassword" name="managerpassword" style="width:90%" required>
+                        </div>
+                        <div class="form-group">
+                          <label for="ManagerUnit">管理员单位</label>
+                          <input type="text" class="form-control" id="ManagerUnit" name="managerunit" style="width:90%" required>
+                        </div>
+                      </div> <!--cil-md-5 -->
+                    </div>  <!--row-->
+                  </div>
+
+                  <div class="panel-footer">
+                    <div class="row">
+                      <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                        <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                      </div>
+                      <div class="col-md-1">
+                        <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </form>
+        </div>
+      </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+<!--<script src="../../js/jquery-1.10.2.min.js"></script>-->
+  <script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag=null;
+  $('#backuseradd').click(function(){
+    tag = "add";
+    $('.table-control').css('display','none');
+    $('#backuseraddpanel').css('display','block');
+  });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+  $('#backuseredit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+
+      $('#ManagerID').val(jsonobject.managerid);
+      $('#ManagerName').val(jsonobject.managername);
+      $('#ManagerPassword').val(jsonobject.managerpassword);
+      $('#ManagerUnit').val(jsonobject.managerunit);
+
+      $('#managertoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#backuseraddpanel').css('display','block');
+      $('#changepanel').html("后台用户编辑");
+      $('#doit').html("确定");
+  });
+    $('#eventsTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+  $('#cancel').click(function(){
+    turnPage('back/dashboard/main/backuser.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#backuserform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:'http://10.120.59.9:81/tbmanager/',
+                success:function(data){
+                    turnPage('back/dashboard/main/backuser.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#backuseraddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: 'http://10.120.59.9:81/tbmanager/'+jsonobject.managerid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/main/backuser.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#backuseraddpanel').css('display','block');
+                }
+            });
+        }
+    });
+    $('#backuserdelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+             //确认是否删除
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: 'http://10.120.59.9:81/tbmanager/'+jsonobject.managerid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/main/backuser.html');
+
+                   }
+               })
+           }
+       });
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+
+      fields: {
+          managername: {
+              validators: {
+                  stringLength: {
+                      max: 30,
+                      message: '限制在30个字符以内'
+                  }
+              }
+          },
+          managerpassword: {
+              validators: {
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_]+$/i,
+                      message: '密码只能包含字母 数字 下划线'
+                  },
+                  stringLength: {
+                      min: 6,
+                      max: 30,
+                      message: '请将密码限制在6-30个字符以内'
+                  }
+              }
+          },
+          managerunit: {
+              validators: {
+                  stringLength: {
+                      max: 50,
+                      message: '限制在50个字符以内'
+                  }
+              }
+          }
+      }
+    });
+</script>
+</body>
+</html>
+
+

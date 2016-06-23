@@ -1,0 +1,253 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>我的体质——个人健康</title>
+    <!-- CSS Bootstrap & Custom -->
+    <link rel="stylesheet" href="css/add.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/templatemo_misc.css">
+    <link rel="stylesheet" href="css/float.css">
+    <link rel="stylesheet" href="css/temp.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/templatemo_style.css">
+    <!-- Favicons -->
+
+    <style type="text/css">
+        .about ul li:before{
+            content:" ";
+        }
+        a{
+            cursor: pointer;
+        }
+        p a{
+            color:#428bca ;
+            text-decoration:underline;
+        }
+        p a:hover{
+            color: #2a6496;;
+        }
+        .base_header ul li:nth-child(5),.base_header ul li:nth-child(6),.base_header ul li:nth-child(7),.base_header ul li:nth-child(8){
+            float: right;
+        }
+        .base_header{
+            text-align: left;
+        }
+        span{
+            font-size: 16px;
+        }
+        h2{
+            color:rgb(51, 51, 51)
+        }
+
+    </style>
+    <script src="js/base-address.js"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="sumjs/individualization.js"></script>
+
+    <script type="text/javascript">
+        function changePage(url){
+            window.location.href=url;
+        }
+
+        /**********************我的体质辨识结果*************************/
+        $(function () {
+            var dataString="";
+            dataString=restful("get",baseAddress+"/tbconstituteidentifyresultcombine/",{"temp_userid":1});
+            //alert(dataString);
+            if(dataString==""){
+                $("#result").html("<p>您尚未进行体质辨识测试,&nbsp<a href='tables/index2_tizhi.html' style='text-decoration: underline'>立即测试>></a></p>");
+            }
+            else{
+                var dataCon=[];
+                var mainCon="";    // 主要体质是 2
+                var mainCharacter="";   //主要体质特征
+                var mainAdjustment="";   //主要体质调护方法
+                var mainMethod="";    //主要体质调理建议
+                var  mainAttention="";      //主要体质饮食宜忌
+                var other="";     //  同时兼有体质是 1
+                var incline="";   //倾向于体质0
+                for(var i=1;i<10;i++){
+                    dataCon.push(dataString[dataString.length-i]);
+                }
+                //alert(dataCon);
+                $.each(dataCon, function (i) {
+                    if(dataCon[i].constituteldentifyflag==2){
+                        mainCon+=dataCon[i].temp_physiqueinfoid.physicaltypename+" ";
+                        //alert(mainCon);
+                        mainCharacter+="<div style='margin-left: 50px'>总体特征："+dataCon[i].temp_physiqueinfoid.generacharacter+"</div><div style='margin-left: 50px'>形体特征："+dataCon[i].temp_physiqueinfoid.shapefeature+"</div><div style='margin-left: 50px'>常见表现："+dataCon[i].temp_physiqueinfoid.commonmanifest
+                        +"</div><div style='margin-left: 50px'>性格特征："+dataCon[i].temp_physiqueinfoid.mentalcharacter+"</div><div style='margin-left: 50px'>发病倾向："+dataCon[i].temp_physiqueinfoid.incidencetendency+"</div><div style='margin-left: 50px'>对外界适应能力："+dataCon[i].temp_physiqueinfoid.adaptivecapacity+"</div>";
+                        mainAdjustment="<div style='margin-left: 50px'>"+dataCon[i].temp_physiqueinfoid.adjustmethod+"</div>";
+                        mainMethod="<div style='margin-left: 50px'>"+dataCon[i].temp_physiqueinfoid.physicaladjustmethod+"</div>";
+                        mainAttention="<div style='margin-left: 50px'>"+dataCon[i].temp_physiqueinfoid.foodallowtaboo+"</div>";
+
+                    }
+                    else if(dataCon[i].constituteldentifyflag==1){
+                        other+=dataCon[i].temp_physiqueinfoid.physicaltypename+" ";
+                    }
+                    else if(dataCon[i].constituteldentifyflag==0){
+                        incline+=dataCon[i].temp_physiqueinfoid.physicaltypename+" ";
+                    }
+                });
+                if(other!=""){
+                    other=",兼有"+other;
+                    //alert(other);
+                }
+                if(incline!=""){
+                    incline=",倾向于"+incline;
+                }
+                var strCon="<p style='float: left;width:140px;margin-top: 0px;font-size: large;'>您的体质类型是:</p><span style='font-size: larger;color:#428bca;width: 100px'>"+mainCon+"</span><span style='width: 200px;font-size: large;'>"+other+incline+"</span><br>";
+                var strCon1="<div style='margin-top: 15px;'><span style='float: left;width: 215px'>根据您的体质情况，推荐您从</span><span style='color:#428bca;width: 50px;margin-top: 10px'> "+mainCon+"</span><span style='width: 100px;margin-top: 10px'>开始调理</span></div>";
+                var strCon2="<div style='margin-top: 5px'>什么是 <span style='color:#428bca;width: 50px;'>"+mainCon+"</span>？<br><span style='font-size: small;'>"+mainCharacter+"</span></div>";
+                var strCon3="<div style='margin-top: 5px;'><span style='color:#428bca;width: 50px;'>"+mainCon+"</span>调护方法:<span style='font-size: small'>"+mainAdjustment+"</span></div>";
+                var strCon4="<div style='margin-top: 5px;'><span style='color:#428bca;width: 50px;'>"+mainCon+"</span>调理建议:<span style='font-size: small'>"+mainMethod+"</span></div>";
+                var strCon5="<div style='margin-top: 5px;'><span style='color:#428bca;width: 50px;'>"+mainCon+"</span>饮食宜忌:<span style='font-size: small'>"+mainAttention+"</span></div>";
+                $("#result").html(strCon+strCon1+strCon2+strCon3+strCon4+strCon5+"<p><a data-toggle='modal' data-target='#myModalCon' style='margin-top: 10px;font-size: medium;margin-left:600px' id='checkScores'>查看体质得分&gt;&gt;</a></p>");
+
+            }
+        })
+
+    </script>
+</head>
+<body>
+
+<!--<个性化平台导航条>-->
+<div class="base_header" style="position: relative;z-index: 200">
+    <ul>
+        <li style="margin-left: 350px">健康管理</li>
+        <li><a class="active" href="index2.html" style="margin-left: 50px">个人健康</a></li>
+        <li><a href="index3.html">健康数据</a></li>
+        <li><a href="index4.html">养生知识</a></li>
+        <li>
+            <div class="nav-button transition">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </li>
+        <li><a id="login" href="loginPage/index.html" style="font-size: 14px">登录</a></li>
+        <li><a href="tables/index2_jieshao.html" style="font-size: 14px">智慧养生</a></li>
+        <li><a href="index-end.html"  style="font-size: 14px">首页</a></li>
+    </ul>
+</div>
+
+<!--模态框（我的体质）-->
+<div class="modal fade" id="myModalCon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 650px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                </button>
+                <h4 class="modal-title">体质测试图表</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <iframe src="tables/Zchart.html" frameborder=no width=100% height=600px></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--<个人健康——我的体质>-->
+<div id="menu-container">
+    <div class="content services animated fadeInDown" id="menu-3" style="display: block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-2">
+                    <div id="icons">
+                        <ul class="tabs">
+                            <li>
+                                <a href="index2.html" class="icon-item1 active">
+                                    <span>我的体质</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="index2_2.html" class="icon-item1" id="collection">
+                                    <span>我的收藏</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="index2_3.html" class="icon-item1">
+                                    <span>我的偏好</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="index2_4.html" class="icon-item1">
+                                    <span>生活习惯</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab4" class="icon-item1" onclick="changePage('index2_5.html')">
+                                    <span>生活数据记录</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab5" class="icon-item1" onclick="changePage('index2_6.html')">
+                                    <span>健康预警</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab6" class="icon-item1" onclick="changePage('index2_7.html')">
+                                    <span>健康趋势</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab7" class="icon-item1" onclick="changePage('index2_8_main.html')">
+                                    <span>个性化养生方案</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                        </ul>
+                    </div> <!-- /.icons -->
+                </div> <!-- /.col-md-3 -->
+
+                <div class="col-md-9 col-sm-10">
+                    <div class="inner-content">
+                        <!--<我的体质>-->
+                        <div class="toggle-content" id="tab1">
+                            <h2 style="font-size: x-large">我的体质</h2>
+                            <hr>
+                            <div style="font-size:medium" id="result">
+                            </div>
+                        </div> <!-- /.toggle-content -->
+                    </div> <!-- /.inner-content -->
+                </div> <!-- /.col-md-9 -->
+            </div> <!-- /.row -->
+        </div> <!-- /.container -->
+    </div> <!-- /.services -->
+</div>
+
+<!--<页面底部>-->
+<div id="templatemo_footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div style="font-size: inherit">
+                    <p>关于我们 | 联系我们 | 手机应用 | 同步软件| 平台介绍 | 帮助 | 常见问题</p>
+                    <p>Copyright@ 2011-2015 中源团队 | 苏ICP备12014086号</p>
+                </div>
+            </div> <!-- /.col-md-12 -->
+        </div> <!-- /.row -->
+    </div> <!-- /.container -->
+</div> <!-- /.templatemo_footer -->
+
+<!-- Scripts -->
+<script src="js/modernizr.js"></script>
+<script src="js/templatemo_custom.js"></script>
+<script type="text/javascript" src="loginPage/js/login.js"></script>
+<script type="text/javascript" src="js/loginCookie.js"></script>
+<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/cl.js"></script>
+
+</body>
+</html>

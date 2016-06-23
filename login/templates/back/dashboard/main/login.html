@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html >
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    {% load staticfiles %}
+    <link href="{% static "login/static/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "login/static/css/bootstrapValidator.css" %}" rel="stylesheet">
+</head>
+<body style="background-image: url('{% static "login/static/icons/back.png" %}')" onkeydown="BindEnter(event)">
+<div class="container-fluid">
+        <div class="row" style="margin-top: 8%";>
+            <div class="col-md-3" style="margin-left: 62%">
+                <fieldset>
+                    <legend>云健康数据共享平台</legend>
+                    <form id="validateform" method="post" action="/login/loginaction/">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ error_message }}
+                            <input type="text" class="form-control" id="UserName" name="username" placeholder="用户名">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="PassWord" name="password" placeholder="密码">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block" id="login">登录</button>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+</div>
+{% load staticfiles %}
+<script src="{% static "login/static/js/jquery-1.10.2.min.js" %}"></script>
+<script src="{% static "login/static/js/bootstrapValidator.js" %}"></script>
+<script>
+    $(function(){
+        $('#validateform').bootstrapValidator({
+            excluded: ':disabled',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                username: {
+                    validators: {
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/i,
+                            message: '用户名只能包含字母 数字 下划线'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 30,
+                            message: '请将用户名限制在6-30个字符以内'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_]+$/i,
+                            message: '密码只能包含字母 数字 下划线'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 30,
+                            message: '请将密码限制在6-30个字符以内'
+                        }
+                    }
+                }
+            }
+        });
+    });
+    function BindEnter(obj)
+    {
+    //使用document.getElementById获取到按钮对象
+    var button = document.getElementById('login');
+    if(obj.keyCode == 13)
+        {
+            button.click();
+            obj.returnValue = false;
+        }
+    }
+</script>
+</body>
+</html>
+
+
+{#<!doctype html>#}
+{#<html lang="zh">#}
+{#<head>#}
+{#	<meta charset="UTF-8">#}
+{#	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">#}
+{#	<meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#	<title></title>#}
+{#    {% load staticfiles %}#}
+{#    <link href="{% static "login/static/css/bootstrap.min.css" %}" rel="stylesheet">#}
+{#    <link href="{% static "login/static/css/default.css" %}" rel="stylesheet">#}
+{#    <link href="{% static "login/static/css/account.css" %}" rel="stylesheet">#}
+{#	<script src="{% static "login/static/css/bootstrap.min.css" %}" ></script>#}
+{#	<script src="{% static "login/static/css/default.css" %}" ></script>#}
+{#	<script src="{% static "login/static/css/account.css" %}" ></script>#}
+{##}
+{#    <style type="text/css">#}
+{#        #login-form,#login-form2{#}
+{#            position: relative;#}
+{#            width: 350px;#}
+{#            margin: 50px 15px;#}
+{#        }#}
+{#    </style>#}
+{#</head>#}
+{#<body>#}
+{#	<div class="htmleaf-container" id="slider1">#}
+{#		<div class="login">#}
+{#			<i class="glyphicon glyphicon-question-sign"></i>#}
+{#			<div class="photo">#}
+{#			</div>#}
+{#			<span>用户登录</span>#}
+{#			<div id="login-form">#}
+{#				<div id="u" class="form-group">#}
+{#				  <input id="username" spellcheck=false class="form-control" name="username" type="text" size="18" alt="login" required="">#}
+{#				  <span class="form-highlight"></span>#}
+{#				  <span class="form-bar"></span>#}
+{#				  <label for="username" class="float-label">用户名</label>#}
+{#				  <div class="username">#}
+{#				  	用户名不能为空！#}
+{#				  	<i class="glyphicon glyphicon-exclamation-sign"></i>#}
+{#				  </div>#}
+{#				</div>#}
+{#				<div id="p" class="form-group">#}
+{#				  <input id="password" class="form-control" spellcheck=false name="password" type="password" size="18" alt="login" required="">#}
+{#				  <span class="form-highlight"></span>#}
+{#				  <span class="form-bar"></span>#}
+{#				  <label for="password" class="float-label">密码</label>#}
+{#				  <div class="password">#}
+{#				  	密码不能为空！#}
+{#                      <i class="glyphicon glyphicon-exclamation-sign"></i>#}
+{#				  </div>#}
+{#				</div>#}
+{#				<div class="form-group">#}
+{#				<input type="checkbox" id="rem">#}
+{#				<label for="rem">记住密码</label>#}
+{#                    <a style="margin-left: 140px;line-height: 30px" id="zhuce">注册</a>#}
+{#				<button id="submit" type="submit">登录</button>#}
+{#				</div>#}
+{#			</div>#}
+{#		</div>#}
+{#	</div>#}
+{#    <div class="htmleaf-container" id="slider2">#}
+{#        <div class="login1" style="opacity: 0;margin-left: 0px">#}
+{#            <i class="glyphicon glyphicon-question-sign"></i>#}
+{#            <div style="margin: 70px 0px -20px 150px;">用户注册</div>#}
+{#            <div id="login-form2">#}
+{#                <div id="u2" class="form-group">#}
+{#                    <input id="username2" spellcheck=false class="form-control" name="username2" type="text" size="18" alt="login" required="">#}
+{#                    <span class="form-highlight"></span>#}
+{#                    <span class="form-bar"></span>#}
+{#                    <label for="username2" class="float-label">用户名</label>#}
+{#                    <div class="username">#}
+{#                        用户名不能为空！#}
+{#                        <i class="glyphicon glyphicon-exclamation-sign"></i>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div id="p2" class="form-group">#}
+{#                    <input id="password2" class="form-control" spellcheck=false name="password2" type="password" size="18" alt="login" required="">#}
+{#                    <span class="form-highlight"></span>#}
+{#                    <span class="form-bar"></span>#}
+{#                    <label for="password2" class="float-label">密码</label>#}
+{#                    <div class="password">#}
+{#                        密码不能为空！#}
+{#                        <i class="glyphicon glyphicon-exclamation-sign"></i>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div id="p3" class="form-group">#}
+{#                    <input id="password3" class="form-control" spellcheck=false name="password3" type="password" size="18" alt="login" required="">#}
+{#                    <span class="form-highlight"></span>#}
+{#                    <span class="form-bar"></span>#}
+{#                    <label for="password3" class="float-label">再次确认密码</label>#}
+{#                    <div class="password">#}
+{#                        密码不能为空！#}
+{#                        <i class="glyphicon glyphicon-exclamation-sign"></i>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div id="p4" class="form-group">#}
+{#                    <input id="email" class="form-control" spellcheck=false type="text" size="18" alt="login" required="">#}
+{#                    <span class="form-highlight"></span>#}
+{#                    <span class="form-bar"></span>#}
+{#                    <label for="email" class="float-label">邮箱</label>#}
+{#                    <div class="password">#}
+{#                        邮箱不能为空！#}
+{#                        <i class="glyphicon glyphicon-exclamation-sign"></i>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <a style="margin-left: 240px;line-height: 30px" id="denglu">登录</a>#}
+{#                    <button id="submit2" type="submit">注册</button>#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    <script src="{% static "login/static/js/base-address.js" %}" type="application/javascript"></script>#}
+{#	<script src="{% static "login/static/js/jquery-1.10.2.min.js" %}" type="application/javascript"></script>#}
+{#    <script src="{% static "login/static/js/login.js" %}" type="application/javascript"></script>#}
+{#    <script src="{% static "login/static/js/text.js" %}" type="application/javascript"></script>#}
+{#	<script>#}
+{#	    $(function () {#}
+{#	        var animationLibrary = 'animate';#}
+{#	        $.easing.easeOutQuart = function (x, t, b, c, d) {#}
+{#	            return -c * ((t = t / d - 1) * t * t * t - 1) + b;#}
+{#	        };#}
+{#	        $('[ripple]:not([disabled],.disabled)').on('mousedown', function (e) {#}
+{#	            var button = $(this);#}
+{#	            var touch = $('<touch><touch/>');#}
+{#	            var size = button.outerWidth() * 1.8;#}
+{#	            var complete = false;#}
+{#	            $(document).on('mouseup', function () {#}
+{#	                var a = { 'opacity': '0' };#}
+{#	                if (complete === true) {#}
+{#	                    size = size * 1.33;#}
+{#	                    $.extend(a, {#}
+{#	                        'height': size + 'px',#}
+{#	                        'width': size + 'px',#}
+{#	                        'margin-top': -size / 2 + 'px',#}
+{#	                        'margin-left': -size / 2 + 'px'#}
+{#	                    });#}
+{#	                }#}
+{#	                touch[animationLibrary](a, {#}
+{#	                    duration: 500,#}
+{#	                    complete: function () {#}
+{#	                        touch.remove();#}
+{#	                    },#}
+{#	                    easing: 'swing'#}
+{#	                });#}
+{#	            });#}
+{#	            touch.addClass('touch').css({#}
+{#	                'position': 'absolute',#}
+{#	                'top': e.pageY - button.offset().top + 'px',#}
+{#	                'left': e.pageX - button.offset().left + 'px',#}
+{#	                'width': '0',#}
+{#	                'height': '0'#}
+{#	            });#}
+{#	            button.get(0).appendChild(touch.get(0));#}
+{#	            touch[animationLibrary]({#}
+{#	                'height': size + 'px',#}
+{#	                'width': size + 'px',#}
+{#	                'margin-top': -size / 2 + 'px',#}
+{#	                'margin-left': -size / 2 + 'px'#}
+{#	            }, {#}
+{#	                queue: false,#}
+{#	                duration: 500,#}
+{#	                'easing': 'easeOutQuart',#}
+{#	                'complete': function () {#}
+{#	                    complete = true;#}
+{#	                }#}
+{#	            });#}
+{#	        });#}
+{#	    });#}
+{#	    var username = $('#username'),username2 = $('#username2'), password = $('#password'),password2 = $('#password2'),password3 = $('#password3'),#}
+{#                erroru = $('.username'), errorp = $('.password'), submit = $('#submit'), udiv = $('#u'), pdiv = $('#p'),udiv2 = $('#u2'), pdiv2 = $('#p2'), pdiv3 = $('#p3'),pdiv4=$("#p4"),email=$("#email");#}
+{##}
+{#        email.blur(function(){#}
+{#            if(email.val()==""){#}
+{#                pdiv4.attr('errr', '');#}
+{#            } else {#}
+{#                pdiv4.removeAttr('errr');#}
+{#                var ema=email.val();#}
+{#                var myreg = /(\S)+[@]{1}(\S)+[.]{1}(\w)+/;#}
+{#                if(!myreg.test(ema)){#}
+{#                    alert("请输入有效的email!");#}
+{#                    $("#email").focus();#}
+{#                }#}
+{#            }#}
+{#        });#}
+{#	    username.blur(function () {#}
+{#	        if (username.val() == '') {#}
+{#	            udiv.attr('errr', '');#}
+{#	        } else {#}
+{#	            udiv.removeAttr('errr');#}
+{#	        }#}
+{#	    });#}
+{#        username2.blur(function () {#}
+{#	        if (username2.val() == '') {#}
+{#	            udiv2.attr('errr', '');#}
+{#	        } else {#}
+{#	            udiv2.removeAttr('errr');#}
+{#                var user2=username2.val();#}
+{#                $.ajax({#}
+{#                    async:false,#}
+{#                    type:"get",#}
+{#                    dataType:"json",#}
+{#                    url:baseAddress+"/validate/",#}
+{#                    data:{"username":user2},#}
+{#                    success: function (msg) {#}
+{#                        if(msg.result==1){#}
+{#                            alert("该用户名已存在！");#}
+{#                            $("#username2").focus();#}
+{#                        }#}
+{#                    }#}
+{#                })#}
+{#	        }#}
+{#	    });#}
+{#	    password.blur(function () {#}
+{#	        if (password.val() == '') {#}
+{#	            pdiv.attr('errr', '');#}
+{#	        } else {#}
+{#	            pdiv.removeAttr('errr');#}
+{#	        }#}
+{#	    });#}
+{#        password2.blur(function () {#}
+{#	        if (password2.val() == '') {#}
+{#	            pdiv2.attr('errr', '');#}
+{#	        } else {#}
+{#	            pdiv2.removeAttr('errr');#}
+{#	        }#}
+{#	    });#}
+{#        password3.blur(function () {#}
+{#	        if (password3.val() == '') {#}
+{#	            pdiv3.attr('errr', '');#}
+{#	        } else {#}
+{#	            pdiv3.removeAttr('errr');#}
+{#	        }#}
+{#	    });#}
+{##}
+{#        $("#zhuce").click(function(){#}
+{#            $("#slider1 .login").animate({left:'1000px',opacity:"0"});#}
+{#            $("#slider2 .login1").animate({left:'631px',opacity:"1"});#}
+{#        });#}
+{#        $("#denglu").click(function(){#}
+{#            $("#slider2 .login1").animate({left:'0px',opacity:"0"});#}
+{#            $("#slider1 .login").animate({left:'631px',opacity:"1"});#}
+{#        });#}
+{#	</script>#}
+{##}
+{#</body>#}
+{#</html>#}

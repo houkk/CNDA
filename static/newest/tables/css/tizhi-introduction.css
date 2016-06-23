@@ -1,0 +1,74 @@
+#introduction li div{
+    margin-bottom: 13px;
+}
+.button{
+    min-width: 125px;
+    max-width: 125px;
+}
+.button--itzel .button__icon {
+    font-size: 14px;
+}
+.button__icon{
+    width:100px;
+}
+.button.button--sacnite {
+    width: 255px;
+    height: 70px;
+}
+.button--moema {
+    background: #FFD1A4;
+    margin-left:620px;
+    margin-top:30px;
+
+}
+.button--moema:hover {
+    background-color: #F39C12;
+}
+.where{
+    margin: -33px 0px 0px 90px;
+}
+.base_style{
+    text-align: center;
+    height: 75px;
+    width: 75px;
+    border-radius: 75px;
+    position: absolute;
+    font-size: 18px;
+    color: white;
+    padding-top: 13px;
+}
+.image_style{
+    width:100px ;
+    margin-left: 45%;
+}
+.color_blue{
+    background: rgba(128, 229, 240, 0.83);
+    margin-top: 1%;
+}
+.color_purple{
+    background: rgba(185, 207, 237, 0.83);
+    margin-top: 1%;
+    margin-left: 15%;
+}
+.color_green{
+    background: rgba(159,209, 130, 0.83);
+    margin-top: 1%;
+    margin-left: 30%;
+}
+.color_red{
+    background: rgba(247,128, 130, 0.83);
+    margin-top: 1%;
+    margin-left: 50%;
+}
+.color_yellow{
+    background: rgba(226, 214, 110, 0.83);
+    margin-top:1%;
+    margin-left: 65%;
+
+}
+.color_pink{
+    background: rgba(227,151,191, 0.83);
+    margin-top: 1%;
+    margin-left: 80%;
+
+}

@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    {% load staticfiles %}
+    <title>Dashboard Template for Bootstrap</title>
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <div id="toolbar" class="btn-group table-control">
+        <button type="button" class="btn btn-default" id="foodnutrientadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button></a>
+        <button type="button" class="btn btn-default" id="foodnutrientedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="foodnutrientdelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2% " id="table">
+        <table data-toggle="table" id="FoodNutrientTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar" sort-name:"stargazers_count" sort-order:'asc'>
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+    <div class="row" style="margin-left: -2%; display: none" id="foodnutrientaddpanel">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">食物营养成分添加</h4>
+                </div>
+                <form id="foodnutrientform" method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group hidden">
+                                        <label for="FoodNutritionID">食物营养成分ID</label>
+                                        <input type="text" class="form-control " id="FoodNutritionID" name="foodnutritionid"  style="width:100%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FoodEnergy">食物能量(单位：Kcal)</label>
+                                        <input type="text" class="form-control" id="FoodEnergy" name="foodenergy" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="EnergyUnit" >能量单位</label>
+                                        <input type="text" class="form-control" id="EnergyUnit" name="energyunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FoodMoisture">食物水分(单位：g)</label>
+                                        <input type="text" class="form-control" id="FoodMoisture" name="foodmoisture" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MoistureyUnit" >水分单位</label>
+                                        <input type="text" class="form-control" id="MoistureyUnit" name="moistureyunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ProteinContent">食物蛋白质含量(单位：g)</label>
+                                        <input type="text" class="form-control" id="ProteinContent" name="proteincontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ProteinyUnit" >蛋白质单位</label>
+                                        <input type="text" class="form-control" id="ProteinyUnit" name="proteinyunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FatContent">脂肪含量(单位：g)</label>
+                                        <input type="text" class="form-control" id="FatContent" name="fatcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FatyUnit" >脂肪单位</label>
+                                        <input type="text" class="form-control" id="FatyUnit" name="fatyunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FiberContent">膳食纤维含量(单位：g)</label>
+                                        <input type="text" class="form-control" id="FiberContent" name="fibercontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FiberyUnit" >膳食纤维单位</label>
+                                        <input type="text" class="form-control" id="FiberyUnit" name="fiberyunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CarbohyDrateContent">碳水化合物含量(单位：g)</label>
+                                        <input type="text" class="form-control" id="CarbohyDrateContent" name="carbohydratecontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CarbohydrateyUnit" >碳水化合物单位</label>
+                                        <input type="text" class="form-control" id="CarbohydrateyUnit" name="carbohydrateyunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminAContent">维生素A含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="VitaminAContent" name="vitaminacontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminAUnit" >维生素A单位</label>
+                                        <input type="text" class="form-control" id="VitaminAUnit" name="vitaminaunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminB1Content">维生素B1含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="VitaminB1Content" name="vitaminb1content" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminB1Unit" >维生素B1单位</label>
+                                        <input type="text" class="form-control" id="VitaminB1Unit" name="vitaminb1unit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminB2Content">维生素B2含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="VitaminB2Content" name="vitaminb2content" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminB2Unit" >维生素B2单位</label>
+                                        <input type="text" class="form-control" id="VitaminB2Unit" name="vitaminb2unit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminB6Content">维生素B6含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="VitaminB6Content" name="vitaminb6content" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminB6Unit" >维生素B6单位</label>
+                                        <input type="text" class="form-control" id="VitaminB6Unit" name="vitaminb6unit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminB12Content">维生素B12含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="VitaminB12Content" name="vitaminb12content" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminB12Unit" >维生素B12单位</label>
+                                        <input type="text" class="form-control" id="VitaminB12Unit" name="vitaminb12unit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminCContent">维生素C含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="VitaminCContent" name="vitaminccontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminCUnit" >维生素C单位</label>
+                                        <input type="text" class="form-control" id="VitaminCUnit" name="vitamincunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminDContent">维生素D含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="VitaminDContent" name="vitamindcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminDUnit" >维生素D单位</label>
+                                        <input type="text" class="form-control" id="VitaminDUnit" name="vitamindunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminEContent">维生素E含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="VitaminEContent" name="vitaminecontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminEUnit" >维生素E单位</label>
+                                        <input type="text" class="form-control" id="VitaminEUnit" name="vitamineunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminKContent">维生素K含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="VitaminKContent" name="vitaminkcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="VitaminKUnit" >维生素K单位</label>
+                                        <input type="text" class="form-control" id="VitaminKUnit" name="vitaminkunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="NicotinicAcidContent">烟酸含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="NicotinicAcidContent" name="nicotinicacidcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="NicotinicAcidUnit" >烟酸单位</label>
+                                        <input type="text" class="form-control" id="NicotinicAcidUnit" name="nicotinicacidunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FolateContent">叶酸含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="FolateContent" name="folatecontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FolateUnit" >叶酸单位</label>
+                                        <input type="text" class="form-control" id="FolateUnit" name="folateunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SodiumContent">纳含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="SodiumContent" name="sodiumcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SodiumUnit" >纳单位</label>
+                                        <input type="text" class="form-control" id="SodiumUnit" name="sodiumunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CaroteneContent" >胡萝卜素含量(单位：μg)</label>
+                                        <input type="text" class="form-control" id="CaroteneContent" name="carotenecontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CaroteneUnit" >胡萝卜素单位</label>
+                                        <input type="text" class="form-control" id="CaroteneUnit" name="caroteneunit" style="width:100%">
+                                    </div>
+                                </div> <!--col-md-5 -->
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="CalciumContent">钙含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="CalciumContent" name="calciumcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CalciumUnit" >钙单位</label>
+                                        <input type="text" class="form-control" id="CalciumUnit" name="calciumunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="IronContent" >铁含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="IronContent" name="ironcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="IronmUnit" >铁单位</label>
+                                        <input type="text" class="form-control" id="IronUnit" name="ironunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PotassiumContent" >钾含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="PotassiumContent" name="potassiumcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PotassiumUnit" >钾单位</label>
+                                        <input type="text" class="form-control" id="PotassiumUnit" name="potassiumunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ZincContent" >锌含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="ZincContent" name="zinccontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ZincUnit" >锌单位</label>
+                                        <input type="text" class="form-control" id="ZincUnit" name="zincunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MagnesiumContent" >镁含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="MagnesiumContent" name="magnesiumcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MagnesiumUnit" >镁单位</label>
+                                        <input type="text" class="form-control" id="MagnesiumUnit" name="magnesiumunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CopperContent" >铜含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="CopperContent" name="coppercontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CopperUnit" >铜单位</label>
+                                        <input type="text" class="form-control" id="CopperUnit" name="copperunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ChromiumContent" >铬含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="ChromiumContent" name="chromiumcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ChromiumUnit" >铬单位</label>
+                                        <input type="text" class="form-control" id="ChromiumUnit" name="chromiumunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MangaessContent">锰含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="MangaessContent" name="mangaesscontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MangaessUnit" >锰单位</label>
+                                        <input type="text" class="form-control" id="MangaessUnit" name="mangaessunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MolybdenumContent">钼含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="MolybdenumContent" name="molybdenumcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MolybdenumUnit">钼单位</label>
+                                        <input type="text" class="form-control" id="MolybdenumUnit" name="molybdenumunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="IodineContent" >碘含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="IodineContent" name="iodinecontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="IodineUnit" >碘单位</label>
+                                        <input type="text" class="form-control" id="IodineUnit" name="iodineunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PhosphrusContent">磷含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="PhosphrusContent" name="phosphruscontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PhosphrusUnit">磷单位</label>
+                                        <input type="text" class="form-control" id="PhosphrusUnit" name="phosphrusunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SeleniumContent" >硒含量(单位：μg)</label>
+                                        <input type="text" class="form-control" id="SeleniumContent" name="seleniumcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SeleniumUnit" >硒单位</label>
+                                        <input type="text" class="form-control" id="SeleniumUnit" name="seleniumunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FluorineContent" >氟含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="FluorineContent" name="fluorinecontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="FluorineUnit" >氟单位</label>
+                                        <input type="text" class="form-control" id="FluorineUnit" name="fluorineunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CholesterolContent" >胆固醇含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="CholesterolContent" name="cholesterolcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CholesteroUnit" >胆固醇单位</label>
+                                        <input type="text" class="form-control" id="CholesteroUnit" name="cholesterounit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SaturatedFattyAcidContent" >饱和脂肪酸含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="SaturatedFattyAcidContent" name="saturatedfattyacidcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SaturatedFattyAcidUnit" >饱和脂肪酸单位</label>
+                                        <input type="text" class="form-control" id="SaturatedFattyAcidUnit" name="saturatedfattyacidunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="AcidRegurgitationContent">泛酸含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="AcidRegurgitationContent" name="acidregurgitationcontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="AcidRegurgitationUnit">泛酸单位</label>
+                                        <input type="text" class="form-control" id="AcidRegurgitationUnit" name="acidregurgitationunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="BiotinContent" >生物酸含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="BiotinContent" name="biotincontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="BiotinUnit" >生物酸单位</label>
+                                        <input type="text" class="form-control" id="BiotinUnit" name="biotinunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CholineContent" >胆碱含量(单位：mg)</label>
+                                        <input type="text" class="form-control" id="CholineContent" name="cholinecontent" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CholineUnit" >胆碱单位</label>
+                                        <input type="text" class="form-control" id="CholineUnit" name="cholineunit" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="EdibleParts" >可食部分(百分比)</label>
+                                        <input type="text" class="form-control" id="EdibleParts" name="edibleparts" style="width:100%">
+                                    </div>
+                                </div>
+                            </div>  <!--row-->
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-7 col-lg-1 col-lg-offset-10">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#foodnutrientadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#foodnutrientaddpanel').css('display','block');
+        document.getElementById("FoodEnergy").focus();
+    });
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+    $('#foodnutrientedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#FoodNutritionID').val(jsonobject.foodnutritionid);
+      $('#FoodEnergy').val(jsonobject.foodenergy);
+      $('#FoodMoisture').val(jsonobject.foodmoisture);
+      $('#ProteinContent').val(jsonobject.proteincontent);
+      $('#FatContent').val(jsonobject.fatcontent);
+      $('#FiberContent').val(jsonobject.fibercontent);
+      $('#CarbohyDrateContent').val(jsonobject.carbohydratecontent);
+      $('#VitaminAContent').val(jsonobject.vitaminacontent);
+      $('#VitaminB1Content').val(jsonobject.vitaminb1content);
+      $('#VitaminB2Content').val(jsonobject.vitaminb2content);
+      $('#VitaminB6Content').val(jsonobject.vitaminb6content);
+
+      $('#VitaminB12Content').val(jsonobject.vitaminb12content);
+      $('#VitaminCContent').val(jsonobject.vitaminccontent);
+      $('#VitaminDContent').val(jsonobject.vitamindcontent);
+      $('#VitaminEContent').val(jsonobject.vitaminecontent);
+      $('#VitaminKContent').val(jsonobject.vitaminkcontent);
+      $('#NicotinicAcidContent').val(jsonobject.nicotinicacidcontent);
+      $('#FolateContent').val(jsonobject.folatecontent);
+      $('#SodiumContent').val(jsonobject.sodiumcontent);
+      $('#CalciumContent').val(jsonobject.calciumcontent);
+      $('#IronContent').val(jsonobject.ironcontent);
+      $('#PotassiumContent').val(jsonobject.potassiumcontent);
+
+      $('#ZincContent').val(jsonobject.zinccontent);
+      $('#MagnesiumContent').val(jsonobject.magnesiumcontent);
+      $('#CopperContent').val(jsonobject.coppercontent);
+      $('#ChromiumContent').val(jsonobject.chromiumcontent);
+      $('#MangaessContent').val(jsonobject.mangaesscontent);
+      $('#MolybdenumContent').val(jsonobject.molybdenumcontent);
+      $('#IodineContent').val(jsonobject.iodinecontent);
+      $('#PhosphrusContent').val(jsonobject.phosphruscontent);
+      $('#SeleniumContent').val(jsonobject.seleniumcontent);
+      $('#FluorineContent').val(jsonobject.fluorinecontent);
+      $('#CholesterolContent').val(jsonobject.cholesterolcontent);
+      $('#SaturatedFattyAcidContent').val(jsonobject.saturatedfattyacidcontent);
+      $('#AcidRegurgitationContent').val(jsonobject.acidregurgitationcontent);
+      $('#BiotinContent').val(jsonobject.biotincontent);
+      $('#CholineContent').val(jsonobject.cholinecontent);
+      $('#CaroteneContent').val(jsonobject.carotenecontent);
+      $('#EdibleParts').val(jsonobject.edibleparts);
+
+      $('#EnergyUnit').val(jsonobject.energyunit);
+      $('#MoistureyUnit').val(jsonobject.moistureyunit);
+      $('#ProteinyUnit').val(jsonobject.proteinyunit);
+      $('#FatyUnit').val(jsonobject.fatyunit);
+      $('#FiberyUnit').val(jsonobject.fiberyunit);
+      $('#CarbohyDrateUnit').val(jsonobject.carbohydrateyunit);
+      $('#VitaminAUnit').val(jsonobject.vitaminaunit);
+      $('#VitaminB1Unit').val(jsonobject.vitaminb1unit);
+      $('#VitaminB2Unit').val(jsonobject.vitaminb2unit);
+      $('#VitaminB6Unit').val(jsonobject.vitaminb6unit);
+
+      $('#VitaminB12Unit').val(jsonobject.vitaminb12unit);
+      $('#VitaminCUnit').val(jsonobject.vitamincunit);
+      $('#VitaminDUnit').val(jsonobject.vitamindunit);
+      $('#VitaminEUnit').val(jsonobject.vitamineunit);
+      $('#VitaminKUnit').val(jsonobject.vitaminkunit);
+      $('#NicotinicAcidUnit').val(jsonobject.nicotinicacidunit);
+      $('#FolateUnit').val(jsonobject.folateunit);
+      $('#SodiumUnit').val(jsonobject.sodiumunit);
+      $('#CalciumUnit').val(jsonobject.calciumunit);
+      $('#IronUnit').val(jsonobject.ironunit);
+      $('#PotassiumUnit').val(jsonobject.potassiumunit);
+
+      $('#ZincUnit').val(jsonobject.zincunit);
+      $('#MagnesiumUnit').val(jsonobject.magnesiumunit);
+      $('#CopperUnit').val(jsonobject.copperunit);
+      $('#ChromiumUnit').val(jsonobject.chromiumunit);
+      $('#MangaessUnit').val(jsonobject.mangaessunit);
+      $('#MolybdenumUnit').val(jsonobject.molybdenumunit);
+      $('#IodineUnit').val(jsonobject.iodineunit);
+      $('#PhosphrusUnit').val(jsonobject.phosphrusunit);
+      $('#SeleniumUnit').val(jsonobject.seleniumunit);
+      $('#FluorineUnit').val(jsonobject.fluorineunit);
+      $('#CholesteroUnit').val(jsonobject.cholesterounit);
+      $('#SaturatedFattyAcidUnit').val(jsonobject.saturatedfattyacidunit);
+      $('#AcidRegurgitationUnit').val(jsonobject.acidregurgitationunit);
+      $('#BiotinUnit').val(jsonobject.biotinunit);
+      $('#CholineUnit').val(jsonobject.cholineunit);
+      $('#CaroteneUnit').val(jsonobject.caroteneunit);
+
+
+      $('.table-control').css('display','none');
+      $('#foodnutrientaddpanel').css('display','block');
+        document.getElementById("FoodEnergy").focus();
+      $('#changepanel').html("食物营养成分编辑");
+      $('#doit').html("确定");
+  });
+  $('#FoodNutrientTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/foodnutrient.html');
+    });
+
+    //中医专家信息添加确定
+    $('#doit').click(function(){
+        //首先提交一个数据进去
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#foodnutrientform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbfoodnutritioncontent/',
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/foodnutrient.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#foodnutrientaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbfoodnutritioncontent/'+jsonobject.foodnutritionid+"/",
+                success:function(data){
+                   turnPage('back/dashboard/objectiveinfo/foodnutrient.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#foodnutrientaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#foodnutrientdelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbfoodnutritioncontent/'+jsonobject.foodnutritionid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/foodnutrient.html');
+                   }
+               })
+           }
+       });
+    $('#validateform').bootstrapValidator({
+        excluded: ':disabled',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+
+        fields: {
+            foodenergy: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            foodmoisture: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            fatcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            fibercontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            carbohydratecontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            vitaminacontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            vitaminb1content: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            vitaminb2content: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            vitaminb12content: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            vitaminccontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            vitamindcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            vitaminecontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            nicotinicacidcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            folatecontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            sodiumcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            calciumcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            ironcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            potassiumcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            zinccontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            magnesiumcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            coppercontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            chromiumcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            mangaesscontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            molybdenumcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            iodinecontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            phosphuscontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            seleniumcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            fluorinecontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            cholesterolcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            saturatedfattyacidcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            acidregurgitationcontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            biotincontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            },
+            cholinecontent: {
+                validators: {
+                    regexp: {
+                        regexp: /^\d{1,6}(\.\d{1,2})$/,
+                        message: '限制最多六位整数以及两位小数'
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
+
+

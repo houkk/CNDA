@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--健康建议限定条件表-->
+    <div id="healthsuggestlimitedtoolbar" class="btn-group table-control tool-control">
+        <button type="button" class="btn btn-default" id="healthsuggestlimitedadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="healthsuggestlimitededit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="healthsuggestlimiteddelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="healthsuggestlimitedTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#healthsuggestlimitedtoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <div class="row" style="display: none;" id="healthsuggestlimitedaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">健康建议限定条件添加</h4>
+                </div>
+                <form id="healthsuggestlimitedform" method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group hidden">
+                                        <label for="HealthSuggestLimitedID">健康建议限制条件ID</label>
+                                        <input type="text" class="form-control " id="HealthSuggestLimitedID" name="healthsuggestlimitedid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SuggestLimitedAttrName">建议限制属性名</label>
+                                        <input type="text" class="form-control" id="SuggestLimitedAttrName" name="suggestlimitedattrname" placeholder="SuggestLimitedAttrName" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SuggestLimitedStatus">建议限制状态</label>
+                                        <input type="text" class="form-control" id="SuggestLimitedStatus" name="suggestlimitedstatus" placeholder="SuggestLimitedStatus" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SuggestLimitedStatusLevel">建议限制状态级别</label>
+                                        <input type="text" class="form-control" id="SuggestLimitedStatusLevel" name="suggestlimitedstatuslevel" placeholder="SuggestLimitedStatusLevel" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SuggestLimitedValue">健康限制值</label>
+                                        <input type="text" class="form-control" id="SuggestLimitedValue" name="suggestlimitedvalue" placeholder="SuggestLimitedValue"  style="width:90%" required>
+
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SuggestLimitedExplain">建议限制说明</label>
+                                        <textarea cols="8" rows="4" class="form-control" id="SuggestLimitedExplain" name="suggestlimitedexplain" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SuggestLimitedRemarks">建议限制备注</label>
+                                        <textarea cols="8" rows="4" class="form-control" id="SuggestLimitedRemarks" name="suggestlimitedremarks" style="width:90%" required></textarea>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                            </div>  <!--row-->
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#healthsuggestlimitedadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#healthsuggestlimitedaddpanel').css('display','block');
+        document.getElementById("SuggestLimitedAttrName").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+     //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#healthsuggestlimitededit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#HealthSuggestLimitedID').val(jsonobject.healthsuggestlimitedid );
+      $('#SuggestLimitedAttrName').val(jsonobject.suggestlimitedattrname );
+      $('#SuggestLimitedStatus').val(jsonobject.suggestlimitedstatus);
+      $('#SuggestLimitedStatusLevel').val(jsonobject.suggestlimitedstatuslevel );
+      $('#SuggestLimitedValue').val(jsonobject.suggestlimitedvalue);
+      $('#SuggestLimitedExplain').val(jsonobject.suggestlimitedexplain );
+      $('#SuggestLimitedRemarks').val(jsonobject.suggestlimitedremarks);
+
+      $('#healthsuggestlimitedtoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#healthsuggestlimitedaddpanel').css('display','block');
+      document.getElementById("SuggestLimitedAttrName").focus();
+      $('#changepanel').html("健康建议限定条件编辑");
+      $('#doit').html("确定");
+  });
+    $('#healthsuggestlimitedTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/healthsuggestlimited.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#healthsuggestlimitedform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbhealthsuggestlimited/',
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/healthsuggestlimited.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#healthsuggestlimitedaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url:  baseAddress+'/tbhealthsuggestlimited/'+jsonobject.healthsuggestlimitedid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/healthsuggestlimited.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#healthsuggestlimitedaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#healthsuggestlimiteddelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url:  baseAddress+'/tbhealthsuggestlimited/'+jsonobject.healthsuggestlimitedid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/healthsuggestlimited.html');
+                   }
+               })
+           }
+       });
+
+
+{#    //获取健康建议ID数据#}
+{#    jQuery(function($){#}
+{#        $.ajax({#}
+{#            type: "get",#}
+{#            datatype:"json",#}
+{#            url:"http://202.195.210.174:4312/tbhealthsuggestions/",#}
+{#            success:function(msg){#}
+{#                var str="";#}
+{#                for(i in msg){#}
+{#                    str += "<option value ="+ msg[i].healthsuggestid+" >" + msg[i].healthsuggesttitle + "</option>";#}
+{#                }#}
+{#                $("#temp_HealthSuggestID").append(str);#}
+{#            }#}
+{#        })#}
+{#    });#}
+
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+
+      fields: {
+          suggestlimitedattrname: {
+              validators: {
+                  regexp: {
+                      regexp: /^[\u4e00-\u9fa5]+$/,
+                      message: '限制中文字符'
+                  },
+                  stringLength: {
+                      max: 50,
+                      message: '限制在50个字符以内'
+                  }
+              }
+          },
+          suggestlimitedstatus: {
+              validators: {
+                  regexp: {
+                      regexp: /^[1-9]\d*$/,
+                      message: '只能包含正整数'
+                  }
+              }
+          },
+          suggestlimitedstatus: {
+              validators: {
+                  regexp: {
+                      regexp: /^[1-9]\d*$/,
+                      message: '只能包含正整数'
+                  }
+              }
+          },
+          suggestlimitedexplain: {
+              validators: {
+                  stringLength: {
+                      max: 200,
+                      message: '限制在200个字符以内'
+                  }
+              }
+          },
+          suggestlimitedremarks: {
+              validators: {
+                  stringLength: {
+                      max: 200,
+                      message: '限制在200个字符以内'
+                  }
+              }
+          }
+      }
+    });
+</script>
+</body>
+</html>
+
+

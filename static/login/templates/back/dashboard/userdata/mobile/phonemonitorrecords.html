@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--手机监控记录表-->
+   <div id="toolbar" class="btn-group">
+        <button type="button" class="btn btn-default">    <!--data-target="#myModal" data-toggle="modal"-->
+            <a href="#"><i class="glyphicon glyphicon-eye-open"></i></a>
+        </button>
+        <button type="button" class="btn btn-default">
+            <a href="#"><i class="glyphicon glyphicon-list-alt"></i></a>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%";>
+        <table data-toggle="table"  id="phonemonitorrecordsTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#phonemonitorrecordstoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <div class="row" style="display: none;" id="phonemonitorrecordsaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title">手机监控记录添加</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="appopentime">应用打开时间</label>
+                                <input type="text" class="form-control" id="appopentime" placeholder="AppOpenTime" style="width:90%">
+                            </div>
+                            <div class="form-group">
+                                <label for="appclosetime">应用关闭时间</label>
+                                <input type="text" class="form-control" id="appclosetime" placeholder="AppCloseTime" style="width:90%">
+                            </div>
+                            <div class="form-group">
+                                <label for="appusetime">应用使用时长</label>
+                                <input type="text" class="form-control" id="appusetime" placeholder="AppUseTime" style="width:90%">
+                            </div>
+                        </div> <!--cil-md-5 -->
+                    </div>  <!--row-->
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                            <button type="button" class="btn btn-default" style="margin-top:5px" id="callback">取消</button>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    $('#phonemonitorrecordsadd').click(function(){
+        $('.table-control').css('display','none');
+        $('#phonemonitorrecordsaddpanel').css('display','block');
+    });
+    $('#callback').click(function(){
+        $('#phonemonitorrecordsaddpanel').css('display','none');
+        $('.table-control').css('display','block');
+    });
+    $('#doit').click(function(){
+        $('#phonemonitorrecordsaddpanel').css('display','none');
+        $('.table-control').css('display','block');
+    });
+</script>
+</body>
+</html>
+
+

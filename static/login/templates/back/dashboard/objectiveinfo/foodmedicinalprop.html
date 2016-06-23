@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--食物药用属性表-->
+    <div id="foodmedicinalproptoolbar" class="btn-group tool-control table-control">
+        <button type="button" class="btn btn-default" id="foodmedicinalpropadd" >    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="foodmedicinalpropedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="foodmedicinalpropdelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="foodmedicinalpropTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#foodmedicinalproptoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+    <div class="row" style="display: none;" id="foodmedicinalpropaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">食物药用属性添加</h4>
+                </div>
+                <form id="foodmedicinalpropform" method="post">
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group hidden">
+                                        <label for="FoodMedicinalPropID">食物药用属性ID</label>
+                                        <input type="text" class="form-control " id="FoodMedicinalPropID" name="foodmedicinalpropid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineProperty">属性</label>
+                                         <input type="text" class="form-control" id="MedicineProperty" name="medicineproperty" style="width:90%" required >
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="MedicineFlavor">味</label>
+                                         <input type="text" class="form-control" id="MedicineFlavor" name="medicineflavor" style="width:90%" required >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="temp_MedicinalEffectTypeID">药用功效类别ID</label>
+                                         <select  class="form-control" id="temp_MedicinalEffectTypeID" name="temp_medicinaleffecttypeid" style="width:90%" required ></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicineEffect">功效</label>
+                                        <textarea cols="8" rows="8" class="form-control" id="MedicineEffect" name="medicineeffect" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MedicinePropRemarks">药用属性备注</label>
+                                        <textarea cols="8" rows="8" class="form-control" id="MedicinePropRemarks" name="medicinepropremarks" style="width:90%" required></textarea>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                            </div>  <!--row-->
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag=null;
+    $('#foodmedicinalpropadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#foodmedicinalpropaddpanel').css('display','block');
+        document.getElementById("MedicineProperty").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+     $('#foodmedicinalpropedit').click(function(){
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#FoodMedicinalPropID').val(jsonobject.foodmedicinalpropid);
+      $('#MedicineProperty').val(jsonobject.medicineproperty);
+      $('#MedicineFlavor').val(jsonobject.medicineflavor);
+      $('#MedicineEffect').val(jsonobject.medicineeffect);
+      $('#MedicinePropRemarks').val(jsonobject.medicinepropremarks);
+      $('#temp_MedicinalEffectTypeID').val(jsonobject.temp_medicinaleffecttypeid);
+
+      $('#foodmedicinalproptoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#foodmedicinalpropaddpanel').css('display','block');
+         document.getElementById("MedicineProperty").focus();
+      $('#changepanel').html("食物药用属性编辑");
+      $('#doit').html("确定");
+  });
+    $('#foodmedicinalproptable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/foodmedicinalprop.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#foodmedicinalpropform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbfoodmedicinalprop/',
+                success:function(data){
+                    $('.table-control').css('display','block');
+                    $('#foodmedicinalpropaddpanel').css('display','none');
+                    $('#table').bootstrapTable('getData');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#foodmedicinalpropaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbfoodmedicinalprop/'+jsonobject.foodmedicinalpropid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/foodmedicinalprop.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#foodmedicinalpropaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+
+    $('#foodmedicinalpropdelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+             //确认是否删除
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbfoodmedicinalprop/'+jsonobject.foodmedicinalpropid+"/",
+                   success: function (json) {
+                      turnPage('back/dashboard/objectiveinfo/foodmedicinalprop.html');
+                   }
+               })
+           }
+       });
+    //获取药用功效类别id数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url:baseAddress+'/tbfoodmedicinaleffecttype/',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].medicinaleffecttypeid +" >" + msg[i].medicinaleffecttypename + "</option>";
+                }
+                $("#temp_MedicinalEffectTypeID").append(str);
+            }
+        })
+    });
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+
+      fields: {
+          medicineproperty: {
+              validators: {
+                  regexp: {
+                      regexp: /^[\u4e00-\u9fa5]+$/,
+                      message: '限制中文字符'
+                  },
+                  stringLength: {
+                      max: 50,
+                      message: '限制在50个字符以内'
+                  }
+              }
+          },
+          medicineflavor: {
+              validators: {
+                  regexp: {
+                      regexp: /^[\u4e00-\u9fa5]+$/,
+                      message: '限制中文字符'
+                  },
+                  stringLength: {
+                      max: 50,
+                      message: '限制在50个字符以内'
+                  }
+              }
+          },
+          medicineeffect: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          medicinepropremarks: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          }
+      }
+    });
+</script>
+</body>
+</html>
+
+

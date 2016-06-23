@@ -1,0 +1,131 @@
+<!Doctype html>
+<head>
+    <meta charset="UTF-8">
+    <title>SportTrend</title>
+    <link rel="stylesheet" href="css/add.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/templatemo_style.css">
+
+    <script src="js/base-address.js"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/echarts-all.js"></script>
+    <script type="text/javascript">
+
+        //ajax函数定义
+        function restful(typeInfo,urlInfo,dataInfo) {
+            /**typeInfo:操作类型；
+             * urlInfo:地址；
+             * dataInfo:json数据；
+             * 操作类型：
+             * get：获取（dataInfo为空时，查询所有；dataInfo不为空，条件查询）；
+             * 查询(数据分页，暂时每页是十条数据，可后台更改)
+             * post：上传；
+             * put：更新(按照id)；
+             * delete：删除数据（id）；
+             * */
+            var result = null;
+            $.ajax({
+                async:false,
+                type: typeInfo,
+                url: urlInfo,
+                dataType:"json",
+                data:dataInfo,
+                success:function(json){
+                    result=json;
+                },
+                error:function(json){
+                    result="fail";
+                }
+            });
+            //	.success(function (json) {
+            //	//result = json;
+            //	result= json;
+            //	return result;
+            //}).error(function(json){
+            //	result = json;
+            //	return result;
+            //});
+            return result;
+        }
+
+        $(function () {
+            var dataSeries=restful("get",baseAddress+"/sportall/",{"temp_userid":11});
+            //alert(dataSeries);
+            var xRay=[];     //横坐标数值
+            var data1=[];   //纵坐标数值
+            $.each(dataSeries,function(i){
+                xRay.push(dataSeries[i].overtime);
+                //alert(xRay);
+                data1.push(dataSeries[i].walkstepnumber);
+                //alert(data1);
+            })
+            var myChart=echarts.init(document.getElementById("main"));
+            var option={
+                title:{
+                    text:'运动步数趋势表'
+                },
+                tooltip:{
+                    trigger:'axis'
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                dataZoom:{
+                     show:true,
+                     start:60
+                 },
+                legend:{
+                    data:['走路步数']
+                },
+                 grid:{
+                    y2: 80
+                 },
+                xAxis:[
+                    {
+                        type:'category',
+                        splitNumber:10,
+                        data:xRay
+                    }
+                ],
+                yAxis:[
+                    {
+                        type:'value'
+                    }
+                ],
+                series:[
+                    {
+                        name:'走路步数',
+                        type:'line',
+                        showAllSymbol:true,
+                        //symbolSize:2,
+                        itemStyle:{normal:{color:'rgba(193,35,43,1)',label:{show:true}}},
+                        data:data1
+                    }
+                ]
+            };
+            //alert(option.yAxis);
+            myChart.setOption(option);
+
+        })
+
+    </script>
+</head>
+<body>
+    <!--为Echarts准备一个具备大小（宽高）的DOM-->
+<!--    <div class="control-group" >
+        请选择查看月份：
+        <input type="date" id="element" style="width: 200px;" onchange="showSportTrend()"></select>
+    </div>-->
+    <div id="main"style="height: 400px;width:600px;"></div>
+</body>
+</html>

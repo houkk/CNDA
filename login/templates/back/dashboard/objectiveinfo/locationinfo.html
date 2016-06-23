@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--地理位置信息表-->
+    <div id="locationinfotoolbar" class="btn-group tool-control table-control">
+        <button type="button" class="btn btn-default" id="locationinfoadd" >    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button></a>
+        <button type="button" class="btn btn-default" id="locationinfoedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="locationinfodelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="locationinfoTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#locationinfotoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+    <div class="row" style="display: none;" id="locationinfoaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">地理位置信息添加</h4>
+                </div>
+                <form id="locationinfoform" method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group hidden">
+                                        <label for="LocationInfoID">位置信息ID</label>
+                                        <input type="text" class="form-control " id="LocationInfoID" name="locationinfoid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LocationLongitude">地理位置经度</label>
+                                        <input type="text" class="form-control" id="LocationLongitude" name="locationlongitude" placeholder="LocationLongitude" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LocationLatitude">地理位置纬度</label>
+                                        <input type="text" class="form-control" id="LocationLatitude" name="locationlatitude" placeholder="LocationLatitude" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="RealLocation">具体地理位置</label>
+                                        <textarea class="form-control" cols="8" rows="4" id="RealLocation" name="reallocation" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LocationRemarks">地理位置备注</label>
+                                        <textarea class="form-control" cols="8" rows="4" id="LocationRemarks" name="locationremarks" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LocationProvince">所在省</label>
+                                        <input type="text" class="form-control" id="LocationProvince" name="locationprovince" placeholder="LocationProvince" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LocationCity">所在市</label>
+                                        <input type="text" class="form-control" id="LocationCity" name="locationcity" placeholder="LocationCity" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LocationClassify">所在区</label>
+                                        <input type="text" class="form-control" id="LocationClassify" name="locationclassify" placeholder="LocationClassify" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LocationCounty">所在县</label>
+                                        <input type="text" class="form-control" id="LocationCounty" name="locationcounty" placeholder="LocationCounty" style="width:90%" required>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                            </div>  <!--row-->
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#locationinfoadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#locationinfoaddpanel').css('display','block');
+        document.getElementById("LocationLongitude").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+     //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#locationinfoedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#LocationInfoID').val(jsonobject.locationinfoid );
+      $('#LocationLongitude').val(jsonobject.locationlongitude );
+      $('#LocationLatitude').val(jsonobject.locationlatitude);
+      $('#RealLocation').val(jsonobject.reallocation );
+      $('#LocationRemarks').val(jsonobject.locationremarks);
+      $('#LocationProvince').val(jsonobject.locationprovince );
+      $('#LocationCity').val(jsonobject.locationcity);
+      $('#LocationClassify').val(jsonobject.locationclassify );
+      $('#LocationCounty').val(jsonobject.locationcounty);
+
+      $('#locationinfotoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#locationinfoaddpanel').css('display','block');
+      document.getElementById("LocationLongitude").focus();
+      $('#changepanel').html("地理位置信息编辑");
+      $('#doit').html("确定");
+  });
+    $('#locationinfoTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/locationinfo.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#locationinfoform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tblocationinfo/',
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/locationinfo.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#locationinfoaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tblocationinfo/'+jsonobject.locationinfoid+"/",
+                success:function(data){
+                   turnPage('back/dashboard/objectiveinfo/locationinfo.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#locationinfoaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#locationinfodelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tblocationinfo/'+jsonobject.locationinfoid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/locationinfo.html');
+                   }
+               })
+           }
+       });
+
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+       fields: {
+           locationlongitude: {
+               validators: {
+                   regexp: {
+                       regexp: /^\d{1,6}(\.\d{1,2})$/,
+                       message: '限制六位整数以及两位小数'
+                   }
+               }
+           },
+           locationlatitude: {
+               validators: {
+                   regexp: {
+                       regexp: /^\d{1,6}(\.\d{1,2})$/,
+                       message: '限制最多六位整数以及两位小数'
+                   }
+               }
+           },
+           locationprovince: {
+               validators: {
+                   stringLength: {
+                       max: 50,
+                       message: '限制在50个字符以内'
+                   }
+               }
+           },
+           locationcity: {
+               validators: {
+                   stringLength: {
+                       max: 50,
+                       message: '限制在50个字符以内'
+                   }
+               }
+           },
+           locationclassify: {
+               validators: {
+                   stringLength: {
+                       max: 50,
+                       message: '限制在50个字符以内'
+                   }
+               }
+           },
+           locationcounty: {
+               validators: {
+                   stringLength: {
+                       max: 50,
+                       message: '限制在50个字符以内'
+                   }
+               }
+           },
+           reallocation: {
+               validators: {
+                   stringLength: {
+                       max: 200,
+                       message: '限制在200个字符以内'
+                   }
+               }
+           },
+           locationremarks: {
+               validators: {
+                   stringLength: {
+                       max: 200,
+                       message: '限制在200个字符以内'
+                   }
+               }
+           }
+       }
+
+    });
+
+</script>
+</body>
+</html>
+
+

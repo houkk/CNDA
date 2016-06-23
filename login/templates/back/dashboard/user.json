@@ -1,0 +1,92 @@
+[
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+     {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+       "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+     {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+       "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    },
+    {
+        "username":"张三",
+        "password": "123456789",
+        "privilege": "root管理员",
+        "group": "admin"
+    }
+]

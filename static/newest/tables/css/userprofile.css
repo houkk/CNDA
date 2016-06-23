@@ -1,0 +1,80 @@
+.middle_border{
+    border: 1px solid rgb(221, 221, 221);;
+    width: 980px;
+    padding: 0px;
+    margin-top: 60px;
+    margin-bottom: 100px;
+    background-color: rgb(251, 251, 251);
+}
+.left_border{
+    margin: 0;
+    width:250px;
+    float: left;
+}
+.right_border{
+    width:728px;
+    border-left: 1px solid rgb(221, 221, 221);
+    float: left;
+    background-color: white;
+}
+.user_img{
+    width: 80px;
+    height: 80px;
+    padding: 2px;
+    border: 1px solid rgb(221, 221, 221);;
+    float: left;
+    margin: 20px;
+}
+.user_name{
+    float: left;
+    height: 120px;
+    line-height: 120px;
+    width: 120px;
+}
+.small_border{
+    color: #000000;
+    height: 50px;
+    width: 250px;
+    float: left;
+    border-top:1px solid rgb(221, 221, 221);
+    font-family: Arial, Helvetica, STHeiti, 宋体;
+    font-size: 12px;
+    line-height: 50px;
+}
+a.small_border:hover{
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.set{
+    height: 38px;
+    width: 249px;
+    background-color: rgb(243, 243, 243);
+    font-size: 14px;
+    line-height: 38px;
+    font-weight: bold;
+}
+.linked{
+
+    background-color: white;
+}
+.button{
+    margin-left: 0px;
+}
+.picture{
+    margin-left: 250px;
+    height: 400px;
+    margin-top: 70px;
+}
+.user_pic{
+    height: 200px;
+    width: 200px;
+    border: 1px solid #999;
+    margin-bottom: 20px;
+}
+.font_pic{
+    font-family: SimSun;
+    color: #999;
+    font-size: 12px;
+    margin-top: 10px;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+<body>
+<div id="main" style="height:600px"></div>
+<!-- ECharts单文件引入 -->
+{% load staticfiles %}
+<script src="{% static "login/static/js/dist/echarts.js" %}"></script>
+<script src="{% static "login/static/js/common.js" %}"></script>
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+{#            echarts:  'http://echarts.baidu.com/build/dist'#}
+            echarts:src = '{% static "login/static/js/dist" %}'
+        }
+    });
+
+    // 使用
+    require(
+            [
+                'echarts',
+                'echarts/chart/pie', // 使用饼图就加载pie模块，按需加载
+                    'echarts/chart/bar' ,
+                    'echarts/chart/funnel',
+                    'echarts/chart/line'
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+
+                var option = {
+                    title:{
+                        text:'饮食信息记录',
+                        x:'center'
+                    },
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {
+                        orient:'vertical',
+                        x:'left',
+                        data:['肉类','蔬菜类','水果类','坚果类']
+                    },
+                    toolbox:{
+                        show:true,
+                        feature:{
+                            mark : {
+                                show: true,
+                                title: {
+                                    mark: '辅助线-开关',
+                                    markUndo: '辅助线-删除',
+                                    markClear: '辅助线-清空'
+                                },
+                                lineStyle: {
+                                    width: 1,
+                                    color: '#1e90ff',
+                                    type: 'dashed'
+                                }
+                            },
+                            dataView: {
+                                show: true,
+                                readOnly: false
+                            },
+                            magicType:{
+                                show:true,
+                                type:['pie','bar','funnel','line'],
+                                option:{
+                                    funnel:{
+                                        x:'25%',
+                                        width:'50%',
+                                        funnelAlign:'left',
+                                        max:1548
+                                    }
+                                }
+                            },
+                            restore:{show:true},
+                            saveAsImage:{
+                                show:true
+                            }
+                        }
+                    },
+                    calculable:true,
+                    series : [
+                        {
+                            "name":"各类食物所占比重",
+                            "type":"pie",
+                            "reduce":'55%',
+                            'center':['50%','60%'],
+                            "data":[
+                                {value:325,name:'肉类'},
+                                {value:596,name:'蔬菜类'},
+                                {value:120,name:'水果类'},
+                                {value:100,name:'坚果类'},
+                            ]
+                        }
+                    ]
+                };
+
+
+                // 为echarts对象加载数据 
+                myChart.setOption(option);
+            }
+    );
+</script>
+</body>

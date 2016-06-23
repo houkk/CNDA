@@ -1,0 +1,500 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>饮食数据录入——健康数据</title>
+    <!-- CSS Bootstrap & Custom -->
+    <link rel="stylesheet" href="css/add.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/templatemo_misc.css">
+    <link rel="stylesheet" href="css/jPages.css">
+    <link rel="stylesheet" href="css/float.css">
+    <link rel="stylesheet" href="css/temp.css">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/templatemo_style.css">
+    <!-- Favicons -->
+
+    <script src="js/base-address.js"></script>
+    <style type="text/css">
+        .about ul li:before{
+            content:" ";
+        }
+    /*    .carousel-control{
+            color: #745959;
+        }
+        .carousel-control:hover{
+            color: #2a2a2a;
+        }*/
+        a{
+            cursor: pointer;
+        }
+        .base_header ul li:nth-child(5),.base_header ul li:nth-child(6),.base_header ul li:nth-child(7),.base_header ul li:nth-child(8){
+            float: right;
+        }
+        .base_header{
+            text-align: left;
+        }
+        span{
+            font-size: 16px;
+        }
+        h3{
+            color:rgb(51, 51, 51)
+        }
+    </style>
+
+    <script type="text/javascript">
+        function changePage(url){
+            window.location.href=url;
+        }
+
+        //ajax函数定义
+        function restful(typeInfo,urlInfo,dataInfo) {
+            /**typeInfo:操作类型；
+             * urlInfo:地址；
+             * dataInfo:json数据；
+             * 操作类型：
+             * get：获取（dataInfo为空时，查询所有；dataInfo不为空，条件查询）；
+             * 查询(数据分页，暂时每页是十条数据，可后台更改)
+             * post：上传；
+             * put：更新(按照id)；
+             * delete：删除数据（id）；
+             * */
+
+            var result = null;
+            $.ajax({
+                async:false,
+                type: typeInfo,
+                url: urlInfo,
+                dataType:"json",
+                //contentType:"application/json",
+                data:dataInfo,
+                success:function(json){
+                    result=json;
+                },
+                error:function(){
+                    result="fail";
+                }
+            });
+            //	.success(function (json) {
+            //	//result = json;
+            //	result= json;
+            //	return result;
+            //}).error(function(json){
+            //	result = json;
+            //	return result;
+            //});
+            return result;
+        }
+
+        //选择食物类型切换
+        function showInfo1(){
+            var food=$("#foodTypeOne").find("option:selected").val();
+            var foodList=restful("get",baseAddress+"/tbcommfoodtype/",{"temp_foodwidecategoryid":food});
+            var strFoodType="";
+            $.each(foodList, function (i) {
+                strFoodType+="<option value=" + foodList[i].commonfoodtypeid +">" + foodList[i].commonfoodtypename + "</option>";
+            });
+            $("#foodType").html("<option>请选择食物种类</option>"+strFoodType);
+        }
+
+        function showInfo() {
+            var checkText = $("#foodType").find("option:selected").val();   //取下拉框的value值
+            var pic = restful("get", baseAddress+"/tbcommonfoodinfo/", {"temp_commonfoodtypeid": checkText});
+            var pic_sub = pic.results;
+            var picStr = "";
+            var jg = 0;
+            if (pic.count % 4 == 0) {
+                jg = parseInt(pic.count / 4);
+            }
+            else {
+                jg = parseInt(pic.count / 4) + 1;
+            }
+            if (jg == 0) {
+                var str1 = "目前没有数据！";
+                $(".holder").html(str1);
+            }
+            else if (jg > 0 && jg < 6) {
+                var str2 = "";
+                for (var i = 2; i < jg+1; i++) {
+                    str2 += "<a onclick='upPage(" + i + ")'>" + i + "</a>";
+                }
+                $(".holder").html("<a onclick='upPage(1)' class='jp-current'>1</a>" + str2 );
+            }
+            else if (jg > 5) {
+                var str3 = "";
+                for (var j = 2; j < 6; j++) {
+                    str3 += "<a onclick='upPage(" + j + ")'>" + j + "</a>"
+                }
+                $(".holder").html("<a onclick='upPage(1)' class='jp-current'>1</a>" + str3 + "<span>...</span><a onclick='upPage(" + jg + ")'>" + jg + "</a>");
+            }
+            for (var i in pic_sub) {
+                var aa=pic_sub[i].commonfoodexplain.length>50? pic_sub[i].commonfoodexplain.substr(0,50)+"...":pic_sub[i].commonfoodexplain;
+                picStr += "<div class='col-xs-3'><div style='text-align: center'><img src='" + pic_sub[i].temp_picturelocationid + "' alt='"+ pic_sub[i].commonfoodname + "'title='" + pic_sub[i].commonfoodname +
+                "'style='width:103px;height:82px;'></div><p style='margin-top: 0px;height:120px;padding-left: 5px;padding-right:5px'>" + aa
+                + "</p><div style='text-align: center'><button class='btn btn-success btn-sm' onclick='xuanZhong(\"" + pic_sub[i].commonfoodname + "\","
+                + pic_sub[i].temp_foodnutritionid + ")'>加入列表</button></div></div>";
+            }
+            if(pic_sub.length==0){
+                $("#picBlock").html("目前没有该数据！");
+                $(".holder").html(" ");
+            }
+            else{
+                $("#picBlock").css('display', 'block');
+                $("#picBlock").html(picStr);
+            }
+        }
+
+        function upPage(value){
+            var checkText = $("#foodType").find("option:selected").val();   //取下拉框的value值
+            var picS = restful("get", baseAddress+"/tbcommonfoodinfo/", {"temp_commonfoodtypeid": checkText,"page":value});
+            var pic_sub=picS.results;
+            var picStr="";
+            var jg = 0;
+            if (picS.count % 4 == 0) {
+                jg = parseInt(picS.count / 4);
+            }
+            else {
+                jg = parseInt(picS.count / 4) + 1;
+            }
+            for (var i in pic_sub) {
+                var aa=pic_sub[i].commonfoodexplain.length>50? pic_sub[i].commonfoodexplain.substr(0,50)+"...":pic_sub[i].commonfoodexplain;
+                picStr += "<div class='col-xs-3'><div style='text-align: center'><img src='" + pic_sub[i].temp_picturelocationid + "' alt='"
+                + pic_sub[i].commonfoodname + "'title='"+pic_sub[i].commonfoodname+"' style='width:103px;height:82px;'></div><p style='margin-top: 0px;height: 120px;padding-left: 5px;padding-right:5px;'>" +aa + "</p>" +
+                "<div style='text-align: center'><button class='btn btn-success btn-sm' onclick='xuanZhong(\""+pic_sub[i].commonfoodname+"\","+pic_sub[i].temp_foodnutritionid+")'>加入列表</button></div></div>";
+            }
+            $("#picBlock").css('display', 'block');
+            $("#picBlock").html(picStr);
+
+            if(jg>5){
+                if(value>4&&value<jg-3){
+                    var str4="<a onclick='upPage(1)'>1</a><span>...</span><a onclick='upPage("+ parseInt(value-2) +")'>"+parseInt(value-2)+"</a><a onclick='upPage("+ parseInt(value-1) +")'>"+parseInt(value-1)+"</a>" +
+                            "<a onclick='upPage("+ parseInt(value) +")' class='jp-current'>"+parseInt(value)+"</a><a onclick='upPage("+ parseInt(value+1) +")'>"+parseInt(value+1)+"</a><a onclick='upPage("+ parseInt(value+2) +")'>"+parseInt(value+2)+"</a>" +
+                            "<span>...</span><a onclick='upPage("+jg+")'>"+jg+"</a>";
+                    $(".holder").html(str4);
+                }
+                else if(value<5){
+                    var str5="";
+                    if(value==1){
+                        str5="<a onclick='upPage(1)' class='jp-current'>1</a><a onclick='upPage(2)'>2</a><a onclick='upPage(3)'>3</a><a onclick='upPage(4)'>4</a><a onclick='upPage(5)'>5</a>" +
+                        "<span>...</span><a onclick='upPage("+jg+")'>"+jg+"</a>";
+                    }
+                    else if(value==2){
+                        str5="<a onclick='upPage(1)'>1</a><a class='jp-current' onclick='upPage(2)'>2</a><a onclick='upPage(3)'>3</a><a onclick='upPage(4)'>4</a><a onclick='upPage(5)'>5</a>" +
+                        "<span>...</span><a onclick='upPage("+jg+")'>"+jg+"</a>";
+                    }
+                    else if(value==3){
+                        str5="<a onclick='upPage(1)'>1</a><a onclick='upPage(2)'>2</a><a class='jp-current' onclick='upPage(3)'>3</a><a onclick='upPage(4)'>4</a><a onclick='upPage(5)'>5</a>" +
+                        "<span>...</span><a onclick='upPage("+jg+")'>"+jg+"</a>";
+                    }
+                    else if(value==4){
+                        str5="<a onclick='upPage(1)'>1</a><a onclick='upPage(2)'>2</a><a onclick='upPage(3)'>3</a><a class='jp-current'onclick='upPage(4)'>4</a><a onclick='upPage(5)'>5</a>" +
+                        "<span>...</span><a onclick='upPage("+jg+")'>"+jg+"</a>";
+                    }
+                    $(".holder").html(str5);
+                }
+                else if(value>jg-4){
+                    var jg1=jg-4;
+                    var jg2=jg-3;
+                    var jg3=jg-2;
+                    var jg4=jg-1;
+                    if(value==jg2){
+                        var str6="<a onclick='upPage(1)'>1</a><span>...</span><a onclick='upPage("+jg1+")'>"+jg1+"</a><a class='jp-current' onclick='upPage("+jg2+")'>"+jg2+"</a>" +
+                                "<a onclick='upPage("+jg3+")'>"+jg3+"</a><a onclick='upPage("+jg4+")'>"+jg4+"</a><a onclick='upPage("+jg+")'>"+jg+"</a>";
+                    }
+                    else if(value==jg3){
+                        var str6="<a onclick='upPage(1)'>1</a><span>...</span><a onclick='upPage("+jg1+")'>"+jg1+"</a><a onclick='upPage("+jg2+")'>"+jg2+"</a>" +
+                                "<a class='jp-current' onclick='upPage("+jg3+")'>"+jg3+"</a><a onclick='upPage("+jg4+")'>"+jg4+"</a><a onclick='upPage("+jg+")'>"+jg+"</a>";
+                    }
+                    else if(value==jg4){
+                        var str6="<a onclick='upPage(1)'>1</a><span>...</span><a onclick='upPage("+jg1+")'>"+jg1+"</a><a onclick='upPage("+jg2+")'>"+jg2+"</a>" +
+                                "<a onclick='upPage("+jg3+")'>"+jg3+"</a><a class='jp-current' onclick='upPage("+jg4+")'>"+jg4+"</a><a onclick='upPage("+jg+")'>"+jg+"</a>";
+                    }
+                    else if(value==jg){
+                        var str6="<a onclick='upPage(1)'>1</a><span>...</span><a onclick='upPage("+jg1+")'>"+jg1+"</a><a onclick='upPage("+jg2+")'>"+jg2+"</a>" +
+                                "<a onclick='upPage("+jg3+")'>"+jg3+"</a><a onclick='upPage("+jg4+")'>"+jg4+"</a><a class='jp-current' onclick='upPage("+jg+")'>"+jg+"</a>";
+                    }
+                    $(".holder").html(str6);
+                }
+            }
+            else{
+                var str5="";
+                if(value==1){
+                    for(var i=2;i<jg+1;i++){
+                        str5+="<a onclick='upPage("+i+")'>"+i+"</a>";
+                    }
+                    $(".holder").html("<a onclick='upPage(1)' class='jp-current'>1</a>"+str5);
+                }
+                else if(value==2){
+                    for(var i=3;i<jg+1;i++){
+                        str5+="<a onclick='upPage("+i+")'>"+i+"</a>";
+                    }
+                    $(".holder").html("<a onclick='upPage(1)'>1</a><a onclick='upPage(2)' class='jp-current'>2</a>"+str5);
+                }
+                else if(value==3){
+                    for(var i=4;i<jg+1;i++){
+                        str5+="<a onclick='upPage("+i+")'>"+i+"</a>";
+                    }
+                    $(".holder").html("<a onclick='upPage(1)'>1</a><a onclick='upPage(2)'>2</a><a onclick='upPage(3)' class='jp-current'>3</a>"+str5);
+                }
+                else if(value==4){
+                    for(var i=5;i<jg+1;i++){
+                        str5+="<a onclick='upPage("+i+")'>"+i+"</a>";
+                    }
+                    $(".holder").html("<a onclick='upPage(1)'>1</a><a onclick='upPage(2)'>2</a><a onclick='upPage(3)'>3</a><a onclick='upPage(4)' class='jp-current'>4</a>"+str5);
+                }
+                else if(value==5){
+                    var str5="<a onclick='upPage(1)'>1</a><a onclick='upPage(2)'>2</a><a onclick='upPage(3)'>3</a><a onclick='upPage(4)'>4</a><a class='jp-current' onclick='upPage(5)'>5</a>";
+                    $(".holder").html(str5);
+                }
+            }
+        }
+
+
+        /************选择食物种类切换、图片下一页显示********/
+         /*       function showInfo() {
+            var checkText = $("#foodType").find("option:selected").val();   //取下拉框的value值
+            //alert(checkText);
+            var pic = restful("get", baseAddress+"/tbcommonfoodinfo/", {"temp_commonfoodtypeid": checkText});
+            //alert(pic.results);
+            //alert(pic);
+            var jg;
+            if(pic.count%4==0){
+                jg=parseInt(pic.count/4);
+            }
+            else{
+                jg=parseInt(pic.count/4)+1;
+            }
+            var pic_sub = pic.results;
+            var picNext=pic.next;
+            var picStr = "";
+            for (var i in pic_sub) {
+                //alert(pic_sub[i].temp_picturelocationid);
+                picStr += "<div class='col-xs-3'style='padding-left: 10px;padding-right: 20px'><div style='text-align: center'><img src='" + pic_sub[i].temp_picturelocationid + "' alt='"
+                + pic_sub[i].commonfoodname + "'title='"+pic_sub[i].commonfoodname+"' style='width:103px;height:82px;'></div><p style='margin-top: 0px;height: 180px;text-align: center;padding-left: 5px;padding-right:5px;'>" + pic_sub[i].commonfoodexplain + "</p>" +
+                "<div style='text-align: center'><button class='btn btn-success btn-sm' onclick='xuanZhong(\""+pic_sub[i].commonfoodname+"\","+pic_sub[i].temp_foodnutritionid+")'>加入列表</button></div></div>";
+                //alert(pic_sub[i].commonfoodname);
+            }
+            var picStrLi="<div class='active item'>"+picStr+"</div>";
+
+            for(var j=0;j<jg-1;j++){
+                var asd=restful("get",picNext);
+                var asd_sub=asd.results;
+                var picStr12="";
+                for (var i in asd_sub) {
+                    //alert(pic_sub[i].temp_picturelocationid);
+                    picStr12 += "<div class='col-xs-3'style='padding-left: 10px;padding-right: 20px'><div style='text-align: center'><img src='" + asd_sub[i].temp_picturelocationid + "' alt='"
+                    + asd_sub[i].commonfoodname + "'title='"+pic_sub[i].commonfoodname+"' style='width:103px;height:82px;'></div><p style='margin-top: 0px;height: 180px;text-align: center;padding-left: 5px;padding-right: 5px'>" + asd_sub[i].commonfoodexplain + "</p>" +
+                    "<div style='text-align: center'><button class='btn btn-success btn-sm' onclick='xuanZhong(\""+asd_sub[i].commonfoodname+"\","+pic_sub[i].temp_foodnutritionid+")'>加入列表</button></div></div>";
+                    //alert(pic_sub[i].commonfoodname);
+                }
+                picNext=asd.next;
+                picStrLi=picStrLi+"<div class='item'>"+picStr12+"</div>";
+            }
+            var picStrFull="<div id='carousel-example-generic' class='carousel slide' data-interval='3000' data-ride='carousel'><div class='carousel-inner'>"+picStrLi+"</div><a class='left carousel-control' style='width: 0px;' href='#carousel-example-generic' role='button' data-slide='prev'>" +
+                    "<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span></a><a class='right carousel-control' style='width: 0px;' href='#carousel-example-generic' role='button' data-slide='next'><span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span></a></div>"
+            if(pic.results==""){
+                $("#picBlock").html(" ");
+            }
+            else{
+                $("#picBlock").css('display', 'block');
+                $("#picBlock").html(picStrFull);
+            }
+        }*/
+
+    </script>
+</head>
+<body>
+<!--<个性化平台导航条>-->
+<div class="base_header" style="position: relative;z-index: 200">
+    <ul>
+        <li style="margin-left: 350px">健康管理</li>
+        <li><a href="index2.html" style="margin-left: 50px">个人健康</a></li>
+        <li><a class="active" href="index3.html">健康数据</a></li>
+        <li><a href="index4.html">养生知识</a></li>
+        <li>
+            <div class="nav-button transition" style="float: right">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </li>
+        <li><a id="login" href="loginPage/index.html" style="font-size: 14px">登录</a></li>
+        <li><a href="tables/index2_jieshao.html" style="font-size: 14px">智慧养生</a></li>
+        <li><a href="index-end.html"  style="font-size: 14px">首页</a></li>
+    </ul>
+</div>
+
+<!--模态框（选择套餐）-->
+<div class="modal fade" id="myModalTaoCan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                </button>
+                <h1 class="modal-title" id="myModalLabel">选择套餐</h1>
+            </div>
+            <div class="modal-body" style="height:550px;overflow-y: scroll">
+                <div class="panel-group" id="accordion">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="pacDetermine">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!--/.modal-content-->
+    </div><!--/.modal-->
+</div>
+
+<!--健康数据——饮食信息录入-->
+<div id="menu-container">
+    <div class="content about animated fadeInDown" id="menu-4" style="display: block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-2">
+                    <div id="icons-about">
+                        <ul class="tabs">
+                            <li>
+                                <a href="#tab8" class="icon-item1 active" onclick="changePage('index3.html')">
+                                    <span>饮食信息</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab9" class="icon-item1" onclick="changePage('index3_2.html')">
+
+                                    <span>运动信息</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                            <li>
+                                <a href="#tab10" class="icon-item1" onclick="changePage('index3_3.html')">
+                                    <span>睡眠信息</span>
+                                </a> <!-- /.icon-item -->
+                            </li>
+                        </ul>
+                    </div> <!-- /.icons -->
+                </div> <!-- /.col-md-3 -->
+                <div class="col-md-9 col-sm-10">
+                    <div class="about-us-content" style="border-top-width: 1px;border-left-width: 1px;padding-top: 30px;">
+                        <!--<饮食信息录入>-->
+                        <div class="toggle-content" id="tab8" style="border-top-width: 10px;border-left-width: 10px;">
+                            <h3 style="font-size: x-large">饮食信息录入</h3>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="div_from_aoto" style="width:300px;margin-left:20px;margin-top: 0px;padding-left: 0px">
+                                        <div class="control-group">
+                                            食物类型:
+                                            <select class="input_select" id="foodTypeOne" style="width: 150px" onchange="showInfo1()">
+                                                <option>请选择食物类型</option>
+                                            </select>
+                                        </div>
+                                        <div class="control-group">
+                                            食物种类:
+                                            <select class="input_select" id="foodType" style="width: 150px" onchange="showInfo()">
+
+                                            </select>
+                                        </div>
+                                        <div class="control-group">
+                                            饮食开始时间:
+                                            <div class="input-group date form_datetime col-md-5" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                                <input class="form-control" style="width:200px" type="text" id="eatStartTime" readonly>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                            </div>
+                                           <!-- <input  type="datetime-local" style="width:200px" id="eatStartTime">-->
+                                        </div>
+                                        <div class="control-group">
+                                            饮食结束时间:
+                                            <div class="input-group date form_datetime col-md-5" data-date-format="yyyy-mm-dd hh:ii" data-link-field="dtp_input1">
+                                                <input class="form-control" style="width:200px" type="text" id="eatEndTime" readonly>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                            </div>
+                                           <!-- <input  type="datetime-local" style="width:200px" id="eatEndTime">-->
+                                        </div>
+                                        <div class="control-group">
+                                            <label>饮食信息备注:
+                                                <br>
+                                                <textarea rows="4" cols="36" id="beiZhu"></textarea>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-left: 0px;padding-right: 0px">
+                                    <button type="button" class="btn btn-success" style="margin-bottom: 10px;" data-toggle="modal" data-target="#myModalTaoCan" id="pacChoice">选择套餐</button>
+                                    <br>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"  style=" padding-left: 10px;padding-bottom: 5px;padding-top: 5px;">
+                                            <h4 class="panel-title" style="float:left;margin-top:3px">
+                                                已选食物
+                                            </h4>
+                                            <button  id="foodSubmit" type="button" style=" margin-left: 270px;" >提交</button>
+                                        </div>
+                                        <div  class="panel-collapse collapse in">
+                                            <div class="panel-body" style="height:270px; overflow-y: scroll;">
+                                                <ul id="foodList" style="margin-top: 0px" >
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="margin-top: 0px">
+                            <div class="row" id="picBlock" >
+
+                            </div>
+                            <div class="holder" style="text-align: center">
+
+                            </div>
+                        </div><!-- /.toggle-content -->
+                    </div> <!-- /.inner-content -->
+                </div> <!-- /.col-md-9 -->
+            </div> <!-- /.row -->
+        </div> <!-- /.container -->
+    </div> <!-- /.services -->
+</div>
+
+<!--<页面底部>-->
+<div id="templatemo_footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div style="font-size: inherit">
+                    <p>关于我们 | 联系我们 | 手机应用 | 同步软件| 平台介绍 | 帮助 | 常见问题</p>
+                    <p>Copyright@ 2011-2015 中源团队 | 苏ICP备12014086号</p>
+                </div>
+            </div> <!-- /.col-md-12 -->
+        </div> <!-- /.row -->
+    </div> <!-- /.container -->
+</div> <!-- /.templatemo_footer -->
+<!-- Scripts -->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/icheck.js"></script>
+<script src="js/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/templatemo_custom.js"></script>
+<script type="text/javascript" src="loginPage/js/login.js"></script>
+<script type="text/javascript" src="js/loginCookie.js"></script>
+<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="sumjs/individualization.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/cl.js"></script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+</script>
+</body>
+</html>

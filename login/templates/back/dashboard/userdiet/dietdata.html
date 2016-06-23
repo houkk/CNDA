@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>基于云技术的智慧中医后台管理系统</title>
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--   营养素种类表  -->
+    <div id="toolbar" class="btn-group tool-control Nutrient">
+        <button type="button" class="btn btn-default" id="nutrientadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button></a>
+        <button type="button" class="btn btn-default" id="diet-chart1">
+            <i class="glyphicon glyphicon-eye-open"></i>
+        </button>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control Nutrient" style="margin-left:-3%; margin-top: -2%">
+        <table data-toggle="table" id="dietTable" data-url="http://10.120.59.9:81tbcommonnutrientintake/" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#toolbar">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        </table>
+    </div>  <!--col-md-10-->
+    <div class="row" style="margin-left: -2%; display: none" id="nutrientaddpanel">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title">普通用户添加</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="UserName">用户名</label>
+                                <input type="email" class="form-control" id="UserName" placeholder="UserName" style="width:100%">
+                            </div>
+                            <div class="form-group">
+                                <label for="Password">密码</label>
+                                <input type="password" class="form-control" id="Password" placeholder="Password" style="width:100%">
+                            </div>
+                            <div class="form-group">
+                                <label for="ReplyPassword">重复密码</label>
+                                <input type="password" class="form-control" id="ReplyPassword" placeholder="ReplyPassword" style="width:100%">
+                            </div>
+                            <div class="form-group">
+                                <label for="UserAge">用户年龄</label>
+                                <input type="password" class="form-control" id="UserAge" placeholder="UserAge" style="width:100%">
+                            </div>
+                            <div class="form-group">
+                                <label for="UserRank">用户等级</label>
+                                <select class="form-control" id="UserRank">
+                                    <option value ="volvo"></option>
+                                    <option value ="saab">Saab</option>
+                                    <option value="opel">Opel</option>
+                                    <option value="audi">Audi</option>
+                                </select>
+                            </div>
+                        </div> <!--cil-md-5 -->
+                        <div class="col-md-1"></div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="email">邮箱</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <label class="sr-only" for="email">Email address</label>
+                                        <div class="input-group-addon">@</div>
+                                        <input type="email" class="form-control" id="email" placeholder="Enter email" style="width:100%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="PhoneNumber" style="width:100px">手机号</label>
+                                <input type="text" class="form-control" id="PhoneNumber" placeholder="PhoneNumber" style="width:100%">
+                            </div>
+                            <div class="form-group">
+                                <label for="UserWorkType" style="width:100px">用户工作类型</label>
+                                <input type="text" class="form-control" id="UserWorkType" placeholder="UserWorkType" style="width:100%">
+                            </div>
+                            <div class="row" style="margin-top:40px">
+                                <div class="col-md-3"><label>用户所在地区</label></div>
+                                <div class="col-md-3">
+                                    <select class="form-control">
+                                        <option value ="volvo"></option>
+                                        <option value ="saab">Saab</option>
+                                        <option value="opel">Opel</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control">
+                                        <option value ="volvo"></option>
+                                        <option value ="saab">Saab</option>
+                                        <option value="opel">Opel</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control">
+                                        <option value ="volvo"></option>
+                                        <option value ="saab">Saab</option>
+                                        <option value="opel">Opel</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:40px">
+                                <div class="col-md-3" ><label>用户所属组</label></div>
+                                <div class="col-md-3">
+                                    <select class="form-control" style="width: 100%">
+                                        <option value ="volvo"></option>
+                                        <option value ="saab">Saab</option>
+                                        <option value="opel">Opel</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3"><label>用户职位</label></div>
+                                <div class="col-md-3">
+                                    <select class="form-control" style="width: 100%">
+                                        <option value ="volvo"></option>
+                                        <option value ="saab">Saab</option>
+                                        <option value="opel">Opel</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  <!--row-->
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-1 col-md-offset-7 col-lg-1 col-lg-offset-10">
+                            <button type="submit" class="btn btn-default" style="margin-top:5px" id="button0">取消</button>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-success" style="margin-top:5px">创建</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--食物营养成分表-->
+    <div id="foodtoolbar" class="btn-group tool-control FoodNutrient" style="display: none">
+        <button type="button" class="btn btn-default" id="fooduseradd" onclick="turnPage('../userguanli/UserAdd.html')">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button></a>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control FoodNutrient" style="margin-left:-3%; display: none">
+        <table data-toggle="table" data-url="../demo.response.json" id="FoodNutrient" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#foodtoolbar">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <!--饮食信息记录表-->
+    <div id="eatingrecordtoolbar" class="btn-group tool-control EatingRecord" style="display: none">
+        <button type="button" class="btn btn-default" id="eatingrecordchart">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-eye-open"></i>
+        </button></a>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control EatingRecord" style="margin-left:-3%; display: none";>
+        <table data-toggle="table" data-url="../demo.response.json" id="eatingRecord" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#eatingrecordtoolbar" >
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <!--饮食偏好记录表-->
+    <div id="eatingprefertoolbar" class="btn-group tool-control EatingPreferRecord" style="display: none">
+        <button type="button" class="btn btn-default" id="eatingpreferuseradd" onclick="turnPage('../userguanli/UserAdd.html')">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-eye-open"></i>
+        </button></a>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control EatingPreferRecord" style="margin-left:-3%; display: none">
+        <table data-toggle="table" data-url="../demo.response.json" id="eatingPrefer" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#eatingprefertoolbar" >
+        <thead>
+        <tr>
+            <th></th>
+
+        </tr>
+        </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <!--饮食特征信息表-->
+    <div id="eatingfeaturetoolbar" class="btn-group tool-control EatingFeature" style="display: none">
+        <button type="button" class="btn btn-default" id="eatingfeatureadd" onclick="turnPage('../userguanli/UserAdd.html')">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button></a>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%; display: none">
+        <table data-toggle="table" data-url="../demo.response.json" id="eatingFeature" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#eatingfeaturetoolbar" sort-name="stargazers_count" sort-order='asc'>
+        <thead>
+        <tr>
+            <th></th>
+        </tr>
+        </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <!--饮食状况分析表-->
+    <div id="eatinganalysistoolbar" class="btn-group tool-control EatingAnalysis" style="display: none">
+        <button type="button" class="btn btn-default" id="eatinganalysisadd" onclick="turnPage('../userguanli/UserAdd.html')">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button></a>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%; display: none">
+        <table data-toggle="table" data-url="../demo.response.json" id="eatingAnalysis" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#eatinganalysistoolbar" sort-name="stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script src="{% static "login/static/js/common.js" %}"></script>
+<script>
+    function turnPage(url){
+        $.ajax({
+            type:"post",
+            url:url,
+            cache:false,
+            success:function(html){
+                $('body',parent.document).find('#content').empty();
+                $('body',parent.document).find('#content').html(html);
+            }
+        });
+    }
+    //eatingdata
+    $("select").change(function(){
+        var page = $(this).children('option:selected').val();
+        $('.tool-control').css('display','none');
+        $('.table-control').css('display','none');
+        if(page == "Nutrient"){
+            $('.Nutrient').css('display','block');
+        }
+        if(page == "FoodNutrient"){
+            $('.FoodNutrient').css('display','block');
+        }
+        if(page == "EatingRecord"){
+            $('.EatingRecord').css('display','block');
+        }
+        if(page == "EatingPreferRecord"){
+            $('.EatingPreferRecord').css('display','block');
+
+        }
+
+    });
+    $('#nutrientadd').click(function(){
+        $('.tool-control').css('display','none');
+        $('.table-control').css('display','none');
+        $('#selec').css('display','none');
+        $('#nutrientaddpanel').css('display','block');
+    });
+    $('#button0').click(function(){
+        $('#nutrientaddpanel').css('display','none');
+        $('#selec').css('display','block');
+        $('.Nutrient').css('display','block');
+    });
+    $('#eatingrecordchart').click(function(){
+        window.open("../userdiet/echarts.html");  <!--在一个新标签中打开页面-->
+    });
+    $('#diet-chart1').click(function(){
+        window.location.href = "../userdiet/dietchart1.html";
+    });
+</script>
+</body>
+</html>
+
+

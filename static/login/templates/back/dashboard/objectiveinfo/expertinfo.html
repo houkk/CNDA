@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid">
+    <!--中医专家信息表-->
+    <div id="expertinfotoolbar" class="btn-group table-control toolcontrol">
+        <button type="button" class="btn btn-default" id="expertinfoadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="expertinfoedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="expertinfodelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12  table-control" style="margin-left:-3%;" id="table">
+        <table data-toggle="table" id="expertTable"  data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#expertinfotoolbar" sort-name="stargazers_count" sort-order='asc'>
+        <thead>
+        <tr>
+            <th></th>
+        </tr>
+        </thead>
+        </table>
+    </div>  <!--col-md-10-->
+    <!--中医专家信息添加-->
+    <div class="row" style="margin-left: -2%; display: none" id="expertinfoaddpanel">
+        <div class="col-md-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">中医专家信息添加</h4>
+                </div>
+                <form id="expertinfoform"  method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group hidden">
+                                        <label for="DoctorID">医生id</label>
+                                        <input type="text" class="form-control " id="DoctorID" name="doctorid"  style="width:100%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="DoctorName">医生姓名</label>
+                                        <input type="text" class="form-control" id="DoctorName" name="doctorname" placeholder="DoctorName" style="width:100%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="DoctorSex">医生性别</label>&nbsp;&nbsp;&nbsp;
+                                        <label class="radio-inline">
+                                            <input type="radio" name="doctorsex" id="male" value="男">男
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="doctorsex" id="female" value="女">女
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="DoctorAge">医生年龄</label>
+                                        <input type="text" class="form-control" id="DoctorAge" name="doctorage" placeholder="DoctorAge" style="width:100%"  required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ProfessionalRands">医生职称</label>
+                                        <textarea cols="8" rows="2" class="form-control" id="ProfessionalRands" name="professionalrands" placeholder="ProfessionalRands" style="width:100%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="DoctorWorkTime">工作时长</label>
+                                        <input type="text" class="form-control" id="DoctorWorkTime"name="doctorworktime" placeholder="DoctorWorktime" style="width:100%" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ResearchArea">研究方向</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="ResearchArea" name="researcharea" required></textarea>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="temp_AdminisAreaID">行政区划ID</label>
+                                        <select class="form-control" id="temp_AdminisAreaID" name="temp_adminisareaid"   style="width:100%" required>
+                                            <option>请选择</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label for="temp_DoctorExpertiseID">医生专长ID</label>
+                                        <select  class="form-control" id="temp_DoctorExpertiseID" name="temp_doctorexpertiseid" style="width:100%" required>
+                                            <option>请选择</option>
+                                        </select>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="DoctorCode">医生代码</label>
+                                        <input type="text" class="form-control" id="DoctorCode" name="doctorcode" placeholder="DoctorCode" style="width:100%">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="temp_PictureLocationID">图片位置ID</label>
+                                        <select  class="form-control" id="temp_PictureLocationID" name="temp_picturelocationid" style="width:100%"></select>
+                                        <option>请选择</option>
+                                     </div>
+                                    <div class="form-group">
+                                        <label for="DoctorSynopsis">医生简介</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="DoctorSynopsis" name="doctorsynopsis"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ResearchFindings">相关研究成果</label>
+                                        <textarea class="form-control" cols="8" rows="8" id="ResearchFindings" name="researchfindings"></textarea>
+                                    </div>
+                                </div>
+                            </div>  <!--row-->
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-7 col-lg-1 col-lg-offset-10">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px " id="doit" >创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#expertinfoadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#expertinfoaddpanel').css('display','block');
+        document.getElementById("DoctorName").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+   //中医专家信息修改
+  $('#expertinfoedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#DoctorID').val(jsonobject.doctorid);
+      $('#DoctorName').val(jsonobject.doctorname);
+    if(jsonobject.doctorsex.toString() == "女"){
+        $("#female").attr("checked","true")
+    }else {
+        $("#male").attr("checked", "true")
+    };
+      $('#DoctorAge').val(jsonobject.doctorage);
+      $('#ProfessionalRands').val(jsonobject.professionalrands);
+      $('#DoctorWorkTime').val(jsonobject.doctorworktime);
+      $('#DoctorSynopsis').val(jsonobject.doctorsynopsis);
+      $('#ResearchArea').val(jsonobject.researcharea);
+      $('#ResearchFindings').val(jsonobject.researchfindings);
+      $('#DoctorCode').val(jsonobject.doctorcode);
+      $('#temp_AdminisAreaID').val(jsonobject.temp_adminisareaid);
+      $('#temp_DoctorExpertiseID').val(jsonobject.temp_doctorexpertiseid);
+      $('#temp_PictureLocationID').val(jsonobject.temp_picturelocationid);
+
+      $('.table-control').css('display','none');
+      $('#expertinfoaddpanel').css('display','block');
+      document.getElementById("DoctorName").focus();
+      $('#changepanel').html("中医专家信息编辑");
+      $('#doit').html("确定");
+  });
+  $('#expertTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+     $('#doit').click(function(){
+          var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#expertinfoform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbtcmdcotorsinfo/',
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/expertinfo.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#expertinfoaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbtcmdcotorsinfo/'+jsonobject.doctorid+"/",
+                success:function(data){
+                    turnPage('back/dashboard/objectiveinfo/expertinfo.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#expertinfoaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+    //取消返回
+     $('#cancel').click(function(){
+
+             turnPage('back/dashboard/objectiveinfo/expertinfo.html');
+    });
+     //删除
+    $('#expertinfodelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbtcmdcotorsinfo/'+jsonobject.doctorid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/expertinfo.html');
+                   }
+               })
+           }
+       });
+
+
+    //获取行政id数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url:baseAddress+'/tbadminisarea/?adminisareacode=0000',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].adminisareaid+" >" + msg[i].adminisareaprovince +"</option>";
+                }
+                $("#temp_AdminisAreaID").append(str);
+            }
+        })
+    });
+    //获取医生专长id数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url:baseAddress+'/tbdoctorexpertiseinfo/',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].doctorexpertiseid+">" + msg[i].doctorexpertisetitle +"</option>";
+                }
+                $("#temp_DoctorExpertiseID").append(str);
+            }
+        })
+    });
+    //获取图片位置id数据
+    jQuery(function($){
+        $.ajax({
+            type: "get",
+            datatype:"json",
+            url:baseAddress+'/tbpicturelist/',
+            success:function(msg){
+                var str="";
+                for(i in msg){
+                    str += "<option value ="+ msg[i].picturelocationid +" >" + msg[i].picturename + "</option>";
+                }
+                $("#temp_PictureLocationID").append(str);
+            }
+        })
+    });
+
+
+
+
+     $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+          doctorname: {
+              validators: {
+                  regexp: {
+                      regexp: /^[\u4e00-\u9fa5]+$/,
+                      message: '限制中文字符'
+                  },
+                  stringLength: {
+                      max: 30,
+                      message: '限制在30个字符以内'
+                  }
+              }
+          },
+          doctorage: {
+              validators: {
+                  regexp: {
+                      regexp: /^[1-9]\d?$|^1[01]\d$|^120$/,
+                      message: '年龄1-120岁之间'
+                  }
+              }
+          },
+          professionalrands: {
+              validators: {
+                  stringLength: {
+                      max: 50,
+                      message: '限制在50个字符以内'
+                  }
+              }
+          },
+          doctorworktime: {
+              validators: {
+                  regexp: {
+                      regexp: /^([1-9]\d{0,1}|100)$/,
+                      message: '限制在1-100年之间'
+                  }
+              }
+          },
+          doctorsynopsis: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          researcharea: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          researchfindings: {
+              validators: {
+                  stringLength: {
+                      max: 1024,
+                      message: '限制在1024个字符以内'
+                  }
+              }
+          },
+          doctorcode: {
+              validators: {
+                  regexp: {
+                      regexp: /^[0-9]*$/,
+                      message: '只能包含正整数'
+                  }
+              }
+          }
+      }
+    });
+</script>
+</body>
+</html>
+
+

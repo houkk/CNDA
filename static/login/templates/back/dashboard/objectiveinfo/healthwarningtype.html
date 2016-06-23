@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+
+</head>
+
+<body>
+<!--================================================here is the message block=======================================================-->
+<div class="container-fluid" >
+    <!--健康预警类别表-->
+    <div id="healthwarningtypetoolbar" class="btn-group table-control tool-control">
+        <button type="button" class="btn btn-default" id="healthwarningtypeadd">    <!--data-target="#myModal" data-toggle="modal"-->
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="healthwarningtypeedit">
+            <i class="glyphicon glyphicon-edit"></i>
+        </button>
+        <button type="button" class="btn btn-default" id="healthwarningtypedelete">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+    <!--   ================================================the table======================================================== -->
+    <div class="col-md-12 table-control" style="margin-left:-3%; margin-top: -2%"; id="table">
+        <table data-toggle="table"  id="healthwarningtypeTable" data-height="520" data-pagination="true" data-search="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-toolbar="#healthwarningtypetoolbar" sort-name=stargazers_count" sort-order='asc'>
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>  <!--col-md-10-->
+
+    <div class="row" style="display: none;" id="healthwarningtypeaddpanel">
+        <div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="panel-title" id="changepanel">健康预警类别添加</h4>
+                </div>
+                <form id="healthwarningtypeform" method="post" >
+                    <div id="validateform">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group hidden">
+                                        <label for="HealthWarningTypeID">健康预警类别ID</label>
+                                        <input type="text" class="form-control " id="HealthWarningTypeID" name="healthwarningtypeid"  style="width:90%"  disabled="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthWarningName">健康预警类别名</label>
+                                        <textarea cols="8" rows="2" class="form-control" id="HealthWarningName" name="healthwarningname" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthWarningTypeCode">健康预警类别代码</label>
+                                        <input type="text" class="form-control" id="HealthWarningTypeCode" name="healthwarningtypecode" placeholder="HealthWarningTypeCode" style="width:90%" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthWarningTypeExp">健康预警分类说明</label>
+                                        <textarea cols="8" rows="4" class="form-control" id="HealthWarningTypeExp" name="healthwarningtypeexp" style="width:90%" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="HealthWarningTypeRemarks">健康预警分类备注</label>
+                                        <textarea cols="8" rows="4" class="form-control" id="HealthWarningTypeRemarks" name="healthwarningtyperemarks" style="width:90%" required></textarea>
+                                    </div>
+                                </div> <!--cil-md-5 -->
+                            </div>  <!--row-->
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-md-1 col-md-offset-10 col-lg-offset-10 col-lg-1">
+                                    <button type="button" class="btn btn-default" style="margin-top:5px" id="cancel">取消</button>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-success" style="margin-top:5px" id="doit">创建</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>  <!--col-md-10-->
+    </div> <!--row-->
+</div>  <!--container-fluid-->
+
+
+
+<!--=========================================here is the js file================================================================-->
+{% load staticfiles %}
+<script src="{% static "login/static/js/start.js" %}"></script>
+<script>
+    var rowcontent = null;
+    var tag = null;
+    $('#healthwarningtypeadd').click(function(){
+        tag = "add";
+        $('.table-control').css('display','none');
+        $('#healthwarningtypeaddpanel').css('display','block');
+        document.getElementById("HealthWarningName").focus();
+    });
+
+    $("form").submit(function(e){
+        e.preventDefault();
+    });
+
+    //点击编辑按钮，把获取到的json 填充到添加界面中
+  $('#healthwarningtypeedit').click(function(){
+      tag = "edit";
+      var jsonobject = eval('('+ rowcontent +')');
+      $('#HealthWarningTypeID').val(jsonobject.healthwarningtypeid );
+      $('#HealthWarningName').val(jsonobject.healthwarningname );
+      $('#HealthWarningTypeCode').val(jsonobject.healthwarningtypecode);
+      $('#HealthWarningTypeExp').val(jsonobject.healthwarningtypeexp);
+      $('#HealthWarningTypeRemarks').val(jsonobject.healthwarningtyperemarks);
+
+      $('#healthwarningtypetoolbar').css('display','none');
+      $('#table').css('display','none');
+      $('#healthwarningtypeaddpanel').css('display','block');
+      document.getElementById("HealthWarningName").focus();
+      $('#changepanel').html("健康预警类别编辑");
+      $('#doit').html("确定");
+      
+  });
+    $('#healthwarningtypeTable').on('check.bs.table', function(e,row){
+    rowcontent = JSON.stringify(row);  //把json对象解析成string对象
+  });
+
+    $('#cancel').click(function(){
+        turnPage('back/dashboard/objectiveinfo/healthwarningtype.html');
+    });
+    $('#doit').click(function(){
+        var jsonobject = eval('('+ rowcontent +')');
+        var jsonobj1 = {};
+        var jsonObject = $('#healthwarningtypeform').serializeArray();
+        $.each(jsonObject, function(){
+            if(jsonobj1[this.name]){
+                if(!jsonobj1.push){
+                    jsonobj1[this.name] = [jsonobj1[this.name]];
+                }
+                jsonobj1[this.name].push(this.value || '');
+            }else{
+                jsonobj1[this.name] = this.value || '';
+            }
+        });
+        if(tag == "add"){
+             $.ajax({
+                async:false,
+                type: "post",
+                dataType:'json',
+                data:jsonobj1,
+                url:baseAddress+'/tbhealthwarningtype/',
+                success:function(data){
+                   turnPage('back/dashboard/objectiveinfo/healthwarningtype.html');
+                },
+                error:function(json){
+                    alert ("插入失败");
+                    $('.table-control').css('display','none');
+                    $('#healthwarningtypeaddpanel').css('display','block');
+                }
+            });
+        }else{
+            $.ajax({
+                async:false,
+                type: "put",
+                dataType:'json',
+                data:jsonobj1,
+                url: baseAddress+'/tbhealthwarningtype/'+jsonobject.healthwarningtypeid+"/",
+                success:function(data){
+                   turnPage('back/dashboard/objectiveinfo/healthwarningtype.html');
+                },
+                error:function(json){
+                    alert ("修改失败");
+                    $('.table-control').css('display','none');
+                    $('#healthwarningtypeaddpanel').css('display','block');
+                }
+            });
+        }
+    });
+     //删除
+    $('#healthwarningtypedelete').click(function(){
+            var jsonobject = eval('('+ rowcontent +')');
+           if(confirm("是否删除此条信息？")) {
+               $.ajax({
+                   type: 'delete',
+                   url: baseAddress+'/tbhealthwarningtype/'+jsonobject.healthwarningtypeid+"/",
+                   success: function (json) {
+                       turnPage('back/dashboard/objectiveinfo/healthwarningtype.html');
+                   }
+               })
+           }
+       });
+
+    $('#validateform').bootstrapValidator({
+      excluded: ':disabled',
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+        fields: {
+            healthwarningtypecode: {
+                validators: {
+                    regexp: {
+                        regexp: /^[1-9]\d*$/,
+                        message: '只能包含正整数'
+                    }
+                }
+            },
+            healthwarningname: {
+                validators: {
+                    stringLength: {
+                        max: 100,
+                        message: '限制在100个字符以内'
+                    }
+                }
+            },
+            healthwarningtypeexp: {
+                validators: {
+                    stringLength: {
+                        max: 200,
+                        message: '限制在200个字符以内'
+                    }
+                }
+            },
+            healthwarningtyperemarks: {
+                validators: {
+                    stringLength: {
+                        max: 200,
+                        message: '限制在200个字符以内'
+                    }
+                }
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
+
+

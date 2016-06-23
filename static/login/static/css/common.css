@@ -1,0 +1,25 @@
+.nav_color{background-color: #87CEFA}
+.nav_height{height: 200px}
+.nav_font{font-size: large}
+.footer ul li {display:inline;}
+.footer{height:20000px; background: #f2f2f2;color: #000000;text-align: center;padding: 20px}
+#accroding{height: 85%}
+#main {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+}
+#footer {
+    position: relative;
+    margin-top: -60px; /*等于footer的高度*/
+    height: 60px;
+    width: auto;
+    clear: both;
+
+}
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}

@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+a:hover,a:focus{
+    cursor: pointer;
+}
+h1{
+    color:white;
+    text-align: center;
+}
+h3 a ,.flag2 a {
+    color: #666;
+    text-decoration: none;
+
+}
+
+h3 a:hover, a:focus ,.flag2 a:hover, .flag2 a:focus{
+    color: #333;
+}
+
+.form-control:focus {
+    border-color: #999;
+}
+p {
+    line-height: 30px;
+}
+
+.flag {
+    color: #999999;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.flag2 {
+    color: #999999;
+    font-size: 12px;
+}
+.flag2 a{
+    float: right;
+}
+.flag3{
+    margin-top: 15px;
+    margin-bottom: 0px;
+    color: white;
+    font-size: 15px;
+}
+div.center {
+    display: block;
+    margin: 0 auto;
+}
+
+.left {
+    display: block;
+    float: left;
+}
+
+.right {
+    display: block;
+    float: right;
+}
+
+#middle {
+    width: 940px;
+    padding: 0;
+}
+
+.title-area {
+    width: 590px;
+    height: 80px;
+    margin: 0;
+}
+
+.form-control {
+    width: 350px;
+    height: 44px;
+    border: 1px solid #ddd;
+    border-radius: 0px;
+}
+
+.widget-area {
+    width: 350px;
+    height: 80px;
+    padding-top: 20px;
+}
+
+.header {
+    width: 940px;
+    padding: 0;
+}
+
+.collapse {
+    padding: 0;
+    background-color: #FFFFFF;
+}
+
+.news {
+    width: 640px;
+    display: block;
+    float: left;
+}
+
+#sort {
+    width: 300px;
+    display: block;
+    float: left;
+    padding: 0 auto;
+}
+
+#sort div {
+    widTh: 150px;
+    margin: 0 auto;
+}
+
+li {
+    list-style: none;
+    line-height: 30px;
+    padding: 0;
+}
+
+.span {
+    padding: 5px;
+    font-size: 20px;
+}

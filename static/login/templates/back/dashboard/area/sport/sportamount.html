@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+<body>
+<div id="main" style="height:600px"></div>
+
+<!-- ECharts单文件引入 -->
+{% load staticfiles %}
+<script src="{% static "login/static/js/dist/echarts-all.js" %}"></script>
+<script src="{% static "login/static/js/common.js" %}"></script>
+<script src="{% static "login/static/js/base-address.js" %}"></script>
+<script type="text/javascript">
+
+{#    // 路径配置#}
+{#    require.config({#}
+{#        paths: {#}
+{#            echarts:src = '{% static "login/static/js/dist" %}'#}
+{#        }#}
+{#    });#}
+{##}
+{#    // 使用#}
+{#    require(#}
+{#            [#}
+{#                'echarts',#}
+{#                'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载#}
+{#                    'echarts/chart/line'#}
+{#            ],#}
+{#            function (ec) {#}
+function restful(typeInfo,urlInfo,dataInfo) {
+            /**typeInfo:操作类型；
+             * urlInfo:地址；
+             * dataInfo:json数据；
+             * 操作类型：
+             * get：获取（dataInfo为空时，查询所有；dataInfo不为空，条件查询）；
+             * 查询(数据分页，暂时每页是十条数据，可后台更改)
+             * post：上传；
+             * put：更新(按照id)；
+             * delete：删除数据（id）；
+             * */
+            var result = null;
+            $.ajax({
+                async:false,
+                type: typeInfo,
+                url: urlInfo,
+                dataType:"json",
+                data:dataInfo,
+                success:function(json){
+                    result=json;
+                },
+                error:function(){
+                    result="fail";
+                }
+            });
+            //	.success(function (json) {
+            //	//result = json;
+            //	result= json;
+            //	return result;
+            //}).error(function(json){
+            //	result = json;
+            //	return result;
+            //});
+            return result;
+        }
+            var dataSeries1=restful("get",baseAddress+"/sport/?date=month",{"temp_userid":11,"data":"alldata"});
+            var dataSeries=dataSeries1.alldata;
+            //alert(dataSeries);
+            var xRay=[];
+            var data1=[];
+            var data2=[];
+            var data3=[];
+            $.each(dataSeries,function(i){
+                xRay.push(dataSeries[i].overtime);
+                data1.push(dataSeries[i].walkdistance);
+                data2.push(dataSeries[i].rundistance);
+                data3.push(dataSeries[i].calorieconsumption);
+                //alert(xRay);
+                //alert(data);
+            });
+                var myChart = echarts.init(document.getElementById('main'));
+                var option = {
+                    title: {
+                        text: '运动量图',
+                        subtext: '单位',
+                        x: 'left'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['走路距离', '跑步距离', '卡路里(Kcal)']
+                    },
+                    dataZoom: {
+                        show: true,
+                        start: 50
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: false,
+                    grid: {
+                        y2: 80
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: xRay
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name:"米"
+                        }
+                    ],
+                    series: [
+                        {
+                            name: ['走路距离'],
+                            type: 'bar',
+                            showAllSymbol: true,
+                            data: data1,
+                            markPoint: {
+                                data: [
+                                    {type: 'max', name: '最大值'},
+                                    {type: 'min', name: '最小值'}
+                                ]
+                            },
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+                        {
+                            name: ['跑步距离'],
+                            type: 'bar',
+                            showAllSymbol: true,
+                            data: data2,
+                            markPoint: {
+                                data: [
+                                    {type: 'max', name: '最大值'},
+                                    {type: 'min', name: '最小值'}
+                                ]
+                            },
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+                        {
+                            name: ['卡路里(Kcal)'],
+                            type: 'bar',
+                            showAllSymbol: true,
+                            data: data3,
+                            markPoint: {
+                                data: [
+                                    {type: 'max', name: '最大值'},
+                                    {type: 'min', name: '最小值'}
+                                ]
+                            },
+                            markLine: {
+                                data: [
+                                    {type: 'average', name: '平均值'}
+                                ]
+                            }
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+
+
+</script>
+</body>
